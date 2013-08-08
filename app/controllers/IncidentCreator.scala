@@ -16,6 +16,8 @@ case class IncidentFormTemp(title: String, description: String, incident_type: S
 
 
 object IncidentCreator extends Controller{
+    
+  //Time conversions to do
   def formTimeToJoda(stringTime: Option[String]) = {
     stringTime match {
       case Some(s) => Some(new DateTime())
@@ -73,6 +75,7 @@ object IncidentCreator extends Controller{
           Ok(views.html.incidentCreationForm(formWithErrors))
           },
         value => {
+          //TODO
           Ok("SUBMIITED")
       }
     )
