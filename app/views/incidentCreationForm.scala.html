@@ -1,0 +1,69 @@
+@(incidentForm: Form[IncidentFormTemp])
+
+
+@import helper._
+<!-- Custom form -->
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
+
+@template(){
+	
+
+
+
+<!-- 	<form action="@routes.IncidentCreator.submitIncidentForm" method="post">
+ -->
+		<!-- THe name attribute deals with form submission -->
+		<!-- <input id = "title" name ="title">
+		<input id = "description" name ="description">
+		<input id = "incident_type" name ="incident_type">
+		<input id = "status" name ="status">
+		<input id = "next_update" name ="next_update">
+		<input id = "issue_type" name ="issue_type">
+		<input id = "issue_type_id" name ="issue_type_id">
+		<input id = "primary_responder" name ="primary_responder">
+		<input id = "response_team" name ="response_team">
+		<input id = "user_id" name ="user_id">
+
+	</form>
+ -->
+
+
+	@form(action = routes.IncidentCreator.submitIncidentForm){
+		<!-- '_attribute -> 'blah' 'attribute -> 'blah2'   -->
+		<fieldset>
+		@inputText(incidentForm("title"), 
+		'_label -> "Title")
+
+		@textarea(incidentForm("description"), 
+		'_label -> "Description")
+
+		@inputText(incidentForm("incident_type"), 
+		'_label -> "Incident Type")
+
+		@inputText(incidentForm("status"), 
+		'_label -> "Status")
+
+		@inputText(incidentForm("next_update"), 
+		'_label -> "Next Update")
+
+		@inputText(incidentForm("issue_type_id"), 
+		'_label -> "Issue Type")
+
+		@inputText(incidentForm("issue_id"), 
+		'_label -> "Issue ID")
+
+		@inputText(incidentForm("primary_responder"), 
+		'_label -> "Primary Responder")
+
+		@inputText(incidentForm("response_team"), 
+		'_label -> "Response Team")
+
+		@inputText(incidentForm("user_id"), 
+		'_label -> "User ID")
+		</fieldset>
+		
+		<button type="submit" class = "btn btn-success">Submit</button>
+	}
+
+}
+

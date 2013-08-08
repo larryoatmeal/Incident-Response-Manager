@@ -1,0 +1,158 @@
+@(incidents: List[IncidentM], numberOfIncidents: Long, err: Option[String], params: BrowserParams)
+
+
+@error(message: String) = {<div class="text-error">@message</div>} 
+@none(message: String) = {<div class="text-warning">@message</div>} 
+@resetURL = @{routes.IncidentBrowser.getIncidents(1,"created_at","NoQuery","description",1)}
+@maxPage = @{IncidentM.pageRangeMax(numberOfIncidents)}
+
+@template("Incidents"){
+	
+	<div class = "row">
+		<div class ="span12">
+			<h1>Incident Response Manager</h1>
+		</div>
+	</div>
+
+	
+
+	<div id = "page_current" data ="@params.page"></div>
+	<div id = "sort_current" data="@params.sort"></div>
+	<div id ="query_current" data="@params.query"></div>
+	<div id ="queryCol_current" data ="@params.queryCol"></div>
+	<div id ="queryOptions_current" data="@params.queryOptions"></div>
+
+
+	<!-- Global error -->
+	@if(!err.isEmpty){
+		<div class="alert alert-error">  
+  			<a href = @resetURL class="close" data-dismiss="alert">Reset</a>  
+  			<strong>Error!</strong> @err.get  
+		</div>
+
+	}
+	<!-- No results -->
+	@if(numberOfIncidents == 0 ){
+		<div class="alert alert-warning">  
+  			<a href = @resetURL class="close" data-dismiss="alert">x</a>  
+  			<strong>No results</strong> 
+		</div>
+
+	}
+
+	<!-- query -->
+	<div class = "row">
+		<a href =@resetURL>Reset</a>
+
+		<form class="form-inline">
+		  <input id ="query" type="text" class="input-small" placeholder="Search...">
+		  <select id ="queryCol">
+		  	@for((name, sqlName) <- IncidentM.columnTuples){
+		  		<option value ="@sqlName">@name</option>
+
+		  	}
+		  </select>
+		  <label  class="checkbox">
+		    <input id = "wholeword" type="checkbox"> Whole word
+		  </label>
+		  <a id ="search" class="btn"><i class="icon-search"></i></a>
+		</form>
+
+	</div>
+
+	<!-- Table -->
+	<div class = "row">
+		<table class ="table table-striped">
+			<thead>
+				<tr>
+					@for((name, sqlName) <- IncidentM.columnTuples){
+						<th><a class = "sort" id = "@sqlName">@name</a></th> 
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@for(incident <- incidents){
+					<tr>
+						<td>@AnormJoda.formatDate(incident.updated_at)</td>
+						<td>@incident.title</td>
+						<td>@incident.description</td>
+						<td>@incident.incident_type</td>
+						<td>@incident.status</td>
+
+						<td>
+						@{incident.issue_type_id match {
+							case Some(i) => IssueTypeM.getIssueType(i) match {
+								case Some(ish) => ish.name
+								case None => error("Error")
+							}
+							case None => none("--")
+						}
+						}
+						</td>
+						<td>@incident.issue_id</td>
+						<td>@AnormJoda.formatDate(incident.created_at)</td>
+						<td>@AnormJoda.formatDate(incident.next_update_at)</td>
+						<td>
+						@{UserM.getUser(incident.primary_responder) match {
+							case Some(u) => u.last_name
+							case None => none("--")
+							}
+						}
+						</td>
+						<td>
+						@{incident.respond_team_id match {
+							case Some(i) => TeamM.getTeam(i) match {
+								case Some(t) => t.name
+								case None => error("Error")
+							}
+							case None => none("--")
+							}
+						}
+						</td>
+						<td>@{AnormJoda.timeDiff(incident.created_at, incident.finished_at) match {
+							case "Anachronism" => error("Anachronism")
+							case d => d
+							}
+						}</td>
+
+
+
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- Pagination -->
+	<div class = "row">
+		<ul class="pager">
+			@if(params.page-1 < 1){
+				<li class = "previous disabled">
+			  		<a disabled>Previous</a></li>
+			  	<li>
+			}else{
+				<li class = "previous">
+			  		<a>Previous</a></li>
+			  	<li>
+			}
+
+		  <li>Page @params.page/@maxPage</li>
+
+		  	@if(params.page+1 > maxPage){
+				<li class = "next disabled">
+			  		<a disabled>Next</a></li>
+			  	<li>
+			}else{
+				<li class = "next">
+			  		<a>Next</a></li>
+			  	<li>
+			}
+		</ul>
+	</div>
+
+	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+	<script src="@routes.Assets.at("javascripts/browser.js")" type ="text/javascript"></script>
+
+}

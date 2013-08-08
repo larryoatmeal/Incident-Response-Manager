@@ -1,0 +1,19 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+#GET     /                           controllers.Application.index
+GET		/debug						controllers.Application.debug
+
+GET		/							controllers.IncidentBrowser.getIncidents(page: Int ?= 1, sort: String ?= "created_at", query: String ?= "NoQuery", queryCol: String ?= "description", queryOptions: Int ?= 0)
+GET     /create 					controllers.IncidentCreator.addIncident
+POST	/create 					controllers.IncidentCreator.submitIncidentForm
+# Javascript routing. MUST BE BEFORE GET /assets/*file
+GET     /assets/javascripts/routes          controllers.Application.javascriptRoutes
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
