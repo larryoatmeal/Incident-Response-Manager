@@ -30,7 +30,7 @@ object TeamM {
   }
   
   def getTeam(id: Int) = Helper.getSingle[TeamM](id, "teams", "id", teamParser)
-  def getTeams = Helper.getAll[TeamM]("teams", teamParser)
+  def getTeams = Helper.getAllSort[TeamM]("teams", "name", false, teamParser)
 
   def addTeam(team: TeamM) = DB.withConnection{
     implicit connection =>

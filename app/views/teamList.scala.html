@@ -1,0 +1,18 @@
+@(teams: List[TeamM])(implicit session: play.api.mvc.Session)
+
+
+@template("Team"){
+
+
+	<div class = "row">
+			<h1>Teams</h1>
+
+			<ul>
+				@for(team <- teams){
+					<li><a href="@routes.TeamInfo.teamPage(team.id.get)">@{team.name}</a></li>
+				}
+			</ul>
+
+	</div>
+
+}

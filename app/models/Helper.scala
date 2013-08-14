@@ -97,6 +97,22 @@ object Helper{
     }
   }
 
+  def getAllSort[T](table: String, sort: String, desc: Boolean, parser: RowParser[T]) = DB.withConnection{
+    implicit connection =>
+    val direction = if(desc){"DESC"}else{"ASC"}
+
+    try {
+      SQL(s"""SELECT * FROM $table ORDER BY $sort $direction""").as(parser *)
+    }
+    catch {
+      case e => {
+        Logger.error(e.toString)
+        List()
+      }
+    }
+  }
+
+  
 
 
 

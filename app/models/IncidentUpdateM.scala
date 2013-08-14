@@ -52,7 +52,7 @@ object IncidentUpdateM{
   def getIncidentUpdates(incident_id: Int): List[IncidentUpdateM] = DB.withConnection {
     implicit connection =>
 
-    SQL("SELECT * FROM incident_updates WHERE incident_id = {incident_id}").on(
+    SQL("SELECT * FROM incident_updates WHERE incident_id = {incident_id} ORDER BY created_at DESC").on(
       "incident_id" -> incident_id
     ).as(incidentUpdateParser *)
   }
@@ -89,6 +89,14 @@ object IncidentUpdateM{
       }
     }
   }
+  
+  def deleteUpdate(id: Int) = DB.withConnection{
+    implicit connection =>
 
-
+    SQL("""UPDATE incident_updates
+           SET deleted = true
+           WHERE id = {id}""").on(
+           "id" -> id
+          ).executeUpdate() == 1
+  }
 }

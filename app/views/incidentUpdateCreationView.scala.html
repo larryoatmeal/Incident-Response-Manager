@@ -1,0 +1,29 @@
+@(updateForm: Form[IncidentUpdateM], incident_id: Int, user_id: Int)(implicit session: play.api.mvc.Session)
+
+@import helper._
+<!-- Custom form -->
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
+
+
+@template("Update"){
+	
+	@form(action = routes.IncidentUpdate.submitUpdate(incident_id)){
+
+		@textarea(updateForm("description"), '_label -> "Description")
+
+
+		<!-- Invisibile fields -->
+		@input(updateForm("created_by"), '_label -> "") { (id, name, value, args) =>
+    		<input type="hidden" name="@name" id="@id" value = "@user_id" @toHtmlArgs(args)>
+		}
+		@input(updateForm("incident_id"), '_label -> "") { (id, name, value, args) =>
+    		<input type="hidden" name="@name" id="@id" value = "@incident_id" @toHtmlArgs(args)>
+		} 
+
+		<button type = "submit" class ="btn btn-success">Submit</button>
+	}
+
+
+
+
+}

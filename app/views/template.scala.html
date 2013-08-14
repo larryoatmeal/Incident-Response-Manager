@@ -1,6 +1,7 @@
-@(title: String = "Title")(content: Html)
+@(title: String = "Title")(content: Html)(implicit session: play.api.mvc.Session) 
 
 
+@user_id = @{session.get("id").map(_.toInt)}
 
 
 <!DOCTYPE html>
@@ -13,16 +14,27 @@
         <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
     </head>
 
-
-
     <body>
     	<div class ="container">
     		<div class = "navbar">
     			<div class = "navbar-inner">
     				<ul class = "nav">
-    					<li><a href="#">Browse</a></li>
-    					<li><a href="#">Create</a></li>
+    					<li><a href="@routes.IncidentBrowser.getIncidents()">Browse</a></li>
+    					<li><a href="@routes.IncidentCreator.addIncident">Create</a></li>
+                        <li><a href="@routes.TeamInfo.teamList">Teams</a></li>
+                        <li><a href="@routes.UserInfo.userList">Users</a></li>
     				</ul>
+                    <div class="notices pull-right">
+                        @user_id match {
+                            case Some(id) => {
+                                <p class="navbar-text">@UserM.getUserFullName(id) <a href = "@routes.Authentication.logout">Log out</a></p>
+
+                            }
+                            case None => {  
+                                <p class ="navbar-text"><a href = "@routes.Authentication.loginScreen">Login</a></p>
+                            }
+                        }
+                     </div>
     			</div>
     		</div>
         	@content

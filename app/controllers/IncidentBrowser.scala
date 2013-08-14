@@ -13,18 +13,17 @@ import anorm._
 
 object IncidentBrowser extends Controller{
 
-
   def getIncidents(page: Int, sort: String, query: String, queryCol: String, queryOptions: Int) = Action{
     implicit request =>
+
     val incidents = IncidentM.getIncidents(page, sort, query, queryCol, queryOptions)
+    //Logger.debug(incidents.toString)
 
     incidents match {
       case (incidents, numberOfIncidents, err) =>
         Ok(views.html.incidentBrowser(incidents, numberOfIncidents, err, BrowserParams(page, sort, query, queryCol, queryOptions)))
-
     }
   }
-
   
   
 

@@ -18,8 +18,6 @@ case class IssueTypeM(
 object IssueTypeM {
   val dummyIssueType = IssueTypeM(anorm.NotAssigned, "Slugger", Some("Clazzy"), "PagerDuty")
 
-  val issueNames = List("None", "PagerDuty", "JIRA", "direct")
-
   val issueTypeParser: RowParser[IssueTypeM] = {
     import anorm.~
     get[Pk[Int]]("id") ~

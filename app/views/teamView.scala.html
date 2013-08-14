@@ -1,0 +1,39 @@
+@(id: Int)(implicit session: play.api.mvc.Session)
+
+@team = @{TeamM.getTeam(id)}
+@users = @{UserTeamMap.getUsers(id)}
+
+
+@template("Team"){
+
+	@team match {
+		case Some(t) => {
+			<div class = "row">
+			<h1>Team: @t.name</h1>
+
+
+			<table class ="table table-striped">
+				<tbody>
+					<tr><td>ID<td/><td>@t.id.get<td/></tr>
+					<tr><td>Name<td/><td> @t.name<td/></tr>
+				</tbody>
+			</table>
+			</div>
+		}
+		case None => {
+			<h1 class ="text-error">Team Not Found</h1>
+		}	
+	}
+
+	<div class = "row">
+			<h3>Members</h3>
+
+			<ul>
+				@for(user <- users){
+					<li><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
+				}
+			</ul>
+
+	</div>
+
+}

@@ -1,15 +1,20 @@
-@(incidentForm: Form[IncidentFormTemp])
+@(incidentForm: Form[IncidentFormTemp], user_id: Int)(implicit session: play.api.mvc.Session)
 
 
 @import helper._
 <!-- Custom form -->
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
+<!-- Select dropdowns. Empty string is interpreted as null-->
+@usersMap = @{for(user <- UserM.getUsers) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
+@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeams) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
+@issueTypesMap = @{Tuple2("","None") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
+
+
 @template(){
 	
 
-
-
+	
 <!-- 	<form action="@routes.IncidentCreator.submitIncidentForm" method="post">
  -->
 		<!-- THe name attribute deals with form submission -->
@@ -27,43 +32,68 @@
 	</form>
  -->
 
+ 	<!-- For time picker -->
+ 	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
+ 	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
+
+ 	<h1>Create an Incident</h1>
+ 	@incidentForm.globalError.map { error =>
+  		<div class="text-error">@error.message</div>
+	}
+
 
 	@form(action = routes.IncidentCreator.submitIncidentForm){
 		<!-- '_attribute -> 'blah' 'attribute -> 'blah2'   -->
 		<fieldset>
+
+
 		@inputText(incidentForm("title"), 
 		'_label -> "Title")
 
 		@textarea(incidentForm("description"), 
 		'_label -> "Description")
 
-		@inputText(incidentForm("incident_type"), 
-		'_label -> "Incident Type")
+		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type")
 
-		@inputText(incidentForm("status"), 
-		'_label -> "Status")
+		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
+		'_label -> "Status")*/}
 
-		@inputText(incidentForm("next_update"), 
+		<label class-"control-label">Status</label>
+		<div class ="controls">
+		<input type = "text" name ="status" value ="open"  readonly = "readonly">
+		</div>
+
+
+		@inputText(incidentForm("next_update_at_string"), 
 		'_label -> "Next Update")
 
-		@inputText(incidentForm("issue_type_id"), 
+
+		@select(incidentForm("issue_type_id"), issueTypesMap,
 		'_label -> "Issue Type")
 
 		@inputText(incidentForm("issue_id"), 
 		'_label -> "Issue ID")
 
-		@inputText(incidentForm("primary_responder"), 
+		@select(incidentForm("primary_responder"), usersMap,
 		'_label -> "Primary Responder")
 
-		@inputText(incidentForm("response_team"), 
+		@select(incidentForm("response_team"), teamsMap,
 		'_label -> "Response Team")
 
-		@inputText(incidentForm("user_id"), 
-		'_label -> "User ID")
+
+		@input(incidentForm("user_id"), '_label -> "") { (id, name, value, args) =>
+    		<input type="hidden" name="@name" id="@id" value = "@user_id" @toHtmlArgs(args)>
+		}
+
 		</fieldset>
 		
 		<button type="submit" class = "btn btn-success">Submit</button>
 	}
+
+	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/jqueryUI.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/jqueryTimepicker.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/creator.js")" type="text/javascript"></script>
 
 }
 

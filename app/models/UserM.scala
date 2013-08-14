@@ -33,7 +33,9 @@ object UserM {
     } 
   }
   def getUser(id: Int) = Helper.getSingle[UserM](id, "users", "id", userParser)
-  def getUsers = Helper.getAll[UserM]("users", userParser)
+  def getUsers = Helper.getAllSort[UserM]("users", "first_name", false, userParser)
+
+  def getUserFullName(id: Int) = getUser(id).map(user => user.first_name + " " + user.last_name)
 
   def addUser(user: UserM) = DB.withConnection{
     implicit connection =>
@@ -56,7 +58,6 @@ object UserM {
       }
 
     }
-
   }
 
 

@@ -41,10 +41,10 @@ case class BrowserParams(
 
 object IncidentM {
 
-  val NoQuery = "NoQuery"
+  //val NoQuery = "NoQuery" //Fake null value for empty query
 
-  val incidentTypes = List("internal","external")
-  val statusTypes = List("open","closed")
+  val incidentTypes = Map("internal" -> "Internal","external"->"External") //database value -> display
+  val statusTypes = Map("open" -> "Open","closed" -> "Closed")
 
 
   val dummyIncident = IncidentM(
@@ -67,35 +67,56 @@ object IncidentM {
   )
   
   val IncidentsPerPage = 50
-  val columns = List(
-    "updated_at",
-    "title",
-    "description",
-    "incident_type",
-    "status",
-    "issue_type",
-    "issue_id",
-    "created_at",
-    "next_update_at",
-    "primary_responder",
-    "response_team",
-    "incident_duration"
+
+  import collection.immutable.ListMap
+  val columnMap = ListMap(//sql name -> display name
+    "created_at" -> "Created At",
+    "updated_at" -> "Updated At",
+    "next_update_at" -> "Next Update",
+    "title" -> "Title",
+    "description" -> "Description",
+    "incident_type"-> "Incident Type",
+    "status" -> "Status",
+    "issue_type" -> "Issue Type",
+    "issue_id" -> "Issue ID",
+    "primary_responder" -> "Primary Responder",
+    "response_team" -> "Response Team",
+    "incident_duration" -> "Incident Duration"
   )
-  val columnNames = List(
-    "Updated At",
-    "Title",
-    "Description",
-    "Incident Type",
-    "Status",
-    "Issue Type",
-    "Issue ID",
-    "Created At",
-    "Next Update At",
-    "Primary Responder",
-    "Response Team",
-    "Incident Duration"
+  val timeColumns = Set(
+    "updated_at", "created_at", "next_update_at"
   )
-  val columnTuples = columnNames zip columns
+
+
+  // val columns = List(
+  //   "updated_at",
+  //   "title",
+  //   "description",
+  //   "incident_type",
+  //   "status",
+  //   "issue_type",
+  //   "issue_id",
+  //   "created_at",
+  //   "next_update_at",
+  //   "primary_responder",
+  //   "response_team",
+  //   "incident_duration"
+  // )
+  // val columnNames = List(
+  //   "Updated At",
+  //   "Title",
+  //   "Description",
+  //   "Incident Type",
+  //   "Status",
+  //   "Issue Type",
+  //   "Issue ID",
+  //   "Created At",
+  //   "Next Update At",
+  //   "Primary Responder",
+  //   "Response Team",
+  //   "Incident Duration"
+  // )
+  // val columnTuples = columnNames zip columns
 
 
   val incidentParser: RowParser[IncidentM] = {
@@ -155,13 +176,15 @@ object IncidentM {
 
     try {
 
-      require(columns.contains(queryCol))
-      require(columns.contains(sort))
+      require(columnMap.contains(queryCol))//contains refers to keys of map
+      require(columnMap.contains(sort))
+
 
       //QueryOptions constants
       val WHOLEWORD = 0
       val WILDCARD = 1
-      val MATCHCASE = 2
+      val BEFORE_TIME = 2
+      val AFTER_TIME = 3
 
       //Values
       val start = (page - 1) * IncidentsPerPage
@@ -174,10 +197,12 @@ object IncidentM {
       //Join relevant tables only if necessary
       //We want to search/sort not by the id for some columns, but rather by the data
       //In their associated columns
+      // Empty string treated as no query
       val joinSQL = {
-
+        //-1 represents null from javascript
         val queryJoin = (query,queryCol) match {
-          case (NoQuery, _) => "" //If no query, no need to join anything
+          case ("", _) => "" //If no query, no need to join anything
+          case ("-1", "issue_type") => ""//If user finding null rows, don't need join
           case (_, "issue_type") => "JOIN issue_types ON incidents.issue_type_id = issue_types.id"
           case (_, "primary_responder") => "JOIN users ON incidents.primary_responder = users.id"
           case (_, "response_team") => "JOIN teams ON incidents.respond_team_id = teams.id"
@@ -187,7 +212,7 @@ object IncidentM {
         //Logger.debug("QueryCol:" + queryCol)
         //Logger.debug("Sort:" + sort)
         val sortJoin = sort match {
-          case `queryCol` if (query != NoQuery) => "" //If sort is same as queryCol, join already taken care of
+          case `queryCol` if (query != "") => "" //If sort is same as queryCol, join already taken care of
           case "issue_type" => "JOIN issue_types ON incidents.issue_type_id = issue_types.id"
           case "primary_responder" => "JOIN users ON incidents.primary_responder = users.id"
           case "response_team" => "JOIN teams ON incidents.respond_team_id = teams.id"
@@ -199,20 +224,27 @@ object IncidentM {
 
       }
 
-      
+      //Check query options
+
       val queryFinal = (queryOptions, query) match {
-        case (_, NoQuery) => NoQuery
+        case (_, "") => "" //query empty, don't need to do anything
         case (WILDCARD, q) => "%" + q + "%"
+        //Convert inputted time to MySQL string datetime
+        case (BEFORE_TIME, q) => "<=" + "'" + AnormJoda.toTimestamp(AnormJoda.formTimeToJoda(q)).toString + "'"
+        case (AFTER_TIME, q) => ">=" + "'" + AnormJoda.toTimestamp(AnormJoda.formTimeToJoda(q)).toString + "'"
         case (_, q) => query
       }
 
   
       val querySQL = (queryFinal, queryCol) match {
-        case (NoQuery, _) => ""
-        case (q, "issue_type") => s"WHERE issue_types.name LIKE '$q'"
+        case ("", _) => ""
+        case ("-1", "issue_type") => s"WHERE incidents.issue_type_id IS NULL"//Special case for nulls
+        case (q, "issue_type") => s"WHERE incidents.issue_type_id = $q"
         case (q, "primary_responder") => s"WHERE users.last_name LIKE '$q'"
         case (q, "response_team") => s"WHERE teams.name LIKE '$q'"
-        case (q, "all") => s"WHERE * LIKE '$q'"
+        case (q, "created_at") => s"WHERE created_at $q" //queryFinal contains <= / >= so don't surround in quotes here
+        case (q, "updated_at") => s"WHERE updated_at $q"
+        case (q, "next_update_at") => s"WHERE next_update_at $q"
         case (q, "incident_duration") => s"WHERE UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at) LIKE '$q'"
         case (q, column) => s"WHERE $column LIKE '$q'"
       }
@@ -222,13 +254,14 @@ object IncidentM {
         case "primary_responder" => "ORDER BY users.last_name"
         case "response_team" => "ORDER BY teams.name"
         case "incident_duration" => "ORDER BY UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at)"
-        case s => s"ORDER BY $s"
+        case c if timeColumns.contains(c) => s"ORDER BY $c DESC"
+        case c => s"ORDER BY $c"
       } 
 
       val finalSQL = Helper.sqlFormat(selectSQL, joinSQL, querySQL, sortSQL, limitSQL)
       //Logger.debug(SQL(finalSQL).toString)
 
-
+      Logger.debug(finalSQL)
       val incidentList = SQL(finalSQL).as(incidentParser *)
 
       //Not very efficient
@@ -257,17 +290,15 @@ object IncidentM {
       case 0 => 1 //If 0 entries, still allow one page
       case n => (entries-1)/IncidentsPerPage + 1
       //If 50 entries, only show 1 page, not 2
-
-
     }
-
-    
-
   } 
 
 
   def addIncident(incident: IncidentM) = DB.withConnection{
     implicit connection =>
+
+    require(incidentTypes.contains(incident.incident_type))
+    require(statusTypes.contains(incident.status))
 
     try {
       SQL("""
@@ -317,7 +348,60 @@ object IncidentM {
       }
   }
 
-}
+  }
+
+  def update(incident_id: Int, user_id: Int) = DB.withConnection{
+    implicit connection =>
+    Logger.debug("Updaetd")
+    SQL(
+      """
+      UPDATE incidents 
+      SET updated_at = {updated_at},
+      updated_by = {updated_by}
+      WHERE id = {incident_id}
+      """
+    ).on(
+      "updated_at" -> AnormJoda.toTimestamp(new DateTime()),
+      "updated_by" -> user_id,
+      "incident_id" -> incident_id
+    ).executeUpdate() == 1
+  }
+
+  def editIncident(incident: IncidentM) = DB.withConnection{
+    implicit connection =>
+    SQL("""
+    UPDATE incidents
+    SET 
+    title = {title},
+    description = {description},
+    incident_type = {incident_type},
+    status = {status},
+    next_update_at = {next_update_at},
+    issue_type_id = {issue_type_id},
+    issue_id = {issue_id},
+    primary_responder = {primary_responder},
+    respond_team_id = {respond_team_id},
+    finished_at = {finished_at},
+    updated_at = {updated_at},
+    updated_by = {updated_by}
+    WHERE id = {id}
+    """
+    ).on(
+      "title" ->incident.title,
+      "description" ->incident.description,
+      "incident_type" ->incident.incident_type,
+      "status" ->incident.status,
+      "issue_id" ->incident.issue_id,
+      "issue_type_id" ->incident.issue_type_id,
+      "respond_team_id" ->incident.respond_team_id,
+      "primary_responder" ->incident.primary_responder,
+      "finished_at" ->toTimestamp(incident.finished_at),
+      "next_update_at" ->toTimestamp(incident.next_update_at),
+      "updated_at" ->toTimestamp(incident.updated_at),
+      "updated_by" ->incident.updated_by,
+      "id" -> incident.id.get
+    ).executeUpdate() == 1
+  }
 
 
 

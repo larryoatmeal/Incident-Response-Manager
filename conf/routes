@@ -2,18 +2,31 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-#GET     /                           controllers.Application.index
-GET		/debug						controllers.Application.debug
+GET     /								controllers.Application.home
+GET		/debug							controllers.Application.debug
 
-GET		/							controllers.IncidentBrowser.getIncidents(page: Int ?= 1, sort: String ?= "created_at", query: String ?= "NoQuery", queryCol: String ?= "description", queryOptions: Int ?= 0)
-GET     /create 					controllers.IncidentCreator.addIncident
-POST	/create 					controllers.IncidentCreator.submitIncidentForm
+GET		/incidents						controllers.IncidentBrowser.getIncidents(page: Int ?= 1, sort: String ?= "created_at", query: String ?= "", queryCol: String ?= "description", queryOptions: Int ?= 1)
+GET     /incidents/create 				controllers.IncidentCreator.addIncident
+POST	/incidents/create 				controllers.IncidentCreator.submitIncidentForm
+GET 	/incidents/view/:id  			controllers.IncidentView.incidentView(id: Int)
+POST 	/incidents/update/delete/:id 	controllers.IncidentUpdate.markDeleted(id: Int)
+POST    /incidents/update/submit 		controllers.IncidentUpdate.submitUpdate(incident_id: Int)
+GET     /incidents/update/:id 			controllers.IncidentUpdate.incidentUpdate(id:Int)
+GET     /incidents/edit/:id 			controllers.IncidentEditor.incidentEdit(id: Int)
+POST 	/incidents/edit/:id 			controllers.IncidentEditor.submitIncidentEditForm(id: Int)
+GET     /login							controllers.Authentication.loginScreen
+POST	/login 							controllers.Authentication.loginSubmit
+GET 	/logout							controllers.Authentication.logout
+GET 	/user 							controllers.UserInfo.userList
+GET 	/team 							controllers.TeamInfo.teamList
+
+GET 	/user/:id 						controllers.UserInfo.userPage(id: Int)
+GET 	/team/:id 						controllers.TeamInfo.teamPage(id: Int)
 # Javascript routing. MUST BE BEFORE GET /assets/*file
-GET     /assets/javascripts/routes          controllers.Application.javascriptRoutes
+GET     /assets/javascripts/routes      controllers.Application.javascriptRoutes
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file              		controllers.Assets.at(path="/public", file)
 
 

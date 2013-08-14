@@ -11,6 +11,10 @@ object Application extends Controller {
     Logger.debug(a.toString)
   }
 
+  def home =  Action{
+    implicit request =>
+    Redirect(routes.IncidentBrowser.getIncidents())
+  }
 
 
   def debug = Action{
@@ -36,6 +40,10 @@ object Application extends Controller {
     // log(IncidentM.getIncidents(1, "primary_responder","1","primary_responder"))
     //log(IssueTypeM.addIssueType(IssueTypeM.dummyIssueType))
     // log(IssueTypeM.getIssueType(1))
+    
+
+
+    
     Ok(views.html.debug())
   }
 
@@ -43,7 +51,8 @@ object Application extends Controller {
     import routes.javascript._
     Ok(
       Routes.javascriptRouter("jsRoutes")(
-        IncidentBrowser.getIncidents
+        IncidentBrowser.getIncidents,
+        IncidentUpdate.markDeleted
 
       )
     ).as("text/javascript") 
