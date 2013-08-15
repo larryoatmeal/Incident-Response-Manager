@@ -14,11 +14,24 @@ POST    /incidents/update/submit 		controllers.IncidentUpdate.submitUpdate(incid
 GET     /incidents/update/:id 			controllers.IncidentUpdate.incidentUpdate(id:Int)
 GET     /incidents/edit/:id 			controllers.IncidentEditor.incidentEdit(id: Int)
 POST 	/incidents/edit/:id 			controllers.IncidentEditor.submitIncidentEditForm(id: Int)
+
 GET     /login							controllers.Authentication.loginScreen
 POST	/login 							controllers.Authentication.loginSubmit
 GET 	/logout							controllers.Authentication.logout
+
 GET 	/user 							controllers.UserInfo.userList
+GET 	/user/add 						controllers.UserInfo.addUser
+POST	/user/add 						controllers.UserInfo.submitUserForm
+POST 	/user/delete/:id 				controllers.UserInfo.deleteUser(id: Int)
+POST 	/user/addTeam 					controllers.UserInfo.addTeamMap(user_id: Int, team_id: Int)
+POST 	/user/deleteTeam 				controllers.UserInfo.deleteTeamMap(user_id: Int, team_id: Int)
+
 GET 	/team 							controllers.TeamInfo.teamList
+GET 	/team/add 						controllers.TeamInfo.addTeam
+POST	/team/add 						controllers.TeamInfo.submitTeamForm
+POST 	/team/delete/:id 				controllers.TeamInfo.deleteTeam(id: Int)
+POST 	/team/addUser 					controllers.TeamInfo.addUserMap(user_id: Int, team_id: Int)
+POST 	/team/deleteUser 				controllers.TeamInfo.deleteUserMap(user_id: Int, team_id: Int)
 
 GET 	/user/:id 						controllers.UserInfo.userPage(id: Int)
 GET 	/team/:id 						controllers.TeamInfo.teamPage(id: Int)

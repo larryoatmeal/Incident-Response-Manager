@@ -1,4 +1,4 @@
-@(users: List[UserM])(implicit session: play.api.mvc.Session)
+@(users: List[UserM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @template("User"){
@@ -7,10 +7,13 @@
 	<div class = "row">
 			<h1>Users</h1>
 			<ul>
-				@for(user <- users){
+				@for(user <- users if(!user.deleted)){
 					<li><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
 				}
 			</ul>
+			
+			<a href="@routes.UserInfo.addUser()" class="btn btn-primary">Add User</a>
+
 	</div>
 
 }

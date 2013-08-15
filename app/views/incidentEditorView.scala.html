@@ -1,4 +1,4 @@
-@(incidentForm: Form[IncidentFormTemp], incident_id: Int)(implicit session: play.api.mvc.Session)
+@(incidentForm: Form[IncidentFormTemp], incident_id: Int)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @import helper._
@@ -6,34 +6,23 @@
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
 <!-- Select dropdowns. Empty string is interpreted as null-->
-@usersMap = @{for(user <- UserM.getUsers) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
-@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeams) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
+@usersMap = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
+@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
 @issueTypesMap = @{Tuple2("","None") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
+
 
 @template(){
 	
 
-	
-<!-- 	<form action="@routes.IncidentCreator.submitIncidentForm" method="post">
- -->
-		<!-- THe name attribute deals with form submission -->
-		<!-- <input id = "title" name ="title">
-		<input id = "description" name ="description">
-		<input id = "incident_type" name ="incident_type">
-		<input id = "status" name ="status">
-		<input id = "next_update" name ="next_update">
-		<input id = "issue_type" name ="issue_type">
-		<input id = "issue_type_id" name ="issue_type_id">
-		<input id = "primary_responder" name ="primary_responder">
-		<input id = "response_team" name ="response_team">
-		<input id = "user_id" name ="user_id">
 
-	</form>
- -->
 
  	<!-- For time picker -->
  	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
  	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
+
+
+
+
 
  	<h1>Edit Incident</h1>
  	@incidentForm.globalError.map { error =>
@@ -47,10 +36,10 @@
 
 
 		@inputText(incidentForm("title"), 
-		'_label -> "Title")
+		'_label -> "Title*")
 
 		@textarea(incidentForm("description"), 
-		'_label -> "Description")
+		'_label -> "Description*")
 
 		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type")
 
@@ -73,18 +62,63 @@
 		@select(incidentForm("response_team"), teamsMap,
 		'_label -> "Response Team")
 
-		@input(incidentForm("user_id"), '_label -> "") { (id, name, value, args) =>
-    		<input type="hidden" name="@name" id="@id" value="@value" @toHtmlArgs(args)>
+		<div id ="subscriptions">
+		@repeat(incidentForm("subscriptions"), min = 0) { subscription =>
+    
+    		<div class="subscription"> 
+			@input(subscription, '_label -> "Subscription") { (id, name, value, args) =>
+
+			<!-- Get index number out of Subscription[n], store in 'index' attribute -->
+
+    		<select name="@name" id="@id" value="@value" index = "@Helper.extractRepeatedFormIndex(name)" @toHtmlArgs(args)>
+				@for((team_id, display) <- teamsMap if (team_id != "")){
+					<option value="@team_id" @if(team_id == value.getOrElse("")){selected}>@display</option>
+				}
+
+			</select>
+			<a class="removeSubscription" index="@Helper.extractRepeatedFormIndex(name)"><i class="icon-remove" ></i></a>
+			}
+			</div>
 		}
+
+		</div>
+		<a id="addSubscription" class="btn btn-primary">Add Subscription</a>
+
+
+		<!-- Stores id -->
+		@input(incidentForm("user_id"), '_label -> "") { (id, name, value, args) =>
+    		<input type="hidden" name="@name" id="@id" value="@value"  @toHtmlArgs(args)>
+		}
+
 
 		</fieldset>
 		
 		<button type="submit" class = "btn btn-success">Update</button>
 	}
 
+	<!-- For making javascript easier -->
+	<div id ="subscription_template" style="display: none;">
+		<div class="subscription">
+		@input(incidentForm("subscriptions[0]"), '_label -> "Subscription") { (id, name, value, args) =>
+
+		<select>
+			@for((value, display) <- teamsMap if (value != "")){
+				<option value="@value">@display</option>
+			}
+		</select>
+		<a class="removeSubscription"><i class="icon-remove"></i></a>
+		}
+		</div>
+	</div>
+
+
 	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/jqueryUI.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/jqueryTimepicker.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/creator.js")" type="text/javascript"></script>
+
+
+
+
 
 }

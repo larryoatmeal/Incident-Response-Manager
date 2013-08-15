@@ -1,11 +1,21 @@
-@(id: Int)(implicit session: play.api.mvc.Session)
+@(id: Int)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
+
 
 @team = @{TeamM.getTeam(id)}
 @users = @{UserTeamMap.getUsers(id)}
-
+@allUsers = @{UserM.getUsers}
+@incidentsSubscribed =  @{IncidentSubscriptionsMap.getIncidents(id)}
 
 @template("Team"){
+	<!-- Store ID for javascript -->
 
+
+
+	<div id="team_id" value="@id"></div>
 	@team match {
 		case Some(t) => {
 			<div class = "row">
@@ -19,21 +29,79 @@
 				</tbody>
 			</table>
 			</div>
+
+			@if(!t.deleted){
+			<div class = "row">
+				@form(action = routes.TeamInfo.deleteTeam(t.id.get)){
+					<button class ="btn btn-danger" type="submit">Delete Team</button>
+
+				}
+			</div>
+
+
+
+			<div class = "row">
+				<h3>Members</h3>
+
+				<ul>
+					@for(user <- users){
+						<li><a class="remove" value="@user.id.get"><i class="icon-remove"></i></a>  <a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
+					}
+				</ul>
+			</div>
+			<div class ="row">
+				<!-- Use javascript to "submit" form -->
+				<form>   
+					<fieldset>				
+					<select id="user_select">
+						@for(user <- allUsers if(!user.deleted)){
+							<option value="@user.id.get">@user.first_name @user.last_name</option>
+						}
+					</select>
+					<!-- <a id="add_user" class="btn btn-primary">Add User</a> -->
+					</fieldset>
+					<a id="add_user" class="btn btn-primary">Add User</a>
+				</form>
+
+			</div>
+
+
+
+			<div class = "row">
+				<h3>Incidents</h3>
+
+				<h4>Response Team For</h4>
+				<ul>
+					@for(i <- TeamM.getResponseTeamIncidents(t.id.get)){
+						<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+					}
+				</ul>
+
+				<h4>Subscribed to</h4>
+				<ul>
+					@for(i <- incidentsSubscribed){
+						<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+					}
+				</ul>
+			</div>
+
+
+
+		}else{
+			<h1 class="text-error">Team has been deleted</h1>
 		}
+
+			
+		}
+
 		case None => {
 			<h1 class ="text-error">Team Not Found</h1>
 		}	
 	}
 
-	<div class = "row">
-			<h3>Members</h3>
+	
+	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/teamView.js")" type="text/javascript"></script>
 
-			<ul>
-				@for(user <- users){
-					<li><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
-				}
-			</ul>
-
-	</div>
 
 }

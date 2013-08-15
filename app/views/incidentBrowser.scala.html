@@ -1,4 +1,4 @@
-@(incidents: List[IncidentM], numberOfIncidents: Long, err: Option[String], params: BrowserParams)(implicit session: play.api.mvc.Session)
+@(incidents: List[IncidentM], numberOfIncidents: Long, err: Option[String], params: BrowserParams)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @error(message: String) = {<div class="text-error">@message</div>} 
@@ -13,9 +13,7 @@
  	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
 
 	<div class = "row">
-		<div class ="span12">
 			<h1>Incident Response Manager</h1>
-		</div>
 	</div>
 
 	

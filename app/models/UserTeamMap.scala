@@ -26,21 +26,29 @@ object UserTeamMap {
   
   def getTeams(user_id: Int) = DB.withConnection{
     implicit connection =>
-    SQL("SELECT teams.* FROM teams JOIN user_team_map ON teams.id = user_team_map.team_id WHERE user_team_map.user_id = {user_id} ").on(
+    SQL("SELECT teams.* FROM teams JOIN user_team_map ON teams.id = user_team_map.team_id WHERE user_team_map.user_id = {user_id} ORDER BY teams.name ").on(
       "user_id" -> user_id
     ).as(TeamM.teamParser *)
   }
 
   def getUsers(team_id: Int) = DB.withConnection{
     implicit connection =>
-    SQL("SELECT users.* FROM users JOIN user_team_map ON users.id = user_team_map.user_id WHERE user_team_map.team_id = {team_id} ").on(
+    SQL("SELECT users.* FROM users JOIN user_team_map ON users.id = user_team_map.user_id WHERE user_team_map.team_id = {team_id} ORDER BY users.first_name").on(
       "team_id" -> team_id
     ).as(UserM.userParser *)
   }
 
+  def deleteUser(user_id: Int) = Helper.delete("user_team_map","user_id",user_id)
+  def deleteTeam(team_id: Int) = Helper.delete("user_team_map","team_id",team_id)
+  def deleteSingleMap(user_id: Int, team_id: Int) = DB.withConnection{
+    implicit connection =>
+    SQL("DELETE FROM user_team_map WHERE user_id = {user_id} AND team_id = {team_id}").on(
+      "user_id" -> user_id,
+      "team_id" -> team_id
+    ).executeUpdate() == 1
+  }
 
-
-  def addTeamUser(user_id: Int, team_id: Int) = DB.withConnection{//Return if succesful or not
+  def addUserTeam(user_id: Int, team_id: Int) = DB.withConnection{//Return if succesful or not
     implicit request =>
     //Check if already exists
     // val exists = SQL("SELECT COUNT(*) FROM user_team_map WHERE user_id = {user_id} AND team_id = {team_id}").on(

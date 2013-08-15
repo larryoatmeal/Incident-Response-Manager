@@ -1,0 +1,17 @@
+@(teamForm: Form[TeamM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
+
+<!-- User selects email, but submits ID -->
+
+
+@template("Login"){
+	
+	<h1>Add Team</h1>
+	@form(action = routes.TeamInfo.submitTeamForm){
+		
+		@inputText(teamForm("name"), '_label -> "Name")
+		<button type="submit" class="btn btn-success">Submit</button>
+	}
+}

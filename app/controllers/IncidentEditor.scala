@@ -30,7 +30,9 @@ object IncidentEditor extends Controller with Secured{
           incident.issue_id,
           incident.primary_responder,
           incident.respond_team_id,
-          user_id.toInt //IGNORED
+          user_id.toInt, //IGNORED
+          //Get subscriptions linked to this incident
+          IncidentSubscriptionsMap.getTeams(incident.id.get).map(_.id.get)
         )
         Ok(views.html.incidentEditorView(IncidentCreator.incidentForm.fill(filledForm), incident_id))  
       }
@@ -58,6 +60,25 @@ object IncidentEditor extends Controller with Secured{
             case "closed" => Some(currentTime)
           }
 
+          //Check if subscriptions have changed
+          val newSubscriptions = value.subscriptions.toSet
+          val oldSubscriptions = IncidentSubscriptionsMap.getTeams(incident_id).map(_.id.get).toSet
+
+          //Find additions:
+          val additions = newSubscriptions.filter(!oldSubscriptions.contains(_))
+          //Find deletions
+          val deletions = oldSubscriptions.filter(!newSubscriptions.contains(_))
+
+          //Add keys
+          additions.foreach{
+            team_id => IncidentSubscriptionsMap.addSubscription(incident_id, team_id) 
+          }
+          //Delete keys
+          deletions.foreach{
+            team_id => IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id) 
+          }
+
+
           //Some fields are ignored in the SQL update
           val incident = IncidentM(
             anorm.Id(incident_id), 
@@ -78,7 +99,7 @@ object IncidentEditor extends Controller with Secured{
             Some(value.user_id) //Updater's user ID
           )
           IncidentM.editIncident(incident)
-          Redirect(routes.IncidentBrowser.getIncidents())
+          Redirect(routes.IncidentView.incidentView(incident_id))
       }
     )
   }

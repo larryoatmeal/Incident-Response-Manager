@@ -33,149 +33,152 @@ CREATE TABLE users (
 	first_name			varchar(256)	NOT NULL,
 	last_name			varchar(256)	NOT NULL,
 	email				varchar(256)	NOT NULL,
+	deleted 			Boolean 		NOT NULL,
+
 
 	PRIMARY KEY(id),
 	UNIQUE (email)
 );
 
 
-INSERT INTO users (id,first_name,last_name,email) VALUES ("1","Mercedes","Pittman","Nunc.ut.erat@gravidaAliquamtincidunt.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("2","Astra","Burke","eget@dignissimpharetraNam.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("3","Cleo","Haynes","nisi.Mauris@dui.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("4","Davis","Ramos","at.nisi@gravida.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("5","Beatrice","Harrington","dolor.Nulla@Donec.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("6","Rhoda","Alvarez","erat.volutpat@vitae.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("7","Armando","Jensen","faucibus.Morbi.vehicula@antedictumcursus.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("8","Susan","Vargas","amet.ante@utmiDuis.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("9","Philip","Flores","habitant.morbi@auctorveliteget.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("10","Rina","Boone","justo.sit@nec.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("11","Dakota","Reid","lectus@nisi.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("12","Blythe","Bond","adipiscing@a.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("13","Merrill","Murray","pellentesque.a.facilisis@Vivamuseuismodurna.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("14","Marcia","Gomez","bibendum.Donec.felis@etlacinia.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("15","Keith","Glenn","nunc.interdum@tempus.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("16","Gage","Lloyd","adipiscing.non@acturpis.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("17","Madeson","Little","libero.at@non.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("18","Caleb","Nicholson","sit.amet.consectetuer@purus.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("19","Ivory","Cooley","vestibulum@ornareelit.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("20","Martha","Horne","nec.euismod.in@utodiovel.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("21","Logan","Fleming","in.faucibus.orci@aliquetliberoInteger.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("22","Alexander","Pierce","aliquet@Nullafacilisi.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("23","Honorato","Bird","sem@est.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("24","Rose","Espinoza","ante.lectus@nislMaecenasmalesuada.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("25","Nerea","Sexton","porttitor.eros.nec@scelerisque.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("26","Willa","Castaneda","nec@tinciduntadipiscingMauris.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("27","Duncan","King","velit@ornarelectus.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("28","September","Reynolds","Etiam.bibendum@risus.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("29","Pearl","Gregory","luctus.sit@odio.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("30","Ferris","Clemons","vehicula@aclibero.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("31","Connor","Middleton","purus.ac@ridiculus.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("32","Neil","Savage","ultricies.ligula.Nullam@dolorDonec.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("33","Lysandra","Bradshaw","diam@Integervulputate.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("34","Matthew","Gaines","risus.odio@etnetus.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("35","Scarlett","Coleman","accumsan.sed@ornaretortorat.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("36","Vincent","Hood","Cras.dolor.dolor@nibh.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("37","Serina","Mckay","purus.Duis@nasceturridiculusmus.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("38","Cameran","Marquez","nonummy.ultricies@ametloremsemper.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("39","Harlan","Barton","non@eu.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("40","Amir","Houston","Lorem.ipsum.dolor@Donecporttitortellus.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("41","Cairo","Bauer","dolor.sit.amet@semmolestie.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("42","Gavin","Simpson","luctus@luctusvulputate.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("43","Elliott","Brewer","lectus@egestas.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("44","Harding","Moran","vestibulum@ipsum.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("45","Yael","Mayer","eros@Donecelementum.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("46","Dorothy","Abbott","metus.urna@acmieleifend.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("47","Demetrius","Phelps","sed.libero@dolorFuscemi.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("48","Xena","Meadows","lorem@Aliquam.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("49","Gareth","Fitzgerald","mi@Duissitamet.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("50","Jolie","Bishop","feugiat.Sed@nonummy.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("51","Ulysses","Valentine","at.augue@dapibusgravida.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("52","Janna","Hines","varius.orci.in@Fusce.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("53","Elaine","Green","pede.malesuada@feugiatSed.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("54","Karyn","Acevedo","Integer.aliquam@tortor.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("55","Cairo","Alford","tristique@fermentummetusAenean.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("56","Lacey","Mccall","tincidunt.pede.ac@dolor.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("57","Alma","Workman","sed@veliteu.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("58","Abel","Mcclure","magnis.dis.parturient@nostraper.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("59","Mechelle","Cline","imperdiet@a.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("60","Breanna","Bullock","montes@cursusIntegermollis.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("61","Nell","Zamora","Donec@nonbibendumsed.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("62","Gareth","Dillon","dui@sitametluctus.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("63","Holmes","Chavez","malesuada.fames@euneque.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("64","Kenyon","Carrillo","Etiam.bibendum.fermentum@ac.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("65","Winifred","Vinson","bibendum@nonummyFuscefermentum.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("66","Tyrone","Morrow","risus.quis@elementumduiquis.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("67","Noelle","Greene","dolor.Donec@cursuspurus.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("68","Susan","Lucas","elit@lacusQuisqueimperdiet.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("69","Winter","Munoz","ut.dolor@estvitae.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("70","Kareem","Oneil","vestibulum.neque.sed@Integerin.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("71","Cora","Stokes","porttitor@nec.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("72","Quinlan","Mcmahon","parturient@feugiat.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("73","Sheila","Buckner","a@magnaetipsum.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("74","Ginger","Ayala","Duis@vehiculaPellentesquetincidunt.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("75","Amir","Osborne","vel.sapien.imperdiet@Morbivehicula.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("76","Roanna","Ayala","elit@ametdapibus.com");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("77","Rebecca","Schroeder","Praesent@arcuCurabiturut.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("78","Noah","Abbott","tristique@dui.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("79","Paloma","Riddle","et@lacusMauris.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("80","Aline","Kelly","eu@molestiearcu.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("81","Cameran","Barron","Suspendisse.non@porttitorvulputateposuere.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("82","Rinah","Hale","Cum@fermentumfermentum.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("83","Hilda","Perkins","cursus.a@egestaslacinia.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("84","Wendy","Whitehead","in.dolor.Fusce@diamluctus.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("85","Yael","Rojas","ante@mollislectuspede.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("86","Nero","Schroeder","ultrices.sit@lobortis.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("87","Lars","Vang","tellus.imperdiet@Sedeu.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("88","Brian","Spears","ut@Nuncsedorci.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("89","Eaton","Frank","Sed.id.risus@Vivamus.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("90","Valentine","Andrews","vel.venenatis@aduiCras.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("91","Amal","Russo","pretium@idnuncinterdum.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("92","Glenna","Strong","mauris.Suspendisse.aliquet@dictumeuplacerat.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("93","Lance","Schwartz","turpis.egestas@sed.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("94","Dacey","Miranda","turpis.vitae@nonummyac.net");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("95","Jocelyn","Beck","Quisque.fringilla.euismod@tinciduntaliquamarcu.edu");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("96","Lee","Silva","Nunc.sollicitudin.commodo@lectusconvallisest.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("97","Jeanette","Dillon","egestas.a.scelerisque@Nullam.co.uk");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("98","Claire","Brennan","sed@rutrumurnanec.ca");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("99","Halee","Hopper","egestas.blandit@sitamet.org");
-INSERT INTO users (id,first_name,last_name,email) VALUES ("100","Grady","Hall","non.leo@In.co.uk");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("1","Mercedes","Pittman","Nunc.ut.erat@gravidaAliquamtincidunt.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("2","Astra","Burke","eget@dignissimpharetraNam.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("3","Cleo","Haynes","nisi.Mauris@dui.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("4","Davis","Ramos","at.nisi@gravida.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("5","Beatrice","Harrington","dolor.Nulla@Donec.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("6","Rhoda","Alvarez","erat.volutpat@vitae.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("7","Armando","Jensen","faucibus.Morbi.vehicula@antedictumcursus.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("8","Susan","Vargas","amet.ante@utmiDuis.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("9","Philip","Flores","habitant.morbi@auctorveliteget.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("10","Rina","Boone","justo.sit@nec.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("11","Dakota","Reid","lectus@nisi.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("12","Blythe","Bond","adipiscing@a.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("13","Merrill","Murray","pellentesque.a.facilisis@Vivamuseuismodurna.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("14","Marcia","Gomez","bibendum.Donec.felis@etlacinia.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("15","Keith","Glenn","nunc.interdum@tempus.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("16","Gage","Lloyd","adipiscing.non@acturpis.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("17","Madeson","Little","libero.at@non.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("18","Caleb","Nicholson","sit.amet.consectetuer@purus.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("19","Ivory","Cooley","vestibulum@ornareelit.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("20","Martha","Horne","nec.euismod.in@utodiovel.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("21","Logan","Fleming","in.faucibus.orci@aliquetliberoInteger.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("22","Alexander","Pierce","aliquet@Nullafacilisi.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("23","Honorato","Bird","sem@est.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("24","Rose","Espinoza","ante.lectus@nislMaecenasmalesuada.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("25","Nerea","Sexton","porttitor.eros.nec@scelerisque.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("26","Willa","Castaneda","nec@tinciduntadipiscingMauris.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("27","Duncan","King","velit@ornarelectus.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("28","September","Reynolds","Etiam.bibendum@risus.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("29","Pearl","Gregory","luctus.sit@odio.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("30","Ferris","Clemons","vehicula@aclibero.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("31","Connor","Middleton","purus.ac@ridiculus.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("32","Neil","Savage","ultricies.ligula.Nullam@dolorDonec.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("33","Lysandra","Bradshaw","diam@Integervulputate.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("34","Matthew","Gaines","risus.odio@etnetus.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("35","Scarlett","Coleman","accumsan.sed@ornaretortorat.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("36","Vincent","Hood","Cras.dolor.dolor@nibh.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("37","Serina","Mckay","purus.Duis@nasceturridiculusmus.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("38","Cameran","Marquez","nonummy.ultricies@ametloremsemper.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("39","Harlan","Barton","non@eu.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("40","Amir","Houston","Lorem.ipsum.dolor@Donecporttitortellus.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("41","Cairo","Bauer","dolor.sit.amet@semmolestie.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("42","Gavin","Simpson","luctus@luctusvulputate.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("43","Elliott","Brewer","lectus@egestas.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("44","Harding","Moran","vestibulum@ipsum.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("45","Yael","Mayer","eros@Donecelementum.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("46","Dorothy","Abbott","metus.urna@acmieleifend.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("47","Demetrius","Phelps","sed.libero@dolorFuscemi.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("48","Xena","Meadows","lorem@Aliquam.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("49","Gareth","Fitzgerald","mi@Duissitamet.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("50","Jolie","Bishop","feugiat.Sed@nonummy.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("51","Ulysses","Valentine","at.augue@dapibusgravida.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("52","Janna","Hines","varius.orci.in@Fusce.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("53","Elaine","Green","pede.malesuada@feugiatSed.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("54","Karyn","Acevedo","Integer.aliquam@tortor.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("55","Cairo","Alford","tristique@fermentummetusAenean.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("56","Lacey","Mccall","tincidunt.pede.ac@dolor.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("57","Alma","Workman","sed@veliteu.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("58","Abel","Mcclure","magnis.dis.parturient@nostraper.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("59","Mechelle","Cline","imperdiet@a.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("60","Breanna","Bullock","montes@cursusIntegermollis.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("61","Nell","Zamora","Donec@nonbibendumsed.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("62","Gareth","Dillon","dui@sitametluctus.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("63","Holmes","Chavez","malesuada.fames@euneque.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("64","Kenyon","Carrillo","Etiam.bibendum.fermentum@ac.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("65","Winifred","Vinson","bibendum@nonummyFuscefermentum.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("66","Tyrone","Morrow","risus.quis@elementumduiquis.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("67","Noelle","Greene","dolor.Donec@cursuspurus.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("68","Susan","Lucas","elit@lacusQuisqueimperdiet.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("69","Winter","Munoz","ut.dolor@estvitae.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("70","Kareem","Oneil","vestibulum.neque.sed@Integerin.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("71","Cora","Stokes","porttitor@nec.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("72","Quinlan","Mcmahon","parturient@feugiat.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("73","Sheila","Buckner","a@magnaetipsum.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("74","Ginger","Ayala","Duis@vehiculaPellentesquetincidunt.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("75","Amir","Osborne","vel.sapien.imperdiet@Morbivehicula.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("76","Roanna","Ayala","elit@ametdapibus.com","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("77","Rebecca","Schroeder","Praesent@arcuCurabiturut.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("78","Noah","Abbott","tristique@dui.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("79","Paloma","Riddle","et@lacusMauris.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("80","Aline","Kelly","eu@molestiearcu.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("81","Cameran","Barron","Suspendisse.non@porttitorvulputateposuere.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("82","Rinah","Hale","Cum@fermentumfermentum.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("83","Hilda","Perkins","cursus.a@egestaslacinia.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("84","Wendy","Whitehead","in.dolor.Fusce@diamluctus.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("85","Yael","Rojas","ante@mollislectuspede.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("86","Nero","Schroeder","ultrices.sit@lobortis.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("87","Lars","Vang","tellus.imperdiet@Sedeu.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("88","Brian","Spears","ut@Nuncsedorci.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("89","Eaton","Frank","Sed.id.risus@Vivamus.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("90","Valentine","Andrews","vel.venenatis@aduiCras.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("91","Amal","Russo","pretium@idnuncinterdum.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("92","Glenna","Strong","mauris.Suspendisse.aliquet@dictumeuplacerat.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("93","Lance","Schwartz","turpis.egestas@sed.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("94","Dacey","Miranda","turpis.vitae@nonummyac.net","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("95","Jocelyn","Beck","Quisque.fringilla.euismod@tinciduntaliquamarcu.edu","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("96","Lee","Silva","Nunc.sollicitudin.commodo@lectusconvallisest.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("97","Jeanette","Dillon","egestas.a.scelerisque@Nullam.co.uk","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("98","Claire","Brennan","sed@rutrumurnanec.ca","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("99","Halee","Hopper","egestas.blandit@sitamet.org","0");
+INSERT INTO users (id,first_name,last_name,email, deleted) VALUES ("100","Grady","Hall","non.leo@In.co.uk","0");
 
 
-
+#
 
 DROP TABLE IF EXISTS teams;
 
 CREATE TABLE teams (
 	id 					int 			NOT NULL AUTO_INCREMENT,
 	name 				varchar(256)	NOT NULL,
+	deleted 			Boolean 		NOT NULL,
 
 	PRIMARY KEY(id),
 	UNIQUE(name)
 );
 
-INSERT INTO teams (id,name) VALUES ("1","Sit Amet Inc.");
-INSERT INTO teams (id,name) VALUES ("2","Neque Sed Sem Company");
-INSERT INTO teams (id,name) VALUES ("3","Sed Nulla Ante Limited");
-INSERT INTO teams (id,name) VALUES ("4","Montes Industries");
-INSERT INTO teams (id,name) VALUES ("5","Integer Sem Elit PC");
-INSERT INTO teams (id,name) VALUES ("6","Iaculis Odio Nam Inc.");
-INSERT INTO teams (id,name) VALUES ("7","Metus Facilisis Lorem PC");
-INSERT INTO teams (id,name) VALUES ("8","Dictum LLP");
-INSERT INTO teams (id,name) VALUES ("9","Neque Sed Limited");
-INSERT INTO teams (id,name) VALUES ("10","Euismod Mauris Eu Incorporated");
-INSERT INTO teams (id,name) VALUES ("11","Cras Vulputate LLP");
-INSERT INTO teams (id,name) VALUES ("12","Donec Porttitor Tellus Incorporated");
-INSERT INTO teams (id,name) VALUES ("13","Morbi Non Sapien Associates");
-INSERT INTO teams (id,name) VALUES ("14","Felis Ullamcorper Limited");
-INSERT INTO teams (id,name) VALUES ("15","Sed Nunc Ltd");
-INSERT INTO teams (id,name) VALUES ("16","Diam Limited");
-INSERT INTO teams (id,name) VALUES ("17","Neque LLC");
-INSERT INTO teams (id,name) VALUES ("18","Et Malesuada Fames LLP");
-INSERT INTO teams (id,name) VALUES ("19","At Arcu Incorporated");
-INSERT INTO teams (id,name) VALUES ("20","Integer In Magna Ltd");
+INSERT INTO teams (id,name, deleted) VALUES ("1","Sit Amet Inc.","0");
+INSERT INTO teams (id,name, deleted) VALUES ("2","Neque Sed Sem Company","0");
+INSERT INTO teams (id,name, deleted) VALUES ("3","Sed Nulla Ante Limited","0");
+INSERT INTO teams (id,name, deleted) VALUES ("4","Montes Industries","0");
+INSERT INTO teams (id,name, deleted) VALUES ("5","Integer Sem Elit PC","0");
+INSERT INTO teams (id,name, deleted) VALUES ("6","Iaculis Odio Nam Inc.","0");
+INSERT INTO teams (id,name, deleted) VALUES ("7","Metus Facilisis Lorem PC","0");
+INSERT INTO teams (id,name, deleted) VALUES ("8","Dictum LLP","0");
+INSERT INTO teams (id,name, deleted) VALUES ("9","Neque Sed Limited","0");
+INSERT INTO teams (id,name, deleted) VALUES ("10","Euismod Mauris Eu Incorporated","0");
+INSERT INTO teams (id,name, deleted) VALUES ("11","Cras Vulputate LLP","0");
+INSERT INTO teams (id,name, deleted) VALUES ("12","Donec Porttitor Tellus Incorporated","0");
+INSERT INTO teams (id,name, deleted) VALUES ("13","Morbi Non Sapien Associates","0");
+INSERT INTO teams (id,name, deleted) VALUES ("14","Felis Ullamcorper Limited","0");
+INSERT INTO teams (id,name, deleted) VALUES ("15","Sed Nunc Ltd","0");
+INSERT INTO teams (id,name, deleted) VALUES ("16","Diam Limited","0");
+INSERT INTO teams (id,name, deleted) VALUES ("17","Neque LLC","0");
+INSERT INTO teams (id,name, deleted) VALUES ("18","Et Malesuada Fames LLP","0");
+INSERT INTO teams (id,name, deleted) VALUES ("19","At Arcu Incorporated","0");
+INSERT INTO teams (id,name, deleted) VALUES ("20","Integer In Magna Ltd","0");
 
 
-
+#
 
 DROP TABLE IF EXISTS user_team_map;
 

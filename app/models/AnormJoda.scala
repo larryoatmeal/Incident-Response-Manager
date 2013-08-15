@@ -57,7 +57,7 @@ object AnormJoda{
         }
         else{
           val duration = new Duration(diff)
-          if(duration.getStandardDays() >0){ duration.getStandardDays() + " days "}else{""} + duration.getStandardHours()%60 + " hours " + duration.getStandardMinutes()%60 + " minutes "
+          (if(duration.getStandardDays() >0){ duration.getStandardDays() + "d "}else{""}) + duration.getStandardHours()%24 + "h " + duration.getStandardMinutes()%60 + "m "
         }
       } 
       case None => "NA"
@@ -81,6 +81,10 @@ object AnormJoda{
   }
   def jodaToFormTime(dateTime: Option[DateTime]): Option[String] = {
     dateTime.map(jodaToFormTime(_))
+  }
+  val timePattern = {
+    import scala.util.matching.Regex
+    new Regex("""[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}""")
   }
 
 

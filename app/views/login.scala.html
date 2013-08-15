@@ -1,11 +1,11 @@
-@(loginForm: Form[LoginClass])(implicit session: play.api.mvc.Session)
+@(loginForm: Form[LoginClass])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
 <!-- User selects email, but submits ID -->
 
-@nameAndIds = @{for(user <- UserM.getUsers) yield Tuple2(user.id.get.toString, user.first_name + " " + user.last_name)}
+@nameAndIds = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.get.toString, user.first_name + " " + user.last_name)}
 
 @template("Login"){
 	

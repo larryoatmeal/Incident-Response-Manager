@@ -1,0 +1,19 @@
+@(userForm: Form[UserM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
+
+<!-- User selects email, but submits ID -->
+
+
+@template("Login"){
+	
+	<h1>Add User</h1>
+	@form(action = routes.UserInfo.submitUserForm){
+		
+		@inputText(userForm("first_name"), '_label -> "First Name")
+		@inputText(userForm("last_name"), '_label -> "Last Name")
+		@inputText(userForm("email"), '_label -> "Email")
+		<button type="submit" class="btn btn-success">Submit</button>
+	}
+}

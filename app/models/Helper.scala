@@ -10,7 +10,6 @@ import play.api.Logger
 
 
 
-
 object Helper{
 
   def log(a: Any){
@@ -112,8 +111,37 @@ object Helper{
     }
   }
 
-  
+  def delete(table: String, col: String,  id: Int) = DB.withConnection{
+    implicit conenction =>
+    SQL(s"""DELETE FROM $table WHERE $col = $id""").executeUpdate() == 1
+  }
 
+  def softDelete(table: String, deleteCol: String, idCol: String, id: Int) = DB.withConnection{
+    implicit connection =>
+
+    SQL(s"""UPDATE $table
+          SET $deleteCol = true
+          WHERE $idCol = {id}""").on("id" -> id).executeUpdate() == 1
+
+    
+  }
+  
+  def extractRepeatedFormIndex(raw: String) = {
+    import scala.util.matching.Regex
+    //Find number inbetween brackets
+    val indexPattern = new Regex("""(?<=\[)[0123456789]+(?=\])""")
+    val index = indexPattern findFirstIn raw
+
+
+    Logger.debug(indexPattern.toString)
+
+    index match {
+      case Some(i) => i
+      case None => 0
+    }
+
+
+  } 
 
 
 

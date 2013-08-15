@@ -9,22 +9,25 @@ import play.api.Logger
 
 case class TeamM(
   id: Pk[Int],
-  name: String
+  name: String,
+  deleted: Boolean
 )
 
 
 object TeamM {
   
-  val dummyTeam = TeamM(anorm.NotAssigned, "Purple")
+  val dummyTeam = TeamM(anorm.NotAssigned, "Purple", false)
 
   val teamParser: RowParser[TeamM] = {
     import anorm.~
     get[Pk[Int]]("id") ~
-    get[String]("name") map {
-      case id ~ name =>
+    get[String]("name") ~ 
+    get[Boolean]("deleted") map {
+      case id ~ name ~ deleted=>
         TeamM(
           id,
-          name
+          name,
+          deleted
         )
     } 
   }
@@ -36,9 +39,10 @@ object TeamM {
     implicit connection =>
 
     try {
-      SQL("""INSERT INTO teams VALUES ({id},{name})""").on(
+      SQL("""INSERT INTO teams VALUES ({id},{name},{deleted})""").on(
         "id" -> team.id,
-        "name" -> team.name
+        "name" -> team.name,
+        "deleted" -> team.deleted
       ).executeUpdate() match {
         case 1 => None 
         case _ => Some("Not added")
@@ -51,5 +55,18 @@ object TeamM {
       }
     }
   }
+
+  def deleteTeam(id: Int) = Helper.softDelete("teams", "deleted", "id", id)
+
+  def getResponseTeamIncidents(team_id: Int) = DB.withConnection{
+    implicit connection =>
+    SQL(
+      """
+      SELECT * FROM incidents WHERE respond_team_id = {team_id}
+      """
+    ).on("team_id" -> team_id).as(IncidentM.incidentParser *)
+  }
+  
+
 
 }

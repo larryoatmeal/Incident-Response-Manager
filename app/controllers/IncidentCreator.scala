@@ -7,11 +7,13 @@ import models._
 import play.api.data._
 import play.api.data.Forms._
 import org.joda.time.DateTime
+import play.api.data.validation.Constraints
+
 
 //Case class specifically for handling form
 case class IncidentFormTemp(title: String, description: String, incident_type: String,
     status: String, next_update_at_string: Option[String], issue_type_id: Option[Int],
-    issue_id: Option[String], primary_responder: Int, response_team: Option[Int], user_id: Int )
+    issue_id: Option[String], primary_responder: Int, response_team: Option[Int], user_id: Int, subscriptions: List[Int])
 
 
 object IncidentCreator extends Controller with Secured{
@@ -22,14 +24,15 @@ object IncidentCreator extends Controller with Secured{
       "description" -> nonEmptyText,
       "incident_type" -> nonEmptyText,
       "status" -> nonEmptyText,
-      "next_update_at_string" -> optional(nonEmptyText),
+      "next_update_at_string" -> optional(nonEmptyText.verifying(Constraints.pattern(AnormJoda.timePattern, error ="Time must be in MM/dd/yyyy hh:mm"))),
       "issue_type_id" -> optional(number),
       "issue_id" -> optional(nonEmptyText),
       "primary_responder" -> number,
       "response_team" -> optional(number),
-      "user_id" -> number
+      "user_id" -> number,
+      "subscriptions" -> list(number)
     )(IncidentFormTemp.apply)(IncidentFormTemp.unapply).verifying(
-      "Global Error",
+      "If Issue Type is not 'None', issue id is necessary. If you are the primary responder, you must specify an upate time",
       i => if (!i.issue_type_id.isEmpty && i.issue_id.isEmpty){
         Logger.debug("Condition 1")
         false
@@ -59,6 +62,7 @@ object IncidentCreator extends Controller with Secured{
           val currentTime = new DateTime()
           //Logger.debug(currentTime.toString)
 
+
           val incident = IncidentM(
             anorm.NotAssigned, 
             value.title,
@@ -77,7 +81,17 @@ object IncidentCreator extends Controller with Secured{
             value.user_id,
             None
           )
-          IncidentM.addIncident(incident)
+          //Get id of inserted incident
+          val incident_id = IncidentM.addIncident(incident)
+          //Logger.debug(incident_id.toString)
+
+          //Add supscriptions
+          val subscriptions = value.subscriptions
+          //Logger.debug(subscriptions.toString)
+          subscriptions.foreach{
+            subscription => IncidentSubscriptionsMap.addSubscription(incident_id, subscription)
+          }
+
           Redirect(routes.IncidentBrowser.getIncidents())
       }
     )

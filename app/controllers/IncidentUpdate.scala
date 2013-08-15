@@ -9,7 +9,6 @@ import play.api.data.Forms._
 import org.joda.time.DateTime
 
 
-
 object IncidentUpdate extends Controller with Secured{
 
   def incidentUpdate(incident_id: Int) = IsAuthenticated{
@@ -45,7 +44,7 @@ object IncidentUpdate extends Controller with Secured{
     implicit request =>
     updateForm.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.incidentUpdateCreationView(updateForm, incident_id, user_id.toInt))
+        Ok(views.html.incidentUpdateCreationView(formWithErrors, incident_id, user_id.toInt))
       },
       value => {
         IncidentUpdateM.addIncidentUpdate(value)

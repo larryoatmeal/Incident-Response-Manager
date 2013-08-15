@@ -1,4 +1,4 @@
-@(incident: Option[IncidentM])(implicit session: play.api.mvc.Session)
+@(incident: Option[IncidentM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @template("Incident Viewer"){
@@ -36,8 +36,20 @@
 		<a class = "btn btn-primary" href = "@routes.IncidentEditor.incidentEdit(i.id.getOrElse(-1))">Edit</a>	
 		</div>
 	
+
+		<div class="row">
+			<h3>Subscribers</h3>
+			<ul>
+				@for(s <- IncidentSubscriptionsMap.getTeams(i.id.get)){
+					<li><a href="@routes.TeamInfo.teamPage(s.id.get)">@s.name</a></li>
+				}
+			</ul>
+		</div>
+
+
 		@defining(IncidentUpdateM.getIncidentUpdates(i.id.get)) { updates =>		
 	
+
 		<div class="row">
 			<h3>Updates</h3>
 			<table class = "table table-striped">
@@ -54,7 +66,7 @@
 					<tr>
 						<td>@AnormJoda.formatDate(update.created_at)</td>
 						<td>@update.description</td>
-						<td>@UserM.getUserFullName(update.created_by)</td>
+						<td><a href="@routes.UserInfo.userPage(update.created_by)">@UserM.getUserFullName(update.created_by)</a></td>
 						<td><a class = "delete" id = "@update.id"><i class="icon-trash"></a></i></td>
 					</tr>
 					}

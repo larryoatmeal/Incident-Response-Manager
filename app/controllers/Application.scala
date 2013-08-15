@@ -52,8 +52,11 @@ object Application extends Controller {
     Ok(
       Routes.javascriptRouter("jsRoutes")(
         IncidentBrowser.getIncidents,
-        IncidentUpdate.markDeleted
-
+        IncidentUpdate.markDeleted,
+        TeamInfo.addUserMap,
+        TeamInfo.deleteUserMap,
+        UserInfo.addTeamMap,
+        UserInfo.deleteTeamMap
       )
     ).as("text/javascript") 
   }

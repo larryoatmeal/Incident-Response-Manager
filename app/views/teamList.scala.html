@@ -1,4 +1,4 @@
-@(teams: List[TeamM])(implicit session: play.api.mvc.Session)
+@(teams: List[TeamM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @template("Team"){
@@ -8,11 +8,12 @@
 			<h1>Teams</h1>
 
 			<ul>
-				@for(team <- teams){
+				<!-- Only show undeleted teams -->
+				@for(team <- teams if(!team.deleted)){
 					<li><a href="@routes.TeamInfo.teamPage(team.id.get)">@{team.name}</a></li>
 				}
 			</ul>
-
+			<a href="@routes.TeamInfo.addTeam()" class="btn btn-primary">Add Team</a>
 	</div>
 
 }

@@ -336,15 +336,16 @@ object IncidentM {
             "updated_at" ->toTimestamp(incident.updated_at),
             "created_by" ->incident.created_by,
             "updated_by" ->incident.updated_by).
-        executeUpdate() match {
-          case 1 => None
-          case _ => Some("Not added")
-        }
+        executeInsert() match {
+          case Some(pk) => pk.toInt
+          case None => -1
+        }//returns ID of inserted row
+
   }
   catch {
       case e => {
         Logger.error(e.toString)
-        Some(e.toString)
+        -1
       }
   }
 
@@ -402,6 +403,7 @@ object IncidentM {
       "id" -> incident.id.get
     ).executeUpdate() == 1
   }
+
 
 
 
