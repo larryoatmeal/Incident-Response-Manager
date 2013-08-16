@@ -1,4 +1,4 @@
-@(teamForm: Form[TeamM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+@(teamForm: Form[TeamM], id: Int)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
@@ -6,10 +6,10 @@
 <!-- User selects email, but submits ID -->
 
 
-@template("Add Team"){
+@template("Edit Team"){
 	
-	<h1>Add Team</h1>
-	@form(action = routes.TeamInfo.submitTeamForm){
+	<h1>Edit Team</h1>
+	@form(action = routes.TeamInfo.submitTeamEditForm(id)){
 		
 		@inputText(teamForm("name"), '_label -> "Name")
 		<button type="submit" class="btn btn-success">Submit</button>

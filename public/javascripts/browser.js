@@ -52,15 +52,22 @@ $(document).ready(function(){
 
 		var queryCol = $("#queryCol").find(":selected").attr("value")
 		var wholeword = $("#wholeword").is(":checked")
-		var checkedTime = $('input[name=time]').filter(':checked').val();
 
-		//1 for wildcard, 0 for wholeword, 2 and 3 for time
+		//Radio buttons value field contain queryOptions int
+		var checkedTime = $('input[name=time]').filter(':checked').val()
+		var checkedDuration = $('input[name=duration]').filter(':checked').val()
+
+		//1 for wildcard, 0 for wholeword, 2 and 3 for time, 4 and 5 for duration
 		var queryOptions = 1
 		if (searchBoxTypeId_current == "timeQuery"){
 			queryOptions = checkedTime
+		}else if(searchBoxTypeId_current == "durationQuery"){
+			queryOptions = checkedDuration
 		}else if (wholeword){
+
 			queryOptions = 0
 		}
+
 		getList(1, sort_current, queryRaw, queryCol, queryOptions)
 	})
 
@@ -75,6 +82,7 @@ $(document).ready(function(){
 			$("#wholeword").prop("checked", true)//whole word
 			$("#wholewordgroup").hide()//hide checkbox because unnecessary
 			$("#timeRadioGroup").hide()
+			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "incidentTypeQuery"//mark current searchBox as the one we're using
 
 		}else if(column == "status"){
@@ -83,6 +91,7 @@ $(document).ready(function(){
 			$("#wholeword").prop("checked", true)
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").hide()
+			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "statusQuery"
 		}else if(column == "issue_type"){
 			$(".query").hide()
@@ -90,6 +99,7 @@ $(document).ready(function(){
 			$("#wholeword").prop("checked", true)
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").hide()
+			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "issueTypeQuery"
 		}else if(column == "created_at" || column == "updated_at" || column == "next_update_at"){
 			$(".query").hide()
@@ -98,19 +108,26 @@ $(document).ready(function(){
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").show()
 			$("#beforeRadio").prop("checked", true)
+			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "timeQuery"
-		}
-		else{
+		}else if(column == "incident_duration"){
+			$(".query").hide()
+			$("#durationQuery").show()
+			$(".durationRadioGroup").show()
+			$("#wholewordgroup").hide()
+			$("#timeRadioGroup").hide()
+			$("#durationRadioGroup").show()
+			$("#shorterRadio").prop("checked", true)
+			searchBoxTypeId_current = "durationQuery"
+		}else{
 			$(".query").hide()
 			$("#regularQuery").show()
 			$("#wholeword").prop("checked", false)
 			$("#wholewordgroup").show()
 			$("#timeRadioGroup").hide()
+			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "regularQuery"
 		}
-
-
-
 	}
 
 	$("#queryCol").change(function(){

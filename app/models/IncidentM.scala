@@ -185,6 +185,8 @@ object IncidentM {
       val WILDCARD = 1
       val BEFORE_TIME = 2
       val AFTER_TIME = 3
+      val SHORTER = 4
+      val LONGER = 5
 
       //Values
       val start = (page - 1) * IncidentsPerPage
@@ -203,9 +205,9 @@ object IncidentM {
         val queryJoin = (query,queryCol) match {
           case ("", _) => "" //If no query, no need to join anything
           case ("-1", "issue_type") => ""//If user finding null rows, don't need join
-          case (_, "issue_type") => "JOIN issue_types ON incidents.issue_type_id = issue_types.id"
+          case (_, "issue_type") => "LEFT JOIN issue_types ON incidents.issue_type_id = issue_types.id"
           case (_, "primary_responder") => "JOIN users ON incidents.primary_responder = users.id"
-          case (_, "response_team") => "JOIN teams ON incidents.respond_team_id = teams.id"
+          case (_, "response_team") => "LEFT JOIN teams ON incidents.respond_team_id = teams.id"
           case (_, _) => ""
         }
         //Logger.debug(queryJoin)
@@ -213,9 +215,10 @@ object IncidentM {
         //Logger.debug("Sort:" + sort)
         val sortJoin = sort match {
           case `queryCol` if (query != "") => "" //If sort is same as queryCol, join already taken care of
-          case "issue_type" => "JOIN issue_types ON incidents.issue_type_id = issue_types.id"
+          //Must join incedents with null issue types as well
+          case "issue_type" => "LEFT JOIN issue_types ON incidents.issue_type_id = issue_types.id"
           case "primary_responder" => "JOIN users ON incidents.primary_responder = users.id"
-          case "response_team" => "JOIN teams ON incidents.respond_team_id = teams.id"
+          case "response_team" => "LEFT JOIN teams ON incidents.respond_team_id = teams.id"
           case  _ => ""
         }
         //Logger.debug(sortJoin)
@@ -232,8 +235,10 @@ object IncidentM {
         //Convert inputted time to MySQL string datetime
         case (BEFORE_TIME, q) => "<=" + "'" + AnormJoda.toTimestamp(AnormJoda.formTimeToJoda(q)).toString + "'"
         case (AFTER_TIME, q) => ">=" + "'" + AnormJoda.toTimestamp(AnormJoda.formTimeToJoda(q)).toString + "'"
+        case (SHORTER, q) => "<=" + "'" + AnormJoda.periodToMilliseconds(q) + "'"
+        case (LONGER, q) => ">=" + "'" + AnormJoda.periodToMilliseconds(q) + "'"
         case (_, q) => query
-      }
+      } 
 
   
       val querySQL = (queryFinal, queryCol) match {
@@ -245,7 +250,7 @@ object IncidentM {
         case (q, "created_at") => s"WHERE created_at $q" //queryFinal contains <= / >= so don't surround in quotes here
         case (q, "updated_at") => s"WHERE updated_at $q"
         case (q, "next_update_at") => s"WHERE next_update_at $q"
-        case (q, "incident_duration") => s"WHERE UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at) LIKE '$q'"
+        case (q, "incident_duration") => s"WHERE UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at)   $q"
         case (q, column) => s"WHERE $column LIKE '$q'"
       }
 
@@ -370,38 +375,46 @@ object IncidentM {
 
   def editIncident(incident: IncidentM) = DB.withConnection{
     implicit connection =>
-    SQL("""
-    UPDATE incidents
-    SET 
-    title = {title},
-    description = {description},
-    incident_type = {incident_type},
-    status = {status},
-    next_update_at = {next_update_at},
-    issue_type_id = {issue_type_id},
-    issue_id = {issue_id},
-    primary_responder = {primary_responder},
-    respond_team_id = {respond_team_id},
-    finished_at = {finished_at},
-    updated_at = {updated_at},
-    updated_by = {updated_by}
-    WHERE id = {id}
-    """
-    ).on(
-      "title" ->incident.title,
-      "description" ->incident.description,
-      "incident_type" ->incident.incident_type,
-      "status" ->incident.status,
-      "issue_id" ->incident.issue_id,
-      "issue_type_id" ->incident.issue_type_id,
-      "respond_team_id" ->incident.respond_team_id,
-      "primary_responder" ->incident.primary_responder,
-      "finished_at" ->toTimestamp(incident.finished_at),
-      "next_update_at" ->toTimestamp(incident.next_update_at),
-      "updated_at" ->toTimestamp(incident.updated_at),
-      "updated_by" ->incident.updated_by,
-      "id" -> incident.id.get
-    ).executeUpdate() == 1
+    try{
+      SQL("""
+      UPDATE incidents
+      SET 
+      title = {title},
+      description = {description},
+      incident_type = {incident_type},
+      status = {status},
+      next_update_at = {next_update_at},
+      issue_type_id = {issue_type_id},
+      issue_id = {issue_id},
+      primary_responder = {primary_responder},
+      respond_team_id = {respond_team_id},
+      finished_at = {finished_at},
+      updated_at = {updated_at},
+      updated_by = {updated_by}
+      WHERE id = {id}
+      """
+      ).on(
+        "title" ->incident.title,
+        "description" ->incident.description,
+        "incident_type" ->incident.incident_type,
+        "status" ->incident.status,
+        "issue_id" ->incident.issue_id,
+        "issue_type_id" ->incident.issue_type_id,
+        "respond_team_id" ->incident.respond_team_id,
+        "primary_responder" ->incident.primary_responder,
+        "finished_at" ->toTimestamp(incident.finished_at),
+        "next_update_at" ->toTimestamp(incident.next_update_at),
+        "updated_at" ->toTimestamp(incident.updated_at),
+        "updated_by" ->incident.updated_by,
+        "id" -> incident.id.get
+      ).executeUpdate()
+
+      Message("Incident edited", Helper.Success)
+    }
+    catch{
+      case e => Message(e.toString, Helper.Error)
+
+    } 
   }
 
 

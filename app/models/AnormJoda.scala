@@ -47,7 +47,7 @@ object AnormJoda{
     }
   }
 
-  //Calculation--------------------------------------------
+  //Time difference--------------------------------------------
   def timeDiff(created: DateTime, finish: Option[DateTime]) = {
     finish match {
       case Some(f) => {
@@ -62,6 +62,42 @@ object AnormJoda{
       } 
       case None => "NA"
     }
+  }
+
+  def periodToMilliseconds(raw: String): Long = {
+    val long = 2834590284569083456l
+
+    val period = new Period(1, 2, 3, 4, 5, 6, 7, 8)
+
+    val format = "DD*:HH:MM"
+
+
+    val firstColon = raw.indexOf(':')
+    val lastColon = raw.lastIndexOf(':')
+    
+
+    val minuteString = raw.drop(lastColon + 1)
+    val hourString = raw.substring(firstColon + 1, lastColon)
+    val dayString = raw.substring(0, firstColon)
+
+    def stripLeadingZero(input: String): Long = {
+      val normalized = if (input.head == '0'){
+        input.tail
+      }else{
+        input
+      }
+      normalized.toInt
+    }
+
+    val minutes = stripLeadingZero(minuteString)
+    val hours = stripLeadingZero(hourString)
+    val days = stripLeadingZero(dayString)
+
+
+    val seconds: Long = minutes * 60 + hours * 60 * 60 + days * 60 * 60 * 24
+   
+
+    seconds
   }
 
   //Form conversions--------------------------------------------

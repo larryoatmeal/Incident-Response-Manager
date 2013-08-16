@@ -85,14 +85,21 @@ object IncidentCreator extends Controller with Secured{
           val incident_id = IncidentM.addIncident(incident)
           //Logger.debug(incident_id.toString)
 
-          //Add supscriptions
-          val subscriptions = value.subscriptions
-          //Logger.debug(subscriptions.toString)
-          subscriptions.foreach{
-            subscription => IncidentSubscriptionsMap.addSubscription(incident_id, subscription)
-          }
-
-          Redirect(routes.IncidentBrowser.getIncidents())
+          //-1 means something went wrong
+          if (incident_id == -1){
+            Redirect(routes.IncidentBrowser.getIncidents()).flashing(
+              "message" -> "Incident not added",
+              "category" -> Helper.Error
+            )
+          }else{
+             //Add supscriptions
+            val subscriptions = value.subscriptions
+            //Logger.debug(subscriptions.toString)
+            subscriptions.foreach{
+              subscription => IncidentSubscriptionsMap.addSubscription(incident_id, subscription)
+            }
+            Redirect(routes.IncidentBrowser.getIncidents())
+            }
       }
     )
   }

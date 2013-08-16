@@ -92,14 +92,21 @@ object IncidentEditor extends Controller with Secured{
             value.primary_responder,
             None,
             finishedTime,
-            AnormJoda.formTimeToJoda(value.next_update_at_string),
+            if(finishedTime.isEmpty){//If incident closed, null out next update at time
+              AnormJoda.formTimeToJoda(value.next_update_at_string)}
+            else{
+              None
+            },
             currentTime, //IGNORED (created_at)
             currentTime,
             value.user_id, //IGNORED (created_by)
             Some(value.user_id) //Updater's user ID
           )
-          IncidentM.editIncident(incident)
-          Redirect(routes.IncidentView.incidentView(incident_id))
+          val result = IncidentM.editIncident(incident)
+          Redirect(routes.IncidentView.incidentView(incident_id)).flashing(
+            "message" -> result.text,
+            "category" -> result.category
+          )
       }
     )
   }

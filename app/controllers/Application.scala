@@ -40,7 +40,7 @@ object Application extends Controller {
     // log(IncidentM.getIncidents(1, "primary_responder","1","primary_responder"))
     //log(IssueTypeM.addIssueType(IssueTypeM.dummyIssueType))
     // log(IssueTypeM.getIssueType(1))
-    
+    log(AnormJoda.periodToMilliseconds("12:45:45"))
 
 
     

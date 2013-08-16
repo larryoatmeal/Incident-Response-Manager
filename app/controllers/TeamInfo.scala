@@ -38,12 +38,10 @@ object TeamInfo extends Controller {
       formWithErrors => Ok(views.html.teamForm(formWithErrors)),
       value => {
         val result = TeamM.addTeam(value)
-
-        result match {
-          case Some(message) => Redirect(routes.TeamInfo.teamList).flashing("message" -> message)
-          case None => Redirect(routes.TeamInfo.teamList)
-        }
-
+        Redirect(routes.TeamInfo.teamList).flashing(
+          "message" -> result.text,
+          "category" -> result.category
+        )
       }
     )
   }
@@ -55,6 +53,34 @@ object TeamInfo extends Controller {
     IncidentSubscriptionsMap.deleteTeamMaps(id)
     Redirect(routes.TeamInfo.teamList)
   }
+
+  def editTeam(id: Int) = Action{
+    implicit request =>
+
+    TeamM.getTeam(id) match {
+      case Some(u) => Ok(views.html.teamEdit(teamForm.fill(u), id))
+      case None => Redirect(routes.TeamInfo.teamPage(id)).flashing(
+        "message" -> "Team does not exist",
+        "category" -> Helper.Error
+      )
+    }
+  }
+
+  def submitTeamEditForm(id: Int) = Action{
+    implicit request =>
+    teamForm.bindFromRequest.fold(
+      formWithErrors => {
+        Ok(views.html.teamEdit(formWithErrors, id))
+      },
+      value => {
+        val result = TeamM.editTeam(value, id)
+        Redirect(routes.TeamInfo.teamPage(id)).flashing(
+          "message" -> result.text,
+          "category" -> result.category
+        )
+      }
+    )
+  }  
 
   def addUserMap(user_id: Int, team_id: Int) = Action{
     implicit request =>

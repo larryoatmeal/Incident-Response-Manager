@@ -25,6 +25,8 @@ POST	/user/add 						controllers.UserInfo.submitUserForm
 POST 	/user/delete/:id 				controllers.UserInfo.deleteUser(id: Int)
 POST 	/user/addTeam 					controllers.UserInfo.addTeamMap(user_id: Int, team_id: Int)
 POST 	/user/deleteTeam 				controllers.UserInfo.deleteTeamMap(user_id: Int, team_id: Int)
+GET 	/user/edit/:id 					controllers.UserInfo.editUser(id: Int)
+POST 	/user/edit/:id 					controllers.UserInfo.submitUserEditForm(id: Int)
 
 GET 	/team 							controllers.TeamInfo.teamList
 GET 	/team/add 						controllers.TeamInfo.addTeam
@@ -32,6 +34,9 @@ POST	/team/add 						controllers.TeamInfo.submitTeamForm
 POST 	/team/delete/:id 				controllers.TeamInfo.deleteTeam(id: Int)
 POST 	/team/addUser 					controllers.TeamInfo.addUserMap(user_id: Int, team_id: Int)
 POST 	/team/deleteUser 				controllers.TeamInfo.deleteUserMap(user_id: Int, team_id: Int)
+GET 	/team/edit/:id 					controllers.TeamInfo.editTeam(id: Int)
+POST	/team/edit 						controllers.TeamInfo.submitTeamEditForm(id: Int)
+
 
 GET 	/user/:id 						controllers.UserInfo.userPage(id: Int)
 GET 	/team/:id 						controllers.TeamInfo.teamPage(id: Int)

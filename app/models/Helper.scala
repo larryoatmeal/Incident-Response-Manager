@@ -8,9 +8,20 @@ import play.api.db.DB
 import play.api.Logger
 
 
+//For informational messages
+case class Message(text: String, category: String)
+
+
 
 
 object Helper{
+
+  //For informational messages
+  val Info = "INFO"
+  val Error = "ERROR"
+  val Warning = "WARNING"
+  val Success = "SUCCESS"
+
 
   def log(a: Any){
     Logger.debug(a.toString)
@@ -122,25 +133,43 @@ object Helper{
     SQL(s"""UPDATE $table
           SET $deleteCol = true
           WHERE $idCol = {id}""").on("id" -> id).executeUpdate() == 1
-
-    
   }
-  
+
+  def softRevive(table: String, deleteCol: String, idCol: String, id: Int) = DB.withConnection{
+    implicit connection =>
+
+    SQL(s"""UPDATE $table
+          SET $deleteCol = false
+          WHERE $idCol = {id}""").on("id" -> id).executeUpdate() == 1
+  }
+
+  def checkExistence(table: String, column: String, value: String) = DB.withConnection{
+    implicit connection =>
+
+    SQL(s"""
+      SELECT COUNT(*)
+      FROM $table
+      WHERE $column = "$value"
+      """
+    )().map(
+      row => {
+        row[Long]("COUNT(*)")   
+      }
+    ).head > 0
+
+  }
+
   def extractRepeatedFormIndex(raw: String) = {
     import scala.util.matching.Regex
     //Find number inbetween brackets
     val indexPattern = new Regex("""(?<=\[)[0123456789]+(?=\])""")
     val index = indexPattern findFirstIn raw
-
-
-    Logger.debug(indexPattern.toString)
+    //Logger.debug(indexPattern.toString)
 
     index match {
       case Some(i) => i
       case None => 0
     }
-
-
   } 
 
 

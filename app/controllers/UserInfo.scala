@@ -41,8 +41,11 @@ object UserInfo extends Controller {
     userForm.bindFromRequest.fold(
       formWithErrors => Ok(views.html.userForm(formWithErrors)),
       value => {
-        UserM.addUser(value)
-        Redirect(routes.UserInfo.userList)
+        val message = UserM.addUser(value)
+        Redirect(routes.UserInfo.userList).flashing(
+          "message" -> message.text,
+          "category" -> message.category
+        )
       }
     )
   }
@@ -59,6 +62,35 @@ object UserInfo extends Controller {
       Redirect(routes.UserInfo.userList)
     }
   }
+
+  def editUser(id: Int) = Action{
+    implicit request =>
+
+    UserM.getUser(id) match {
+      case Some(u) => Ok(views.html.userEdit(userForm.fill(u), id))
+      case None => Redirect(routes.UserInfo.userPage(id)).flashing(
+        "message" -> "User does not exist",
+        "category" -> Helper.Error
+      )
+    }
+  }
+
+  def submitUserEditForm(id: Int) = Action{
+    implicit request =>
+    userForm.bindFromRequest.fold(
+      formWithErrors => {
+        Ok(views.html.userEdit(formWithErrors, id))
+      },
+      value => {
+        val result = UserM.editUser(value, id)
+        Redirect(routes.UserInfo.userPage(id)).flashing(
+          "message" -> result.text,
+          "category" -> result.category
+        )
+      }
+    )
+  }
+
 
   def addTeamMap(user_id: Int, team_id: Int) = Action{
     implicit request =>

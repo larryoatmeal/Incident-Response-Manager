@@ -1,4 +1,4 @@
-@(userForm: Form[UserM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+@(userForm: Form[UserM], id: Int)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
@@ -6,10 +6,10 @@
 <!-- User selects email, but submits ID -->
 
 
-@template("Add User"){
+@template("Edit user"){
 	
-	<h1>Add User</h1>
-	@form(action = routes.UserInfo.submitUserForm){
+	<h1>Edit User</h1>
+	@form(action = routes.UserInfo.submitUserEditForm(id)){
 		
 		@inputText(userForm("first_name"), '_label -> "First Name")
 		@inputText(userForm("last_name"), '_label -> "Last Name")

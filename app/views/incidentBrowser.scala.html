@@ -68,14 +68,26 @@
 		  	}
 		  </select>
 
-		<div id = "timeRadioGroup">
-		  <label class="radio">
-		 	<input id = "beforeRadio" type="radio" name="time" value="2">Before<br>
-		  </label>
-		  <label class="radio">
-		 	<input id = "afterRadio"  type="radio" name="time" value="3">After<br>
-		  </label>
-		</div>
+		  <input type ="text" id="durationQuery" class="query" placeholder="dd*:hh:mm">
+
+
+		  <div id = "timeRadioGroup">
+		    <label class="radio">
+		 	  <input id = "beforeRadio" type="radio" name="time" value="2">Before<br>
+		    </label>
+		    <label class="radio">
+		 	  <input id = "afterRadio"  type="radio" name="time" value="3">After<br>
+		    </label>
+		  </div>
+
+		  <div id = "durationRadioGroup">
+		    <label class="radio">
+		 	  <input id = "shorterRadio" type="radio" name="duration" value="4">Shorter<br>
+		    </label>
+		    <label class="radio">
+		 	  <input id = "longerRadio"  type="radio" name="duration" value="5">Longer<br>
+		    </label>
+		  </div>
 
 		  <select id ="queryCol">
 		  	@for((value, display) <- IncidentM.columnMap){
@@ -125,13 +137,17 @@
 						}
 						}
 						</td>
-						<td>@incident.issue_id</td>
+						<td>@incident.issue_id match{
+							case Some(i) => {@i}
+							case None => {@none("--")}
+						}
+						</td>
 						
 						
 						<td>
 						@UserM.getUser(incident.primary_responder) match {
 							case Some(u) => {<a href="@routes.UserInfo.userPage(u.id.get)">@u.last_name</a>}
-							case None => {none("--")}
+							case None => {@none("--")}
 						}
 					
 						</td>

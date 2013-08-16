@@ -35,28 +35,68 @@ object TeamM {
   def getTeam(id: Int) = Helper.getSingle[TeamM](id, "teams", "id", teamParser)
   def getTeams = Helper.getAllSort[TeamM]("teams", "name", false, teamParser)
 
-  def addTeam(team: TeamM) = DB.withConnection{
+  def addTeam(team: TeamM): Message = DB.withConnection{
     implicit connection =>
 
+    //if team already exists, just make deleted flag false 
     try {
-      SQL("""INSERT INTO teams VALUES ({id},{name},{deleted})""").on(
+      SQL("""INSERT INTO teams VALUES ({id},{name},{deleted})
+        """).on(
         "id" -> team.id,
         "name" -> team.name,
         "deleted" -> team.deleted
       ).executeUpdate() match {
-        case 1 => None 
-        case _ => Some("Not added")
+        case 1 => Message("Successfully added team", Helper.Success)
+        case _ => Message("Not added", Helper.Error)
       }
     }
     catch {
+      case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException => {
+        SQL("""UPDATE teams
+               SET deleted = false 
+               WHERE name = {name}
+               AND deleted = true""").on(
+                "name" -> team.name
+          ).executeUpdate() match {
+            case 0 => Message(s"Team with name '${team.name}' already exists", Helper.Error)
+            case 1 => Message("Previous team with same name. Previous team revived", Helper.Warning) 
+          }  
+      }
       case e => {
         Logger.error(e.toString)
-        Some(e.toString)
+        Message(e.toString, Helper.Error)
       }
     }
   }
 
   def deleteTeam(id: Int) = Helper.softDelete("teams", "deleted", "id", id)
+  def reviveTeam(id: Int) = Helper.softRevive("teams", "deleted", "id", id)
+
+  def editTeam(team: TeamM, id: Int) = DB.withConnection{
+    implicit connection => {
+
+      try{
+        SQL("""
+        UPDATE teams
+        SET name = {name}
+        WHERE id = {id}
+        """).on(
+          "name" -> team.name,
+          "id" -> id
+        ).executeUpdate()
+        Message("Updated team", Helper.Success)
+      }
+      catch{
+        case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException => {
+          Message("Team name already exists", Helper.Error)
+        }
+        case e => {
+          Message(e.toString, Helper.Error)
+        }
+      }
+    }
+  }
+
 
   def getResponseTeamIncidents(team_id: Int) = DB.withConnection{
     implicit connection =>

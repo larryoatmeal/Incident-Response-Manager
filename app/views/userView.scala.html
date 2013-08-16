@@ -24,7 +24,7 @@
 
 			<table class ="table table-striped">
 				<tbody>
-					<tr><td>ID<td/><td>@u.id.get<td/></tr>
+					<tr><td>ID<td/><td>@id<td/></tr>
 					<tr><td>First name<td/><td> @u.first_name<td/></tr>
 					<tr><td>Last name<td/><td> @u.last_name<td/></tr>
 					<tr><td>Email<td/><td> @u.email<td/></tr>
@@ -35,7 +35,11 @@
 			@if(!u.deleted){
 
 			<div class = "row">
-				@form(action = routes.UserInfo.deleteUser(u.id.get)){
+				@form(action = routes.UserInfo.editUser(id)){
+					<button class ="btn btn-info" type="submit">Edit User</button>
+
+				}
+				@form(action = routes.UserInfo.deleteUser(id)){
 					<button class ="btn btn-danger" type="submit">Delete User</button>
 
 				}
@@ -75,21 +79,21 @@
 
 				<h4>Primary Responder For</h4>
 				<ul>
-					@for(i <- UserM.getPrimaryResponderIncidents(u.id.get)){
+					@for(i <- UserM.getPrimaryResponderIncidents(id)){
 						<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 					}
 				</ul>
 
 				<h4>Team Responder For</h4>
 				<ul>
-					@for(i <- UserM.getResponseTeamIncidents(u.id.get)){
+					@for(i <- UserM.getResponseTeamIncidents(id)){
 						<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 					}
 				</ul>
 
 				<h4>Subscribed To</h4>
 				<ul>
-					@for(i <- UserM.getSubscriptions(u.id.get)){
+					@for(i <- UserM.getSubscriptions(id)){
 						<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 					}
 				</ul>
@@ -109,7 +113,9 @@
 		}	
 	}
 
-	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+
+
 	<script src="@routes.Assets.at("javascripts/userView.js")" type="text/javascript"></script>
 	
 

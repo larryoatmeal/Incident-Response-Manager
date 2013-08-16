@@ -7,6 +7,7 @@ import play.api.Play.current
 import play.api.db.DB
 import play.api.Logger
 
+
 case class UserM(
   id: Pk[Int],
   first_name: String,
@@ -40,7 +41,8 @@ object UserM {
 
   def getUserFullName(id: Int) = getUser(id).map(user => user.first_name + " " + user.last_name)
 
-  def addUser(user: UserM) = DB.withConnection{
+  def addUser(user: UserM): Message = DB.withConnection{
+
     implicit connection =>
     try{
       SQL("""INSERT INTO users VALUES ({id},{first_name},{last_name},{email},{deleted})""").on(
@@ -50,21 +52,65 @@ object UserM {
         "email" -> user.email,
         "deleted" -> user.deleted
       ).executeUpdate() match {
-        case 1 => None
-        case _ => Some("Not added")
+        case 1 => Message("Successfully added user", Helper.Success)
+        case _ => Message("Not added", Helper.Error)
 
       }
     }
     catch{
+      //For duplicate emails, just turn deleted flag to true
+      case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException => {
+        SQL("""UPDATE users
+               SET deleted = false 
+               WHERE email = {email}
+               AND deleted = true""").on(
+                "email" -> user.email
+          ).executeUpdate() match {
+            //If user already exists and has not been deleted, update will affect 0 rows
+            case 0 => Message(s"User with email '${user.email}' already exists", Helper.Error)
+            //If user exists but has been deleted, update will affect one row
+            case 1 => Message("Previous user with same email. Previous user revived", Helper.Warning) 
+          }
+      }
       case e => {
         Logger.error(e.toString)
-        Some(e.toString)
+        Message(e.toString, Helper.Error)
       }
 
     }
   }
 
+
   def deleteUser(id: Int) = Helper.softDelete("users", "deleted", "id", id)
+
+  def editUser(user: UserM, id: Int) = DB.withConnection{
+    implicit connection => {
+      try{
+        SQL("""
+        UPDATE users
+        SET first_name = {first_name}, last_name = {last_name}, email = {email}
+        WHERE id = {id}
+        """).on(
+          "first_name" -> user.first_name,
+          "last_name" -> user.last_name,
+          "email" -> user.email,
+          "id" -> id
+        ).executeUpdate()
+
+        Message("Edited user", Helper.Success)
+      }
+      catch{
+        case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException =>{
+          Message("Email already exists", Helper.Error)
+        }
+        case e =>{
+          Message(e.toString, Helper.Error)
+        }
+
+      }
+    }
+  }
+
 
   def getPrimaryResponderIncidents(user_id: Int) = DB.withConnection{
     implicit connection =>
@@ -94,7 +140,7 @@ object UserM {
     implicit connection =>
     SQL(
       """
-      SELECT incidents.* FROM incidents 
+      SELECT DISTINCT incidents.* FROM incidents 
       JOIN incident_subscriptions
       ON incident_subscriptions.incident_id = incidents.id
       JOIN user_team_map
