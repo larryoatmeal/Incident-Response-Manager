@@ -51,7 +51,10 @@ object TeamInfo extends Controller {
     TeamM.deleteTeam(id)
     UserTeamMap.deleteTeam(id)//Delete map keys
     IncidentSubscriptionsMap.deleteTeamMaps(id)
-    Redirect(routes.TeamInfo.teamList)
+    Redirect(routes.TeamInfo.teamList).flashing(
+      "message" -> "Deleted team",
+      "category" -> Helper.Info
+    )
   }
 
   def editTeam(id: Int) = Action{

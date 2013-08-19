@@ -60,6 +60,8 @@ object Helper{
 
   // }
 
+
+  //Add spaces between sql lines
   def sqlFormat(args: String*) = {
     args.foldLeft(""){
       (acc, arg) => acc + " " + arg + " "
@@ -159,6 +161,7 @@ object Helper{
 
   }
 
+  //For multiple subscriptions in forms
   def extractRepeatedFormIndex(raw: String) = {
     import scala.util.matching.Regex
     //Find number inbetween brackets
@@ -171,6 +174,19 @@ object Helper{
       case None => 0
     }
   } 
+
+  def gravatar(email: String, size: Int = 30) = {
+    import java.security.MessageDigest
+    //Lower case, no spaces
+    val emailNormalized = email.toLowerCase.filter(_!=" ")
+    val bytesOfMessage = emailNormalized.getBytes("UTF-8")
+    val hash = MessageDigest.getInstance("MD5").digest(bytesOfMessage).map("%02x".format(_)).mkString 
+
+    "http://www.gravatar.com/avatar/" + hash + "?d=retro&s=" + size
+  }
+
+
+
 
 
 

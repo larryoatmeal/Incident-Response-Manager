@@ -57,9 +57,15 @@ object UserInfo extends Controller {
 
     //If deleted user is currently logged in, logout
     if(id == session.get("id").getOrElse("-1").toInt){
-      Redirect(routes.Authentication.logout)
+      Redirect(routes.Authentication.logout).flashing(
+        "message" -> "You Deleted Yourself! Logged out",
+        "category" -> Helper.Warning
+      )
     }else{
-      Redirect(routes.UserInfo.userList)
+      Redirect(routes.UserInfo.userList).flashing(
+      "message" -> "Deleted user",
+      "category" -> Helper.Info
+    )
     }
   }
 

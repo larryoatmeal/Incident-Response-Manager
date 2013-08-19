@@ -24,7 +24,7 @@ case class IncidentUpdateM(
 
 object IncidentUpdateM{
     
-
+  
   val dummyUpdate = IncidentUpdateM(anorm.NotAssigned, 1,
     "Update Gamma", 2, new DateTime, false) 
 

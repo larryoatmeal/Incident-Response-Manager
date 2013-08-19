@@ -36,12 +36,20 @@
  	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
  	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
 
+
+ 	<div class="row">
+ 	<div class="span12">
+
  	<h1>Create an Incident</h1>
  	@incidentForm.globalError.map { error =>
   		<div class="text-error">@error.message</div>
 	}
 
+	</div>
+	</div>
 
+	<div class="row">
+ 	<div class="span12">
 	@form(action = routes.IncidentCreator.submitIncidentForm){
 		<!-- '_attribute -> 'blah' 'attribute -> 'blah2'   -->
 		<fieldset>
@@ -113,6 +121,8 @@
 		
 		<button type="submit" class = "btn btn-success">Submit</button>
 	}
+	</div>
+	</div>
 
 	<!-- For making javascript easier -->
 	<!-- Can't be inside form since we don't want to submit it -->

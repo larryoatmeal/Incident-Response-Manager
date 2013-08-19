@@ -41,9 +41,9 @@ object Application extends Controller {
     //log(IssueTypeM.addIssueType(IssueTypeM.dummyIssueType))
     // log(IssueTypeM.getIssueType(1))
     log(AnormJoda.periodToMilliseconds("12:45:45"))
-
-
-    
+    //Emailer.sendEmail()
+    //Emailer.send(1)
+      
     Ok(views.html.debug())
   }
 

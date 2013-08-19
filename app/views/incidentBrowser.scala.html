@@ -12,10 +12,15 @@
  	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
  	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
 
+
 	<div class = "row">
+		<div class="span12">
 			<h1>Incident Response Manager</h1>
+		</div>
 	</div>
 
+
+	
 	
 
 	<div id = "page_current" data ="@params.page"></div>
@@ -44,6 +49,8 @@
 
 	<!-- query -->
 	<div class = "row">
+		<div class="span12">
+
 		<a href =@resetURL>Reset</a>
 
 		<form class="form-inline">
@@ -99,14 +106,16 @@
 		  </label>
 		  <a id ="search" class="btn"><i class="icon-search"></i></a>
 		</form>
-
+		</div>
 	</div>
 
 	<!-- Table -->
 	<div class = "row">
+		<div class ="span12">
 		<table class ="table table-striped">
 			<thead>
 				<tr>
+					<th>Gravatar</th>
 					@for((value, display) <- IncidentM.columnMap){
 						<th><a class = "sort" id = "@value">@display</a></th> 
 					}
@@ -116,6 +125,7 @@
 			<tbody>
 				@for(incident <- incidents){
 					<tr>
+						<td><img src="@Helper.gravatar(UserM.getUser(incident.primary_responder).map(_.email).getOrElse(""))"></td>
 						<td>@AnormJoda.formatDate(incident.created_at)</td>						
 						<td>@AnormJoda.formatDate(incident.updated_at)</td>
 						<td>@{AnormJoda.formatDate(incident.next_update_at) match {
@@ -179,11 +189,13 @@
 				}
 			</tbody>
 		</table>
+		</div>
 	</div>
 
 
 	<!-- Pagination -->
 	<div class = "row">
+		<div class ="span12">
 		<ul class="pager">
 			@if(params.page-1 < 1){
 				<li class = "previous disabled">
@@ -207,6 +219,7 @@
 			  	<li>
 			}
 		</ul>
+		</div>
 	</div>
 
 	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>

@@ -57,7 +57,20 @@ object IncidentSubscriptionsMap {
   }
   def deleteTeamMaps(team_id: Int) = Helper.delete("incident_subscriptions", "team_id", team_id)
 
-
+  def getAllEmails(incident_id: Int) = DB.withConnection{
+    implicit connection =>
+    SQL("""SELECT DISTINCT users.email FROM incidents 
+           JOIN incident_subscriptions ON incident_subscriptions.incident_id = incidents.id
+           JOIN teams ON incident_subscriptions.team_id = teams.id
+           JOIN user_team_map ON user_team_map.team_id = teams.id
+           JOIN users ON users.id = user_team_map.user_id
+           WHERE incident_id = {incident_id}
+      """).on(
+        "incident_id" -> incident_id
+      )().map(
+        row => row[String]("email")
+      ).toList
+  }
 
   // def addSubscription(incident_id: Int, team_id: Int) = DB.withConnection{//Return if succesful or not
   //   implicit request =>

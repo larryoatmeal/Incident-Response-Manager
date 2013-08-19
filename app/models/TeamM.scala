@@ -107,6 +107,22 @@ object TeamM {
     ).on("team_id" -> team_id).as(IncidentM.incidentParser *)
   }
   
+  def getUserEmails(team_id: Int) = DB.withConnection{
+    implicit connection => 
+    SQL(
+      """
+      SELECT users.email FROM teams
+      JOIN user_team_map ON user_team_map.team_id = teams.id
+      JOIN users ON users.id = user_team_map.user_id
+      WHERE teams.id = {team_id}
+      """
+    ).on(
+      "team_id" -> team_id
+    )().map(
+      row => row[String]("email")
+    ).toList
+  }
+
 
 
 }

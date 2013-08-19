@@ -37,6 +37,7 @@ case class BrowserParams(
   query: String,
   queryCol: String,
   queryOptions: Int
+  //sortOrder: Int = IncidentM.ASCENDING
 )
 
 object IncidentM {
@@ -46,6 +47,16 @@ object IncidentM {
   val incidentTypes = Map("internal" -> "Internal","external"->"External") //database value -> display
   val statusTypes = Map("open" -> "Open","closed" -> "Closed")
 
+  //QueryOptions constants
+    val WHOLEWORD = 0
+    val WILDCARD = 1
+    val BEFORE_TIME = 2
+    val AFTER_TIME = 3
+    val SHORTER = 4
+    val LONGER = 5
+  //Sort option constants
+    val ASCENDING = 0
+    val DESCENDING = 1
 
   val dummyIncident = IncidentM(
     anorm.NotAssigned,
@@ -86,38 +97,6 @@ object IncidentM {
   val timeColumns = Set(
     "updated_at", "created_at", "next_update_at"
   )
-
-
-  // val columns = List(
-  //   "updated_at",
-  //   "title",
-  //   "description",
-  //   "incident_type",
-  //   "status",
-  //   "issue_type",
-  //   "issue_id",
-  //   "created_at",
-  //   "next_update_at",
-  //   "primary_responder",
-  //   "response_team",
-  //   "incident_duration"
-  // )
-  // val columnNames = List(
-  //   "Updated At",
-  //   "Title",
-  //   "Description",
-  //   "Incident Type",
-  //   "Status",
-  //   "Issue Type",
-  //   "Issue ID",
-  //   "Created At",
-  //   "Next Update At",
-  //   "Primary Responder",
-  //   "Response Team",
-  //   "Incident Duration"
-  // )
-  // val columnTuples = columnNames zip columns
-
 
   val incidentParser: RowParser[IncidentM] = {
     import anorm.~
@@ -179,14 +158,6 @@ object IncidentM {
       require(columnMap.contains(queryCol))//contains refers to keys of map
       require(columnMap.contains(sort))
 
-
-      //QueryOptions constants
-      val WHOLEWORD = 0
-      val WILDCARD = 1
-      val BEFORE_TIME = 2
-      val AFTER_TIME = 3
-      val SHORTER = 4
-      val LONGER = 5
 
       //Values
       val start = (page - 1) * IncidentsPerPage
@@ -415,6 +386,21 @@ object IncidentM {
       case e => Message(e.toString, Helper.Error)
 
     } 
+  }
+
+  def getAllEmails(incident_id: Int) = DB.withConnection{
+    implicit connection =>
+    SQL("""SELECT DISTINCT users.email FROM incidents 
+           JOIN incident_subscriptions ON incident_subscriptions.incident_id = incidents.id
+           JOIN teams ON incident_subscriptions.team_id = teams.id
+           JOIN user_team_map ON user_team_map.team_id = teams.id
+           JOIN users ON users.id = user_team_map.user_id
+           WHERE incident_id = {incident_id}
+      """).on(
+        "incident_id" -> incident_id
+      )().map(
+        row => row[String]("email")
+      ).toList
   }
 
 

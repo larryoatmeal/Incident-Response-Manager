@@ -1,4 +1,4 @@
-package models
+  package models
 
 import anorm._
 import anorm.RowParser

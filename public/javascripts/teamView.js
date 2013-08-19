@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 		})
 	})
-
+	
 	//Remove user
 	$(".remove").on("click", function(){
 		var user_id = $(this).attr("value")
@@ -28,5 +28,8 @@ $(document).ready(function(){
 			}
 		})
 	})
+
+	//Open up dropdowns initially
+	$('.collapse').collapse()
 
 })

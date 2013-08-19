@@ -103,6 +103,9 @@ object IncidentEditor extends Controller with Secured{
             Some(value.user_id) //Updater's user ID
           )
           val result = IncidentM.editIncident(incident)
+
+          Emailer.send(incident_id)
+
           Redirect(routes.IncidentView.incidentView(incident_id)).flashing(
             "message" -> result.text,
             "category" -> result.category

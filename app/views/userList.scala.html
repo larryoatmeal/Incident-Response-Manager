@@ -5,15 +5,31 @@
 
 
 	<div class = "row">
+		<div class="span12">
 			<h1>Users</h1>
+
+			<table class="table table-striped">
+				<tbody>
+					@for(user <- users if(!user.deleted)){
+					<tr>
+						<td width ="10%"><img src="@Helper.gravatar(user.email)"></td>
+						<td><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></td>
+					</tr>
+					}
+				</tbody>
+
+
+			</table>
+			@{/*
 			<ul>
 				@for(user <- users if(!user.deleted)){
 					<li><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
 				}
 			</ul>
+			*/}
 			
 			<a href="@routes.UserInfo.addUser()" class="btn btn-primary">Add User</a>
-
+		</div>
 	</div>
 
 }

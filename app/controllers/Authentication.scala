@@ -37,7 +37,10 @@ object Authentication extends Controller{
 
   def logout = Action{
     implicit request =>
-    Redirect(routes.IncidentBrowser.getIncidents()).withNewSession
+    Redirect(routes.IncidentBrowser.getIncidents()).withNewSession.flashing(
+        "message" -> "Logged out",
+        "category" -> Helper.Info
+      )
 
   }
 }

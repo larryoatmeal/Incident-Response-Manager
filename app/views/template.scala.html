@@ -2,8 +2,7 @@
 
 
 @user_id = @{session.get("id").map(_.toInt)}
-
-
+@user = @{user_id.flatMap(UserM.getUser(_))}
 <!DOCTYPE html>
 
 <html>
@@ -26,25 +25,37 @@
         }
         </style>
     -->
+
+        <style>
+        .container{
+            width: 1100px;
+        }
+        </style>
     </head>
 
 
 
     <body>
-    	<div class ="container">
-    		<div class = "navbar">
-    			<div class = "navbar-inner">
-    				<ul class = "nav">
-    					<li><a href="@routes.IncidentBrowser.getIncidents()">Browse</a></li>
-    					<li><a href="@routes.IncidentCreator.addIncident">Create</a></li>
+
+        <div class = "navbar">
+                <div class = "navbar-inner">
+                    <ul class = "nav">
+                        <li><a href="@routes.IncidentBrowser.getIncidents()">Browse</a></li>
+                        <li><a href="@routes.IncidentCreator.addIncident">Create</a></li>
                         <li><a href="@routes.TeamInfo.teamList">Teams</a></li>
                         <li><a href="@routes.UserInfo.userList">Users</a></li>
-    				</ul>
+                    </ul>
+
+                    
 
                     <div class="notices pull-right">
-                        @user_id match {
-                            case Some(id) => {
-                                <p class="navbar-text">@UserM.getUserFullName(id) <a href = "@routes.Authentication.logout">Log out</a></p>
+                        @user match {
+                            case Some(user) => {
+                                <p class="navbar-text">
+                                    <a href = "@routes.UserInfo.userPage(user.id.get)"><img src="@Helper.gravatar(user.email, 20)"></a>
+                                    @user.first_name @user.last_name 
+                                    <a href = "@routes.Authentication.logout">Log out</a>
+                                </p>
 
                             }
                             case None => {  
@@ -52,14 +63,18 @@
                             }
                         }
                      </div>
-    			</div>
-    		</div>
+                </div>
+        </div>
+
+
+    	<div class ="container">
 
             <!-- Messages -->
             @(flash.get("message"), flash.get("category")) match{
                         case (Some(message), Some(category)) => {
 
-
+                        <div class="row">
+                        <div class="span12">
                         @category match {
                             case Helper.Error => {
                             <div class="alert alert-error">
@@ -96,6 +111,9 @@
                             </div>
                             }
                         }
+                        </div>
+                        </div>
+
                     }
                         case (_, _) => {}
             }
