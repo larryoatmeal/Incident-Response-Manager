@@ -40,8 +40,8 @@ class Emailer extends Actor{
         var email = new SimpleEmail()
         email.setHostName("smtp.googlemail.com")
         email.setSmtpPort(465)
-        email.setAuthenticator(new DefaultAuthenticator("sogimaplayapp@gmail.com", "w00tw00t"))
-        email.setFrom("sogimaplayapp@gmail.com")
+        email.setAuthenticator(new DefaultAuthenticator("emailaddress", "password"))
+        email.setFrom("emailaddress")
 
 
         email.setSubject(subject)
