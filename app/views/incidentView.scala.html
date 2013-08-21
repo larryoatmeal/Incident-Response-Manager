@@ -6,7 +6,8 @@
 	@incident match {
 		case Some(i) => {
 		<div class = "row">
-		<h1>Incident: @i.title</h1>
+		<h1>Incident: @i.title <a class ="btn btn-warning" id="quit">Back</a>	
+</h1>
 
 
 		<table class ="table table-striped">
@@ -33,7 +34,7 @@
 				<tr><td>Updated By<td/><td> <a href="@routes.UserInfo.userPage(i.updated_by.getOrElse(-1))">@i.updated_by.map(UserM.getUserFullName(_))</a><td/></tr>
 			</tbody>
 		</table>
-		<a class = "btn btn-info" href = "@routes.IncidentEditor.incidentEdit(i.id.getOrElse(-1))">Edit</a>	
+		<a class = "btn btn-info" href = "@routes.IncidentEditor.incidentEdit(i.id.getOrElse(-1))">Edit</a>
 		</div>
 	
 
@@ -67,7 +68,7 @@
 						<td>@AnormJoda.formatDate(update.created_at)</td>
 						<td>@update.description</td>
 						<td><a href="@routes.UserInfo.userPage(update.created_by)">@UserM.getUserFullName(update.created_by)</a></td>
-						<td><a class = "delete" id = "@update.id"><i class="icon-trash"></a></i></td>
+						<td><a class = "delete" id = "@update.id"><span class="glyphicon glyphicon-trash"></a></span></td>
 					</tr>
 					}
 				</tbody>

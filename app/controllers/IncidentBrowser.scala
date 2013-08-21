@@ -24,12 +24,7 @@ object IncidentBrowser extends Controller{
         Ok(views.html.incidentBrowser(incidents, numberOfIncidents, err, BrowserParams(page, sort, query, queryCol, queryOptions)))
     }
   }
-  
-  
-
-  
-
-
+    
     // ((incident: IncidentM) => Some(
     //   incident.title,
     //   incident.description,

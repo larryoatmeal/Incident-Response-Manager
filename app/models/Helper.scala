@@ -185,6 +185,14 @@ object Helper{
     "http://www.gravatar.com/avatar/" + hash + "?d=retro&s=" + size
   }
 
+  def cutoff(text: String, cutoffNumber: Int) = {
+    if (text.length > cutoffNumber){
+      text.substring(0, cutoffNumber) + "..."
+    }else{
+      text
+    }
+  }
+
 
 
 

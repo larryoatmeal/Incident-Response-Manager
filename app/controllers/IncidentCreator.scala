@@ -32,17 +32,16 @@ object IncidentCreator extends Controller with Secured{
       "user_id" -> number,
       "subscriptions" -> list(number)
     )(IncidentFormTemp.apply)(IncidentFormTemp.unapply).verifying(
-      "If Issue Type is not 'None', issue id is necessary. If you are the primary responder, you must specify an upate time",
-      i => if (!i.issue_type_id.isEmpty && i.issue_id.isEmpty){
-        Logger.debug("Condition 1")
-        false
-      }else if(i.user_id == i.primary_responder && i.next_update_at_string.isEmpty){
-        Logger.debug(i.next_update_at_string.getOrElse("NONE"))
-        false
-      }
-      else{
-        true
-      }
+      "If Issue Type is not 'None', issue id is necessary. If you are the primary responder, you must specify an update time",
+      i => 
+        ((i.issue_type_id, i.issue_id) match {
+          case (Some(1), None) => true //1 is "Direct". If issue type direct, issue id optional
+          case (Some(issue_type), None) => false //If other issue type beside Direct must have issue_id
+          case (None, None) => false //If no issue type must have issue_id
+          case (_, _) => true //anything else is fine     
+        }) && !(i.user_id == i.primary_responder && i.next_update_at_string.isEmpty)
+        //If user is primary responsder, must supply update time
+        
     )
   )
   
@@ -73,7 +72,7 @@ object IncidentCreator extends Controller with Secured{
             value.issue_type_id,
             value.response_team,
             value.primary_responder,
-            None,
+            Some(currentTime),
             None,
             AnormJoda.formTimeToJoda(value.next_update_at_string),
             currentTime,

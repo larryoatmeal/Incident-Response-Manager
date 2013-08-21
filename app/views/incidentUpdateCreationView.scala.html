@@ -7,10 +7,12 @@
 
 @template("Update"){
 	
-	@form(action = routes.IncidentUpdate.submitUpdate(incident_id)){
+	@form(action = routes.IncidentUpdate.submitUpdate(incident_id), 'role->"form"){
+		<h1>Update</h1>
+		@textarea(updateForm("description"), '_label -> "Description*", 'class->"form-control", 'rows-> 10)
 
-		@textarea(updateForm("description"), '_label -> "Description*")
-
+		<button type = "submit" class ="btn btn-success">Submit</button>
+		<a class ="btn btn-warning" id="quit">Quit</a>
 
 		<!-- Invisibile fields -->
 		@input(updateForm("created_by"), '_label -> "") { (id, name, value, args) =>
@@ -20,7 +22,6 @@
     		<input type="hidden" name="@name" id="@id" value = "@incident_id" @toHtmlArgs(args)>
 		} 
 
-		<button type = "submit" class ="btn btn-success">Submit</button>
 	}
 
 

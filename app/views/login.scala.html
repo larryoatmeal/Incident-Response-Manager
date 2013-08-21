@@ -8,13 +8,51 @@
 @nameAndIds = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.get.toString, user.first_name + " " + user.last_name)}
 
 @template("Login"){
+	<style>	
+		.form-signin {
+		  max-width: 330px;
+		  padding: 15px;
+		  margin: 0 auto;
+		}
+		.form-signin .form-signin-heading,
+		.form-signin .checkbox {
+		  margin-bottom: 10px;
+		}
+		.form-signin .checkbox {
+		  font-weight: normal;
+		}
+		.form-signin .form-control {
+		  position: relative;
+		  font-size: 16px;
+		  height: auto;
+		  padding: 10px;
+		  -webkit-box-sizing: border-box;
+		     -moz-box-sizing: border-box;
+		          box-sizing: border-box;
+		}
+		.form-signin .form-control:focus {
+		  z-index: 2;
+		}
+		.form-signin input[type="text"] {
+		  margin-bottom: -1px;
+		  border-bottom-left-radius: 0;
+		  border-bottom-right-radius: 0;
+		}
+		.form-signin input[type="password"] {
+		  margin-bottom: 10px;
+		  border-top-left-radius: 0;
+		  border-top-right-radius: 0;
+		}
+	</style>
+
 	
-	<h1>Login</h1>
-	@form(action = routes.Authentication.loginSubmit){
-		@select(loginForm("id"), nameAndIds, '_label -> "Name")
-		<button type="submit" class="btn btn-success">Submit</button>
+	@form(action = routes.Authentication.loginSubmit, 'class -> "form-signin"){
+		<h1 class="form-signin-heading">Login</h1>
+		@select(loginForm("id"), nameAndIds, '_label -> "Name", 'class -> "form-control")
+		<button type="submit" class="btn btn-lgn btn-block btn-success">Submit</button>
 
 	}
+
 
 
 

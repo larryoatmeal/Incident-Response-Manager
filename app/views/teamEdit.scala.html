@@ -9,9 +9,10 @@
 @template("Edit Team"){
 	
 	<h1>Edit Team</h1>
-	@form(action = routes.TeamInfo.submitTeamEditForm(id)){
+	@form(action = routes.TeamInfo.submitTeamEditForm(id), 'role-> "form"){
 		
-		@inputText(teamForm("name"), '_label -> "Name")
+		@inputText(teamForm("name"), '_label -> "Name", 'class->"form-control")
 		<button type="submit" class="btn btn-success">Submit</button>
+		<a class ="btn btn-warning" id="quit">Quit</a>
 	}
 }

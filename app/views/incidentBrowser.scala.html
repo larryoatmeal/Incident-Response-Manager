@@ -14,7 +14,7 @@
 
 
 	<div class = "row">
-		<div class="span12">
+		<div class="col-md-12">
 			<h1>Incident Response Manager</h1>
 		</div>
 	</div>
@@ -49,69 +49,135 @@
 
 	<!-- query -->
 	<div class = "row">
-		<div class="span12">
+		<div class="col-md-12">
 
 		<a href =@resetURL>Reset</a>
 
-		<form class="form-inline">
+
+	<!-- 	<form class="form-inline" role="form">
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputEmail2">Email address</label>
+		    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+		  </div>
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputPassword2">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+		  </div>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Remember me
+		    </label>
+		  </div>
+		  <button type="submit" class="btn btn-default">Sign in</button>
+		</form> -->
+
+		<form class="form-inline" role="form">
 		<!-- Multiple "query" forms. Only one visible at a time -->
-		  <input id ="regularQuery" type="text" class="query" placeholder="Search...">
-		  <input id ="timeQuery" type="text" class="query" placeholder="Time...">
-		  <select id ="incidentTypeQuery" class="query">
-		  	@for((value, display) <- IncidentM.incidentTypes){
-		  		<option value="@value">@display</option>
-		  	}
-		  </select>
-		  <select id ="statusQuery" class="query">
-		  	@for((value, display) <- IncidentM.statusTypes){
-		  		<option value="@value">@display</option>
-		  	}
-		  </select>
-		  <select id ="issueTypeQuery" class="query">
-		  	<!-- -1 will be interpreted as searching for null values -->
-		  	<option value="-1">None</option>
-		  	@for(issueType <- IssueTypeM.getIssueTypes){
-		  		<option value="@issueType.id.get">@issueType.name</option>
-		  	}
-		  </select>
 
-		  <input type ="text" id="durationQuery" class="query" placeholder="dd*:hh:mm">
+		  <div class="form-group">
+		  	<label class="sr-only" for="regularyQuery"></label>
+		  	<input id ="regularQuery" type="text" querygroup = "query" placeholder="Search..." class="form-control">
+	    </div>
 
-
-		  <div id = "timeRadioGroup">
-		    <label class="radio">
-		 	  <input id = "beforeRadio" type="radio" name="time" value="2">Before<br>
-		    </label>
-		    <label class="radio">
-		 	  <input id = "afterRadio"  type="radio" name="time" value="3">After<br>
-		    </label>
+      <div class="form-group">
+	      	<label class="sr-only" for="timeQuery"></label>
+		  	<input id ="timeQuery" type="text" querygroup = "query" placeholder="Time..." class="form-control">
 		  </div>
 
-		  <div id = "durationRadioGroup">
-		    <label class="radio">
-		 	  <input id = "shorterRadio" type="radio" name="duration" value="4">Shorter<br>
-		    </label>
-		    <label class="radio">
-		 	  <input id = "longerRadio"  type="radio" name="duration" value="5">Longer<br>
-		    </label>
+		  <div class="form-group">
+		  	<label class="sr-only" for="incidentTypeQuery"></label>
+			  <select id ="incidentTypeQuery" querygroup = "query" class="form-control">
+			  	@for((value, display) <- IncidentM.incidentTypes){
+			  		<option value="@value">@display</option>
+			  	}
+			  </select>
 		  </div>
 
-		  <select id ="queryCol">
-		  	@for((value, display) <- IncidentM.columnMap){
-		  		<option value ="@value">@display</option>
-		  	}
-		  </select>
-		  <label  id = "wholewordgroup" class="checkbox">
-		    <input id = "wholeword" type="checkbox"> Whole word
-		  </label>
-		  <a id ="search" class="btn"><i class="icon-search"></i></a>
+		  <div class="form-group">
+		  	<label class="sr-only" for="statusQuery"></label>
+			  <select id ="statusQuery" querygroup = "query" class="form-control">
+			  	@for((value, display) <- IncidentM.statusTypes){
+			  		<option value="@value">@display</option>
+			  	}
+			  </select>
+			</div>
+
+			<div class="form-group">
+				<label class="sr-only" for="issueTypeQuery"></label>
+			  <select id ="issueTypeQuery" querygroup = "query" class ="form-control">
+			  	<!-- -1 will be interpreted as searching for null values -->
+			  	<option value="-1">None</option>
+			  	@for(issueType <- IssueTypeM.getIssueTypes){
+			  		<option value="@issueType.id.get">@issueType.name</option>
+			  	}
+			  </select>
+			</div>
+
+			<div class="form-group">
+				<label class="sr-only" for="durationQuery"></label>
+		  	<input type ="text" id="durationQuery" querygroup = "query" placeholder="dd*:hh:mm" class="form-control">
+			</div>
+
+			<div class="form-group">
+			  <div id = "timeRadioGroup">
+				   <div class="radio">
+				   		<label>
+					 	  	<input id = "beforeRadio" type="radio" name="time" value="2">
+					 	  	Before
+				 	  	</label>
+				   	</div>
+				   	<div class="radio">
+				   		<label>
+				   			<input id = "afterRadio"  type="radio" name="time" value="3">
+				   			After
+				   		</label>
+				   	</div>
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <div id = "durationRadioGroup">
+			  	<div class="radio">
+				   		<label>
+					 	  	<input id = "shorterRadio" type="radio" name="duration" value="4">
+					 	  	Shorter
+				 	  	</label>
+				  </div>
+			   	<div class="radio">
+			   		<label>
+			   			<input id = "longerRadio"  type="radio" name="duration" value="5">
+			   			Longer
+			   		</label>
+			   	</div>
+			  </div>
+			</div>
+
+		  <div class="form-group">
+		  	<select id ="queryCol" class="form-control">
+			  	<label class="sr-only" for="exampleInputEmail2"></label>
+			  	@for((value, display) <- IncidentM.columnMap){
+			  		<option value ="@value">@display</option>
+			  	}
+		  	</select>
+			</div>
+
+		  <div class="checkbox" id="wholewordgroup">
+			  <label>
+			    <input id = "wholeword" type="checkbox">
+			    Whole word
+			  </label>
+			</div>
+
+		  <a id ="search" class="btn">
+		  	<span class="glyphicon glyphicon-search"></span>
+		  </a>
 		</form>
 		</div>
 	</div>
 
 	<!-- Table -->
 	<div class = "row">
-		<div class ="span12">
+		<div class ="col-md-12">
 		<table class ="table table-striped">
 			<thead>
 				<tr>
@@ -132,8 +198,12 @@
 							case Some(t) => t
 							case None => none("--")
 						}}</td>
-						<td>@incident.title</td>
-						<td>@incident.description</td>
+						<td>
+							<a href="@routes.IncidentView.incidentView(incident.id.getOrElse(-1))">
+							@incident.title
+							</a>
+						</td>
+						<td>@Helper.cutoff(incident.description, 30)</td>
 						<td>@incident.incident_type</td>
 						<td>@incident.status</td>
 
@@ -179,9 +249,14 @@
 						}</td>
 
 						<td>
-							<a href = "@routes.IncidentView.incidentView(incident.id.getOrElse(-1))"><i class="icon-eye-open"></i></a>
-							<a href = "@routes.IncidentUpdate.incidentUpdate(incident.id.getOrElse(-1))"><i class="icon-comment"></i></a>
-							<a href = "@routes.IncidentEditor.incidentEdit(incident.id.getOrElse(-1))"><i class="icon-edit"></i></a>
+							<!-- <a href = "@routes.IncidentView.incidentView(incident.id.getOrElse(-1))"><i class="icon-eye-open"></span></a>
+							<a href = "@routes.IncidentUpdate.incidentUpdate(incident.id.getOrElse(-1))"><i class="icon-comment"></span></a>
+							<a href = "@routes.IncidentEditor.incidentEdit(incident.id.getOrElse(-1))"><i class="icon-edit"></span></a>-->
+
+							<a href = "@routes.IncidentView.incidentView(incident.id.getOrElse(-1))"><span class="glyphicon glyphicon-eye-open"></span></a>
+							<a href = "@routes.IncidentUpdate.incidentUpdate(incident.id.getOrElse(-1))"><span class="glyphicon glyphicon-comment"></span></a>
+							<a href = "@routes.IncidentEditor.incidentEdit(incident.id.getOrElse(-1))"><span class="glyphicon glyphicon-edit"></span></a>
+
 
 						</td>
 
@@ -195,7 +270,7 @@
 
 	<!-- Pagination -->
 	<div class = "row">
-		<div class ="span12">
+		<div class ="col-md-12">
 		<ul class="pager">
 			@if(params.page-1 < 1){
 				<li class = "previous disabled">

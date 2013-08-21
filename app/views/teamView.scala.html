@@ -17,75 +17,80 @@
 	@team match {
 		case Some(t) => {
 			<div class = "row">
-			<div class = "span12">
-			<h1>Team: @t.name</h1>
+				<div class="col-md-12">
+					<h1>Team: @t.name</h1>
 
-				<table class ="table table-striped">
-					<tbody>
-						<tr><td>ID</td><td>@id</td></tr>
-						<tr><td>Name</td><td> @t.name</td></tr>
-					</tbody>
-				</table>
-
-			</div>
+					<table class ="table table-striped">
+						<tbody>
+							<tr><td>ID</td><td>@id</td></tr>
+							<tr><td>Name</td><td> @t.name</td></tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			@if(!t.deleted){
 			<div class = "row"> 
-				<div class="span6">
-					@form(action = routes.TeamInfo.editTeam(id)){
-						<button class ="btn btn-info" type="submit">Edit Team</button>
+					<div class="col-md-6">
+						@form(action = routes.TeamInfo.editTeam(id)){
+							<button class ="btn btn-info" type="submit">Edit Team</button>
+							<a class ="btn btn-warning" id="quit">Back</a>
 
-					}
-				</div>
-				<div class="span6">
-					@form(action = routes.TeamInfo.deleteTeam(id)){
-						<button class ="btn btn-danger pull-right" type="submit">Delete Team</button>
+						}
+					</div>
 
-					}
-				</div>
+					<div class="col-md-6">
+						@form(action = routes.TeamInfo.deleteTeam(id)){
+							<button class ="btn btn-danger pull-right" type="submit">Delete Team</button>
+
+						}
+					</div>
 			</div>
 
 			<hr>
 
 
 			<div class="row">
-				<div class = "span6">
+				<div class = "col-md-6">
 					<h3>Members</h3>
 					<ul>
 						@for(user <- users){
-							<li><a class="remove" value="@user.id.get"><i class="icon-remove"></i></a>  <a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
+							<li><a class="remove" value="@user.id.get"><span class="glyphicon glyphicon-remove"></span></a>  <a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
 						}
 					</ul>
 					<!-- Use javascript to "submit" form -->
-					<form>   
-						<fieldset>				
-						<select id="user_select">
-							@for(user <- allUsers if(!user.deleted)){
-								<option value="@user.id.get">@user.first_name @user.last_name</option>
-							}
-						</select>
+					<form role="form"> 
+						<div class="form-group">  
+							<select id="user_select" class="form-control">
+								@for(user <- allUsers if(!user.deleted)){
+									<option value="@user.id.get">@user.first_name @user.last_name</option>
+								}
+							</select>
+						</div>
 						<!-- <a id="add_user" class="btn btn-primary">Add User</a> -->
-						</fieldset>
 						<a id="add_user" class="btn btn-primary">Add User</a>
 					</form>
 				</div>
 
 
-				<div class ="span6">
+				<div class ="col-md-6">
 					<h3>Incidents</h3>
-					<h4><a class ="btn" data-toggle="collapse" data-target="#responseteam">Response Team For</a></h4>
-					<ul class="collapse" id="responseteam">
-						@for(i <- TeamM.getResponseTeamIncidents(id)){
-							<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
-						}
-					</ul>
+					<ul>
+						<li>Response Team For
+							<ul id="responseteam">
+								@for(i <- TeamM.getResponseTeamIncidents(id)){
+									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+								}
+							</ul>
+						</li>
 
-					<h4><a class ="btn" data-toggle="collapse" data-target="#subscribedto">Subscribed to</a></h4>
-					<ul class="collapse" id="subscribedto">
-						@for(i <- incidentsSubscribed){
-							<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
-						}
+						<li>Subscribed to
+							<ul id="subscribedto">
+								@for(i <- incidentsSubscribed){
+									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+								}
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</div>

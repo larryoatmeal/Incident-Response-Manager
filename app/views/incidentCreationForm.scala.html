@@ -38,55 +38,59 @@
 
 
  	<div class="row">
- 	<div class="span12">
+ 	<div class="col-md-12">
 
  	<h1>Create an Incident</h1>
  	@incidentForm.globalError.map { error =>
-  		<div class="text-error">@error.message</div>
+  		<div class="text-danger">@error.message</div>
 	}
 
 	</div>
 	</div>
 
 	<div class="row">
- 	<div class="span12">
-	@form(action = routes.IncidentCreator.submitIncidentForm){
+ 	<div class="col-md-12">
+	@form(action = routes.IncidentCreator.submitIncidentForm, 'role -> "form"){
 		<!-- '_attribute -> 'blah' 'attribute -> 'blah2'   -->
-		<fieldset>
+		<!-- <fieldset> -->
 
 
 		@inputText(incidentForm("title"), 
-		'_label -> "Title*", 'errormessage -> "Required")
+		'_label -> "Title*", 'errormessage -> "Required", 'class ->"form-control")
 
 		@textarea(incidentForm("description"), 
-		'_label -> "Description*", 'errormessage -> "Required")
+		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 10, 'class ->"form-control")
 
-		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type")
+		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type", 'class ->"form-control")
 
 		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
 		'_label -> "Status")*/}
 
-		<label class-"control-label">Status</label>
-		<div class ="controls">
-		<input type = "text" name ="status" value ="open"  readonly = "readonly">
-		</div>
+		<!-- <label class-"control-label">Status</label>
+			<div class ="controls">
+			<input type = "text" name ="status" value ="open"  readonly = "readonly" class="form-control">
+		</div> -->
+		<div class="form-group">
+	      <label for="disabledTextInput">Status</label>
+	      <input type="text" name = "status" id="disabledTextInput" value ="open" class="form-control" readonly>
+    </div>
 
 
 		@inputText(incidentForm("next_update_at_string"), 
-		'_label -> "Next Update")
+		'_label -> "Next Update", 'class ->"form-control")
 
 
 		@select(incidentForm("issue_type_id"), issueTypesMap,
-		'_label -> "Issue Type")
+		'_label -> "Issue Type", 'class ->"form-control")
 
 		@inputText(incidentForm("issue_id"), 
-		'_label -> "Issue ID")
+		'_label -> "Issue ID", 'class ->"form-control")
 
 		@select(incidentForm("primary_responder"), usersMap,
-		'_label -> "Primary Responder")
+		'_label -> "Primary Responder", 'class ->"form-control")
 
 		@select(incidentForm("response_team"), teamsMap,
-		'_label -> "Response Team")
+		'_label -> "Response Team", 'class ->"form-control")
 
 		<div id ="subscriptions">
 		@repeat(incidentForm("subscriptions"), min = 0) { subscription =>
@@ -96,13 +100,14 @@
 
 			<!-- Get index number out of Subscription[n], store in 'index' attribute -->
 
-    		<select name="@name" id="@id" value="@value" index = "@Helper.extractRepeatedFormIndex(name)" @toHtmlArgs(args)>
+    		<select name="@name" id="@id" value="@value" index = "@Helper.extractRepeatedFormIndex(name)" @toHtmlArgs(args) class="form-control">
 				@for((team_id, display) <- teamsMap if (team_id != "")){
 					<option value="@team_id" @if(team_id == value.getOrElse("")){selected}>@display</option>
 				}
 
 			</select>
-			<a class="removeSubscription" index="@Helper.extractRepeatedFormIndex(name)"><i class="icon-remove" ></i></a>
+			<!-- <a class="removeSubscription" index="@Helper.extractRepeatedFormIndex(name)"><i class="icon-remove" ></i></a> -->
+			<a class="removeSubscription"><span class="glyphicon glyphicon-remove"></span></a>
 			}
 			</div>
 
@@ -117,9 +122,10 @@
     		<input type="hidden" name="@name" id="@id" value = "@user_id" @toHtmlArgs(args)>
 		}
 
-		</fieldset>
+		<!-- </fieldset> -->
 		
 		<button type="submit" class = "btn btn-success">Submit</button>
+		<a class ="btn btn-warning" id="quit">Quit</a>
 	}
 	</div>
 	</div>
@@ -130,12 +136,13 @@
 		<div class="subscription">
 		@input(incidentForm("subscriptions[0]"), '_label -> "Subscription") { (id, name, value, args) =>
 
-		<select>
+		<select class="form-control">
 			@for((value, display) <- teamsMap if (value != "")){
 				<option value="@value">@display</option>
 			}
 		</select>
-		<a class="removeSubscription"><i class="icon-remove"></i></a>
+		<!-- <a class="removeSubscription"><i class="icon-remove"></i></a> -->
+		<a class="removeSubscription"><span class="glyphicon glyphicon-remove"></span></a>
 		}
 		</div>
 	</div>

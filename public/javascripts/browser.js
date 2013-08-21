@@ -71,14 +71,22 @@ $(document).ready(function(){
 		getList(1, sort_current, queryRaw, queryCol, queryOptions)
 	})
 
+	function hideAllQueries(){
+		$("[querygroup='query']").parent().hide()
+	}
+	function show(id){
+		$("#"+id).parent().show()
+
+	}
+
 
 	function modifySearchBox(){
 		var column = $("#queryCol").find(':selected')[0].value
 
 
 		if(column == "incident_type"){
-			$(".query").hide()//hide all
-			$("#incidentTypeQuery").show()//show the selected one
+			hideAllQueries()//hide all
+			show("incidentTypeQuery")//show the selected one
 			$("#wholeword").prop("checked", true)//whole word
 			$("#wholewordgroup").hide()//hide checkbox because unnecessary
 			$("#timeRadioGroup").hide()
@@ -86,24 +94,24 @@ $(document).ready(function(){
 			searchBoxTypeId_current = "incidentTypeQuery"//mark current searchBox as the one we're using
 
 		}else if(column == "status"){
-			$(".query").hide()
-			$("#statusQuery").show()
+			hideAllQueries()
+			show("statusQuery")
 			$("#wholeword").prop("checked", true)
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").hide()
 			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "statusQuery"
 		}else if(column == "issue_type"){
-			$(".query").hide()
-			$("#issueTypeQuery").show()
+			hideAllQueries()
+			show("issueTypeQuery")
 			$("#wholeword").prop("checked", true)
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").hide()
 			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "issueTypeQuery"
 		}else if(column == "created_at" || column == "updated_at" || column == "next_update_at"){
-			$(".query").hide()
-			$("#timeQuery").show()
+			hideAllQueries()
+			show("timeQuery")
 			$("#wholeword").prop("checked", false)
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").show()
@@ -111,8 +119,8 @@ $(document).ready(function(){
 			$("#durationRadioGroup").hide()
 			searchBoxTypeId_current = "timeQuery"
 		}else if(column == "incident_duration"){
-			$(".query").hide()
-			$("#durationQuery").show()
+			hideAllQueries()
+			show("durationQuery")
 			$(".durationRadioGroup").show()
 			$("#wholewordgroup").hide()
 			$("#timeRadioGroup").hide()
@@ -120,8 +128,8 @@ $(document).ready(function(){
 			$("#shorterRadio").prop("checked", true)
 			searchBoxTypeId_current = "durationQuery"
 		}else{
-			$(".query").hide()
-			$("#regularQuery").show()
+			hideAllQueries()
+			show("regularQuery")
 			$("#wholeword").prop("checked", false)
 			$("#wholewordgroup").show()
 			$("#timeRadioGroup").hide()

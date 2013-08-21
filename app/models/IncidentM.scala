@@ -401,7 +401,7 @@ object IncidentM {
       )().map(
         row => row[String]("email")
       ).toList
-  }
+  } 
 
 
 
