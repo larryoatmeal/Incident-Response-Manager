@@ -175,6 +175,7 @@
 		</div>
 	</div>
 
+	@if(numberOfIncidents > 0 ) {
 	<!-- Table -->
 	<div class = "row">
 		<div class ="col-md-12">
@@ -266,7 +267,13 @@
 		</table>
 		</div>
 	</div>
+	} else {
+		<div class="empty-incident-set">
+			<em>No incidents found</em>	
+		</div>
+	}
 
+	<strong>I think there should be button here to create a new incident</strong>
 
 	<!-- Pagination -->
 	<div class = "row">
