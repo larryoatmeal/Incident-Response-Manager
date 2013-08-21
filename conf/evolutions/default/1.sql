@@ -7,9 +7,9 @@ CREATE TABLE incidents (
 	id 					int 			NOT NULL AUTO_INCREMENT, 			#? Needs to be not null?
 	title 				varchar(256)	NOT NULL,
 	description 		TEXT			NOT NULL, #? Probably need to change max characters
-	incident_type		varchar(256)	NOT NULL,
-	status				varchar(256)	NOT NULL,
-	issue_id			varchar(256),
+	incident_type		varchar(127)	NOT NULL,
+	status				varchar(127)	NOT NULL,
+	issue_id			varchar(64),
 	issue_type_id		int,	
 	respond_team_id		int,
 	primary_responder 	int   			NOT NULL,
@@ -30,9 +30,9 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
 	id 					int           	NOT NULL AUTO_INCREMENT,
-	first_name			varchar(256)	NOT NULL,
-	last_name			varchar(256)	NOT NULL,
-	email				varchar(256)	NOT NULL,
+	first_name			varchar(127)	NOT NULL,
+	last_name			varchar(127)	NOT NULL,
+	email				varchar(255)	NOT NULL,
 	deleted 			Boolean 		NOT NULL,
 
 
@@ -149,7 +149,7 @@ DROP TABLE IF EXISTS teams;
 
 CREATE TABLE teams (
 	id 					int 			NOT NULL AUTO_INCREMENT,
-	name 				varchar(256)	NOT NULL,
+	name 				varchar(127)	NOT NULL,
 	deleted 			Boolean 		NOT NULL,
 
 	PRIMARY KEY(id),
@@ -321,7 +321,7 @@ DROP TABLE IF EXISTS issue_types;
 
 CREATE TABLE issue_types (
 	id					int 			NOT NULL AUTO_INCREMENT,
-	slug				varchar(256)	NOT NULL,
+	slug				varchar(127)	NOT NULL,
 	clazz				varchar(256),
 	name 				varchar(256),
 
@@ -330,9 +330,9 @@ CREATE TABLE issue_types (
 
 );
 
-INSERT INTO issue_types VALUES(1, "slug1", null, "Direct");
-INSERT INTO issue_types VALUES(2, "slug2", null, "JIRA");
-INSERT INTO issue_types VALUES(3, "slug3", null, "Pager Duty");
+INSERT INTO issue_types VALUES(1, "direct", null, "Direct");
+INSERT INTO issue_types VALUES(2, "jira", null, "JIRA");
+INSERT INTO issue_types VALUES(3, "pager-duty", null, "Pager Duty");
 
 
 
