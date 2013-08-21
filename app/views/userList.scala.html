@@ -11,6 +11,12 @@
 
 			<table class="table table-striped">
 				<tbody>
+					<!-- 
+					this filtering logic should be in your controller, I was expecting to see something like
+					def getUsers = {
+						Helper.getAllSort[UserM]("users", "first_name", false, userParser).filter { u => ! u.deleted  }
+					}
+					-->
 					@for(user <- users if(!user.deleted)){
 					<tr>
 						<td width ="10%"><img src="@Helper.gravatar(user.email)"></td>
