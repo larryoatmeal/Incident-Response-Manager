@@ -24,7 +24,7 @@ case class IncidentUpdateM(
 
 object IncidentUpdateM{
     
-  
+
   val dummyUpdate = IncidentUpdateM(anorm.NotAssigned, 1,
     "Update Gamma", 2, new DateTime, false) 
 
@@ -56,6 +56,8 @@ object IncidentUpdateM{
       "incident_id" -> incident_id
     ).as(incidentUpdateParser *)
   }
+
+  def getIncidentUpdatesNotDeleted(incident_id: Int) = getIncidentUpdates(incident_id).filter(!_.deleted)
 
   def addIncidentUpdate(update: IncidentUpdateM) = DB.withConnection{
     implicit connection => 

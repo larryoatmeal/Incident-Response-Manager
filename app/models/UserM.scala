@@ -38,6 +38,7 @@ object UserM {
   }
   def getUser(id: Int) = Helper.getSingle[UserM](id, "users", "id", userParser)
   def getUsers = Helper.getAllSort[UserM]("users", "first_name", false, userParser)
+  def getUsersNotDeleted = getUsers.filter(!_.deleted)
 
   def getUserFullName(id: Int) = getUser(id).map(user => user.first_name + " " + user.last_name)
 

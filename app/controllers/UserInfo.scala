@@ -16,7 +16,7 @@ object UserInfo extends Controller {
 
   def userList = Action{
     implicit request =>
-    val users = UserM.getUsers
+    val users = UserM.getUsersNotDeleted
     Ok(views.html.userList(users))
   }
 

@@ -48,7 +48,7 @@
 		</div>
 
 
-		@defining(IncidentUpdateM.getIncidentUpdates(i.id.get)) { updates =>		
+		@defining(IncidentUpdateM.getIncidentUpdatesNotDeleted(i.id.get)) { updates =>		
 	
 
 		<div class="row">
@@ -63,7 +63,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@for(update <- updates if !update.deleted){
+					@for(update <- updates){
 					<tr>
 						<td>@AnormJoda.formatDate(update.created_at)</td>
 						<td>@update.description</td>
@@ -79,7 +79,7 @@
 
 		}
 		case None => {
-			<h1 class="text-error">Incident Not Found</h1>
+			<h1 class="text-danger">Incident Not Found</h1>
 
 		}
 	}

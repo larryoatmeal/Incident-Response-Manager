@@ -15,7 +15,7 @@ object TeamInfo extends Controller {
 
   def teamList = Action{
     implicit request =>
-    val teams = TeamM.getTeams
+    val teams = TeamM.getTeamsNotDeleted
     Ok(views.html.teamList(teams))
   }
 

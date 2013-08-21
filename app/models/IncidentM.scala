@@ -229,7 +229,7 @@ object IncidentM {
         case "issue_type" => "ORDER BY issue_types.name"
         case "primary_responder" => "ORDER BY users.last_name"
         case "response_team" => "ORDER BY teams.name"
-        case "incident_duration" => "ORDER BY UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at)"
+        case "incident_duration" => "ORDER BY UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(created_at) DESC"
         case c if timeColumns.contains(c) => s"ORDER BY $c DESC"
         case c => s"ORDER BY $c"
       } 

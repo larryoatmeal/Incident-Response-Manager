@@ -16,20 +16,34 @@ $(document).ready(function(){
 	// 	$("#query").val(query_current)
 	// }
 	
-	$("#queryCol").val(queryCol_current)//will check for value attribute
 
-	if(queryOptions_current == 0){
-		$("#wholeword").prop('checked',true)
+
+	function initialize(){
+		$("#queryCol").val(queryCol_current)
+
+		if(queryOptions_current == 0){
+			$("#wholeword").prop('checked',true)
+		}
+
+		modifySearchBox()
+
+		//refill inputs
+		$("#" + searchBoxTypeId_current).val(query_current)
+
+
+
 	}
 
-	modifySearchBox()
+
+	initialize()
+	
 
 
 	//Sort
 	$(".sort").on("click", function(){
 
 		var sort = $(this).attr("id")
-		getList(page_current, sort, query_current, queryCol_current, queryOptions_current)
+		getList(1, sort, query_current, queryCol_current, queryOptions_current)
 
 	})
 

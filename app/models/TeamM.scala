@@ -34,6 +34,9 @@ object TeamM {
   
   def getTeam(id: Int) = Helper.getSingle[TeamM](id, "teams", "id", teamParser)
   def getTeams = Helper.getAllSort[TeamM]("teams", "name", false, teamParser)
+  def getTeamsNotDeleted = getTeams.filter(!_.deleted)
+
+
 
   def addTeam(team: TeamM): Message = DB.withConnection{
     implicit connection =>

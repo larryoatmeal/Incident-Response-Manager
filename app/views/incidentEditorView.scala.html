@@ -6,8 +6,8 @@
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
 <!-- Select dropdowns. Empty string is interpreted as null-->
-@usersMap = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
-@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
+@usersMap = @{for(user <- UserM.getUsersNotDeleted) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
+@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeamsNotDeleted) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
 @issueTypesMap = @{Tuple2("","None") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
 
 
@@ -94,7 +94,7 @@
 		</fieldset>
 		
 		<button type="submit" class = "btn btn-success">Update</button>
-		<a class ="btn btn-warning" id="quit">Quit</a>
+		<a class ="btn btn-warning" id="quit">Cancel</a>
 	}
 
 	<!-- For making javascript easier -->

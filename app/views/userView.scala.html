@@ -6,7 +6,7 @@
 
 @user = @{UserM.getUser(id)}
 @teams = @{UserTeamMap.getTeams(id)}
-@allTeams = @{TeamM.getTeams}
+@allTeams = @{TeamM.getTeamsNotDeleted}
 
 
 
@@ -75,7 +75,7 @@
 					<form role="form">   
 						<div class="form-group">				
 							<select id="team_select" class="form-control">
-								@for(team <- allTeams if(!team.deleted)){
+								@for(team <- allTeams){
 									<option value="@team.id.get">@team.name</option>
 								}
 							</select>
@@ -88,29 +88,31 @@
 				<div class ="col-md-6">
 					<h3>Incidents</h3>
 					<ul>
-						<li>Primary Responder For
-							<ul id="primaryresponder">
+						<li class = "btn btn-default" data-toggle="collapse" data-target="#primaryresponder">Primary Responder For</li>
+							<ul id="primaryresponder" class="collapse in" >
 								@for(i <- UserM.getPrimaryResponderIncidents(id)){
-									<li>@{i.title}</li>
+									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 								}
 							</ul>
-						</li>
 
-						<li>Team Responder For
-							<ul id="teamresponder">
+						<br>
+
+						<li class = "btn btn-default" data-toggle="collapse" data-target="#teamresponder">Team Responder For</li>
+							<ul id="teamresponder" class="collapse in">
 								@for(i <- UserM.getResponseTeamIncidents(id)){
 									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 								}
 							</ul>
-						</li>
-
-						<li>Subscribed To
-							<ul id="subscribedto" >
+						
+						<br> 
+						
+						<li class = "btn btn-default" data-toggle="collapse" data-target="#subscribedto">Subscribed To</li>
+							<ul id="subscribedto" class="collapse in">
 								@for(i <- UserM.getSubscriptions(id)){
 									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 								}
 							</ul>
-						</li>
+
 					</ul>
 				</div>
 
@@ -119,12 +121,12 @@
 
 
 			}else{
-				<h1 class="text-error">User has been deleted</h1>
+				<h1 class="text-danger">User has been deleted</h1>
 			}
 
 		}
 		case None => {
-			<h1 class ="text-error">User Not Found</h1>
+			<h1 class ="text-danger">User Not Found</h1>
 		}	
 	}
 

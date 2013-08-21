@@ -17,19 +17,17 @@
 						Helper.getAllSort[UserM]("users", "first_name", false, userParser).filter { u => ! u.deleted  }
 					}
 					-->
-					@for(user <- users if(!user.deleted)){
+					@for(user <- users){
 					<tr>
 						<td width ="10%"><img src="@Helper.gravatar(user.email)"></td>
 						<td><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></td>
 					</tr>
 					}
 				</tbody>
-
-
 			</table>
 			@{/*
 			<ul>
-				@for(user <- users if(!user.deleted)){
+				@for(user <- users){
 					<li><a href="@routes.UserInfo.userPage(user.id.get)">@{user.first_name + " " + user.last_name}</a></li>
 				}
 			</ul>

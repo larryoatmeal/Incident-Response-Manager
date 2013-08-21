@@ -5,7 +5,7 @@
 
 <!-- User selects email, but submits ID -->
 
-@nameAndIds = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.get.toString, user.first_name + " " + user.last_name)}
+@nameAndIds = @{for(user <- UserM.getUsersNotDeleted) yield Tuple2(user.id.get.toString, user.first_name + " " + user.last_name)}
 
 @template("Login"){
 	<style>	

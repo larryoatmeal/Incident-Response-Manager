@@ -31,9 +31,9 @@ $(document).ready(function(){
 		})
 	})
 
-	//Open up dropdowns initially
-	$('.collapse').collapse()
-
+	//close dropdowns initially
+	//$('.collapse').collapse()
+	$(".collapse").collapse()
 
 
 })
