@@ -16,9 +16,16 @@ object ApplicationBuild extends Build {
     "org.apache.commons" % "commons-email" % "1.3"
   )
 
-
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+      // define the statements initially evaluated when entering 'console',
+      // 'console-quick', or 'console-project'
+      initialCommands := """
+       |// make app resources accessible
+       |Thread.currentThread.setContextClassLoader(getClass.getClassLoader)
+       |new play.core.StaticApplication(new java.io.File("."))
+       |import models._
+       |import scala.collection.JavaConversions._ 
+      """.stripMargin
   )
 
 }
