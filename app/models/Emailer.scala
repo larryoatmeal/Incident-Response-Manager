@@ -26,15 +26,15 @@ object Emailer{
   //Domain
   val domain = "http://localhost:9000"
 
-  //Email config
-  val hostEmail = "treekotrombone@gmail.com"
-  val hostPassword = "treekotrombonepassword"
+  //Email config: Edit this
+  val hostEmail = "youremail"
+  val hostPassword = "yourpassword"
+  val hostName = "hostname" //"smtp.gmail.com"
+  val hostSmtpPort = 465
+  val hostSSL = true
+  val hostTLS = true 
 
-  //Email types
-  val CreateIncident = 0
-  val UpdateIncident = 1
-  val EditIncident = 2
-
+  
   val system = ActorSystem("EmailSystem")
   val email = system.actorOf(Props[Emailer], name = "emailer")
 
@@ -91,12 +91,12 @@ class Emailer extends Actor{
 
         //Email config
         val email = new HtmlEmail()
-        email.setHostName("smtp.gmail.com")
-        email.setSmtpPort(465)
+        email.setHostName(Emailer.hostName)
+        email.setSmtpPort(Emailer.hostSmtpPort)
         email.setAuthenticator(new DefaultAuthenticator(Emailer.hostEmail, Emailer.hostPassword))
         email.setFrom(Emailer.hostEmail)
-        email.setSSLOnConnect(true)
-        email.setStartTLSEnabled(true)
+        email.setSSLOnConnect(Emailer.hostSSL)
+        email.setStartTLSEnabled(Emailer.hostTLS)
 
 
         def scalaToJavaEmails(list: List[String]): java.util.List[javax.mail.internet.InternetAddress] = {
