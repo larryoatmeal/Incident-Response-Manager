@@ -16,29 +16,12 @@
         <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
      
-         <!--  
-        <style type="text/css">
-        body {
-            background-color: #CCC;
-        }
-        table{
-            border: 0.13em solid black;
-        }
-        th, td{
-            border: 1px solid gray;
-        }
-        </style>
-
-        <style>
-        .container{
-            width: 1100px;
-        }
-        </style>
-            -->
         <style>
             body {
               background-color: #eee;
               font-family:"Tahoma";/* <-- fonts */
+              padding-top: 70px;
+              /*padding-bottom: 30px;*/
             }
             h1, h2, h3, h4, h5, h6{
               font-family:"Tahoma";   
@@ -50,7 +33,7 @@
     </head>
 
     <body>
-        <div class = "navbar navbar-default">
+        <div class = "navbar navbar-default navbar-fixed-top">
                 <!-- <div class = "navbar-inner"> -->
             <div class="container">
                 <div class="navbar-header">
@@ -88,22 +71,7 @@
                 </div>
             </div>
         </div>
-                    <!-- 
-                    <ul class = "nav">
-                        <li><a href="@routes.IncidentBrowser.getIncidents()">Browse</a></li>
-                        <li><a href="@routes.IncidentCreator.addIncident">Create</a></li>
-                        <li><a href="@routes.TeamInfo.teamList">Teams</a></li>
-                        <li><a href="@routes.UserInfo.userList">Users</a></li>
-                    </ul> -->
-
-
-                    <!-- <div class="notices pull-right"> -->
-                    <!-- <div class="nav navbar-nav navbar-right"> -->
-
-                     <!-- </div> -->
-                <!-- </div> -->
-     
-
+                
 
     	<div class ="container">
 
@@ -115,14 +83,14 @@
                         <div class="col-md-12">
                         @category match {
                             case Helper.Error => {
-                            <div class="alert alert-error">
+                            <div class="alert alert-danger">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
 
                                 <strong>Error:</strong> @message
                             </div>
                             }
                             case Helper.Warning => {
-                            <div class="alert">
+                            <div class="alert alert-warning">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
 
                                 <strong>Warning:</strong> @message

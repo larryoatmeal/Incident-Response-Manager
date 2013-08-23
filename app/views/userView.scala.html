@@ -7,7 +7,9 @@
 @user = @{UserM.getUser(id)}
 @teams = @{UserTeamMap.getTeams(id)}
 @allTeams = @{TeamM.getTeamsNotDeleted}
-
+@primaryResponderIncidents = @{UserM.getPrimaryResponderIncidents(id)}
+@responseTeamIncidents = @{UserM.getResponseTeamIncidents(id)}
+@subscriptions = @{UserM.getSubscriptions(id)}
 
 
 @template("User"){
@@ -88,30 +90,49 @@
 				<div class ="col-md-6">
 					<h3>Incidents</h3>
 					<ul>
-						<li class = "btn btn-default" data-toggle="collapse" data-target="#primaryresponder">Primary Responder For</li>
-							<ul id="primaryresponder" class="collapse in" >
-								@for(i <- UserM.getPrimaryResponderIncidents(id)){
-									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
-								}
-							</ul>
+
+						@if(primaryResponderIncidents.isEmpty){
+							<li class = "btn btn-default">Primary Responder For: <span class="text-warning">None</span></li>
+						}else{
+							<li class = "btn btn-default" data-toggle="collapse" data-target="#primaryresponder">Primary Responder For <span class="text-info">(@primaryResponderIncidents.length)</span></li></li>
+								<ul id="primaryresponder" class="collapse in" >
+									@for(i <- UserM.getPrimaryResponderIncidents(id)){
+										<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+									}
+								</ul>
+						}
 
 						<br>
 
-						<li class = "btn btn-default" data-toggle="collapse" data-target="#teamresponder">Team Responder For</li>
+						@if(responseTeamIncidents.isEmpty){
+							<li class = "btn btn-default">Team Responder For: <span class="text-warning">None</span></li>
+
+						}else{
+							<li class = "btn btn-default" data-toggle="collapse" data-target="#teamresponder">Team Responder For <span class="text-info">(@responseTeamIncidents.length)</span></li>
 							<ul id="teamresponder" class="collapse in">
 								@for(i <- UserM.getResponseTeamIncidents(id)){
 									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
 								}
 							</ul>
+						}
+
 						
-						<br> 
 						
-						<li class = "btn btn-default" data-toggle="collapse" data-target="#subscribedto">Subscribed To</li>
-							<ul id="subscribedto" class="collapse in">
-								@for(i <- UserM.getSubscriptions(id)){
-									<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
-								}
-							</ul>
+						<br>
+
+						@if(subscriptions.isEmpty){
+							<li class = "btn btn-default">Subscribed To: <span class="text-warning">None</span></li>
+						}else{
+							<li class = "btn btn-default" data-toggle="collapse" data-target="#subscribedto">Subscribed To <span class="text-info">(@subscriptions.length)</span></li></li>
+								<ul id="subscribedto" class="collapse in">
+									@for(i <- UserM.getSubscriptions(id)){
+										<li><a href="@routes.IncidentView.incidentView(i.id.get)">@{i.title}</a></li>
+									}
+								</ul>
+						}
+
+						
+						
 
 					</ul>
 				</div>

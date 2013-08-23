@@ -109,6 +109,24 @@ object Helper{
     }
   }
 
+  def getAllNotDeleted[T](table: String, parser: RowParser[T], delCol: String) = DB.withConnection{
+    implicit connection =>
+
+    try {
+      SQL(s"""SELECT * FROM $table WHERE $delCol = false""").as(parser *)
+    }
+    catch {
+      case e => {
+        Logger.error(e.toString)
+        List()
+      }
+    }
+
+
+  }
+
+
+
   def getAllSort[T](table: String, sort: String, desc: Boolean, parser: RowParser[T]) = DB.withConnection{
     implicit connection =>
     val direction = if(desc){"DESC"}else{"ASC"}
@@ -178,7 +196,7 @@ object Helper{
   def gravatar(email: String, size: Int = 30) = {
     import java.security.MessageDigest
     //Lower case, no spaces
-    val emailNormalized = email.toLowerCase.filter(_!=" ")
+    val emailNormalized = email.toLowerCase.filter(_!=' ')
     val bytesOfMessage = emailNormalized.getBytes("UTF-8")
     val hash = MessageDigest.getInstance("MD5").digest(bytesOfMessage).map("%02x".format(_)).mkString 
 
