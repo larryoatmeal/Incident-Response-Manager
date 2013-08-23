@@ -95,9 +95,9 @@ object IncidentCreator extends Controller with Secured{
             //Add supscriptions
             value.subscriptions.foreach{
               subscription => IncidentSubscriptionsMap.addSubscription(incident_id, subscription)
-            }
+          }
             
-          Emailer.send(incident_id)
+          Emailer.send(IncidentCreatedMail(incident_id))
 
 
 

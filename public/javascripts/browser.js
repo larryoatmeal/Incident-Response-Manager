@@ -29,8 +29,7 @@ $(document).ready(function(){
 
 	function initialize(){
 		$("#queryCol").val(queryCol_current)
-
-
+		show("queryCol") //show query column selector after coorect option chosen to avoid artifacts
 		
 		modifySearchBox()
 		//refill inputs

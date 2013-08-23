@@ -1,13 +1,13 @@
 @(incident: Option[IncidentM])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
+
 @template("Incident Viewer"){
 
 	@incident match {
 		case Some(i) => {
 		<div class = "row">
-		<h1>Incident: @i.title <a class ="btn btn-warning" id="quit">Back</a>	
-</h1>
+		<h1>Incident: @i.title <a class ="btn btn-warning" id="quit">Back</a>	</h1>
 
 
 		<table class ="table table-striped">
@@ -37,45 +37,61 @@
 		<a class = "btn btn-info" href = "@routes.IncidentEditor.incidentEdit(i.id.getOrElse(-1))">Edit</a>
 		</div>
 	
+		@defining(IncidentSubscriptionsMap.getTeams(i.id.get)){ subscriptions =>
 
-		<div class="row">
-			<h3>Subscribers</h3>
-			<ul>
-				@for(s <- IncidentSubscriptionsMap.getTeams(i.id.get)){
-					<li><a href="@routes.TeamInfo.teamPage(s.id.get)">@s.name</a></li>
+
+			<div class="row">
+
+				@if(subscriptions.isEmpty){
+					<h3>Subscribers: <span class="text-warning">None</span></h3>
+				}else{
+					<h3>Subscribers</h3>
+					<ul>
+						
+
+						@for(s <- subscriptions){
+							<li><a href="@routes.TeamInfo.teamPage(s.id.get)">@s.name</a></li>
+						}
+					</ul>
 				}
-			</ul>
-		</div>
-
-
-		@defining(IncidentUpdateM.getIncidentUpdatesNotDeleted(i.id.get)) { updates =>		
-	
-
-		<div class="row">
-			<h3>Updates</h3>
-			<table class = "table table-striped">
-				<thead>
-					<tr>
-						<td>Date</td>
-						<td>Update Comments</td>
-						<td>Author</td>
-						<td>Delete</td>
-					</tr>
-				</thead>
-				<tbody>
-					@for(update <- updates){
-					<tr>
-						<td>@AnormJoda.formatDate(update.created_at)</td>
-						<td>@update.description</td>
-						<td><a href="@routes.UserInfo.userPage(update.created_by)">@UserM.getUserFullName(update.created_by)</a></td>
-						<td><a class = "delete" id = "@update.id"><span class="glyphicon glyphicon-trash"></a></span></td>
-					</tr>
-					}
-				</tbody>
-			</table>
-			<a class = "btn btn-primary" href = "@routes.IncidentUpdate.incidentUpdate(i.id.getOrElse(-1))">Add Update</a>	
-		</div>
+			</div>
 		}
+
+
+		@defining(IncidentUpdateM.getIncidentUpdatesNotDeleted(i.id.get)) { updates =>
+			<div class="row">
+		
+
+				@if(updates.isEmpty){
+					<h3>Updates: <span class="text-warning">None</span></h3>
+
+				}else{
+					<h3>Updates</h3>
+						<table class = "table table-striped">
+							<thead>
+								<tr>
+									<td>Date</td>
+									<td>Update Comments</td>
+									<td>Author</td>
+									<td>Delete</td>
+								</tr>
+							</thead>
+							<tbody>
+								@for(update <- updates){
+								<tr>
+									<td>@AnormJoda.formatDate(update.created_at)</td>
+									<td>@update.description</td>
+									<td><a href="@routes.UserInfo.userPage(update.created_by)">@UserM.getUserFullName(update.created_by)</a></td>
+									<td><a class = "delete" id = "@update.id"><span class="glyphicon glyphicon-trash"></a></span></td>
+								</tr>
+								}
+							</tbody>
+						</table>
+				}
+				<a class = "btn btn-primary" href = "@routes.IncidentUpdate.incidentUpdate(i.id.getOrElse(-1))">Add Update</a>	
+			</div>
+		}
+		
 
 		}
 		case None => {

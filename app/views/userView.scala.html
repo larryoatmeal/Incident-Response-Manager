@@ -92,7 +92,7 @@
 					<ul>
 
 						@if(primaryResponderIncidents.isEmpty){
-							<li class = "btn btn-default">Primary Responder For: <span class="text-warning">None</span></li>
+							<li class = "btn btn-default" disabled>Primary Responder For: <span class="text-warning">None</span></li>
 						}else{
 							<li class = "btn btn-default" data-toggle="collapse" data-target="#primaryresponder">Primary Responder For <span class="text-info">(@primaryResponderIncidents.length)</span></li></li>
 								<ul id="primaryresponder" class="collapse in" >
@@ -105,7 +105,7 @@
 						<br>
 
 						@if(responseTeamIncidents.isEmpty){
-							<li class = "btn btn-default">Team Responder For: <span class="text-warning">None</span></li>
+							<li class = "btn btn-default" disabled>Team Responder For: <span class="text-warning">None</span></li>
 
 						}else{
 							<li class = "btn btn-default" data-toggle="collapse" data-target="#teamresponder">Team Responder For <span class="text-info">(@responseTeamIncidents.length)</span></li>
@@ -121,7 +121,7 @@
 						<br>
 
 						@if(subscriptions.isEmpty){
-							<li class = "btn btn-default">Subscribed To: <span class="text-warning">None</span></li>
+							<li class = "btn btn-default" disabled>Subscribed To: <span class="text-warning">None</span></li>
 						}else{
 							<li class = "btn btn-default" data-toggle="collapse" data-target="#subscribedto">Subscribed To <span class="text-info">(@subscriptions.length)</span></li></li>
 								<ul id="subscribedto" class="collapse in">

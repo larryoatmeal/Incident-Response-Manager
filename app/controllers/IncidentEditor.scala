@@ -69,6 +69,8 @@ object IncidentEditor extends Controller with Secured{
           //Find deletions
           val deletions = oldSubscriptions.filter(!newSubscriptions.contains(_))
 
+          Logger.debug(deletions.toString)
+
           //Add keys
           additions.foreach{
             team_id => IncidentSubscriptionsMap.addSubscription(incident_id, team_id) 
@@ -102,9 +104,19 @@ object IncidentEditor extends Controller with Secured{
             value.user_id, //IGNORED (created_by)
             Some(value.user_id) //Updater's user ID
           )
+
+          val oldIncident = IncidentM.getOneIncident(incident_id) 
           val result = IncidentM.editIncident(incident)
 
-          Emailer.send(incident_id)
+          Emailer.send(IncidentUnsubscribedMail(incident_id, deletions))
+          Emailer.send(IncidentNewlySubscribedMail(incident_id, additions))
+
+          //If oldIncident exists, and it should, send an email notifying changes
+          if (!oldIncident.isEmpty){
+            Emailer.send(IncidentEditedMail(incident_id, oldIncident.get))
+
+          }
+
 
           Redirect(routes.IncidentView.incidentView(incident_id)).flashing(
             "message" -> result.text,

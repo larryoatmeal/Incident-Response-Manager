@@ -49,7 +49,7 @@ object IncidentUpdate extends Controller with Secured{
       value => {
         IncidentUpdateM.addIncidentUpdate(value)
         IncidentM.update(incident_id, user_id.toInt) //Set update time on each update
-        Emailer.send(incident_id)
+        Emailer.send(IncidentUpdatedMail(incident_id, value))
         Redirect(routes.IncidentView.incidentView(incident_id))
       }
     )

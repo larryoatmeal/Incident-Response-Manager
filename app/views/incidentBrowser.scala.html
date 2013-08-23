@@ -127,7 +127,7 @@
 			  </div>
 			</div>
 
-		  <div class="form-group">
+		  <div class="form-group" style="display: none;">
 		  	<select id ="queryCol" class="form-control">
 			  	<label class="sr-only" for="exampleInputEmail2"></label>
 			  	@for((value, display) <- IncidentM.columnMap){
@@ -202,7 +202,7 @@
 						
 						<td>
 						@UserM.getUser(incident.primary_responder) match {
-							case Some(u) => {<a href="@routes.UserInfo.userPage(u.id.get)">@u.first_name @u.last_name</a>}
+							case Some(u) => {<a href="@routes.UserInfo.userPage(u.id.get)">@u.last_name, @u.first_name</a>}
 							case None => {@none("--")}
 						}
 					
