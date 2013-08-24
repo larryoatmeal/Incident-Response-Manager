@@ -25,7 +25,7 @@ case class IncidentNewlySubscribedMail(incident_id: Int, newlysubscribed: Set[In
 object Emailer{
   //Domain
   val domain = "http://localhost:9000"
-
+  
   //Email config: Edit this
   val hostEmail = "youremail"
   val hostPassword = "yourpassword"
