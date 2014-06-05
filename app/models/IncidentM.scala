@@ -253,7 +253,7 @@ object IncidentM {
     }
     catch{
 
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         Tuple3(List(), 0, Some(e.toString))
 
@@ -319,7 +319,7 @@ object IncidentM {
 
   }
   catch {
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         -1
       }
@@ -383,7 +383,7 @@ object IncidentM {
       Message("Incident edited", Helper.Success)
     }
     catch{
-      case e => Message(e.toString, Helper.Error)
+      case e: Throwable => Message(e.toString, Helper.Error)
 
     } 
   }

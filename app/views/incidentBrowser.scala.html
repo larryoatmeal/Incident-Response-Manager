@@ -1,6 +1,6 @@
 @(incidents: List[IncidentM], numberOfIncidents: Long, err: Option[String], params: BrowserParams)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
-
+@import helper._
 @error(message: String) = {<div class="text-error">@message</div>} 
 @none(message: String) = {<div class="text-warning">@message</div>} 
 @resetURL = @{routes.IncidentBrowser.getIncidents(1,"created_at","","description",1)}
@@ -273,7 +273,9 @@
 		</div>
 	}
 
-	<strong>I think there should be button here to create a new incident</strong>
+	@form(action = routes.IncidentCreator.addIncident, 'class -> "new-incident"){
+		<button type="submit" class="btn btn-success">New</button>
+	}
 
 	<!-- Pagination -->
 	<div class = "row">

@@ -1,0 +1,53 @@
+div#primary_responder {
+	float: left;
+	width: 50%;
+	padding: 6px 12px;
+}
+
+div#response_team {
+	float: right;
+	width: 50%;
+	padding: 6px 12px;
+}
+
+div#issue_type_id {
+	float: left;
+	width: 50%;
+	padding: 6px 12px;
+}
+
+div#issue_id {
+	float: right;
+	width: 50%;
+	padding: 6px 12px;
+}
+
+div#incident_status {
+	float: left;
+	width: 50%;	
+	padding: 6px 12px;
+}
+
+div#next_update_at {
+	float: right;
+	width: 50%;
+	padding: 6px 12px;
+}
+
+div#incident_title {
+	float: left;
+	width: 90%;		
+}
+
+div#incident_type {
+	float: right;
+	width: 10%;
+	padding: 1px 3px;
+}
+
+div#incident_desc
+	float: left;
+	width: 100%;	
+}
+
+

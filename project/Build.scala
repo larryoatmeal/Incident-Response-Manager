@@ -22,9 +22,10 @@ object ApplicationBuild extends Build {
       initialCommands := """
        |// make app resources accessible
        |Thread.currentThread.setContextClassLoader(getClass.getClassLoader)
-       |new play.core.StaticApplication(new java.io.File("."))
+       |import anorm._
        |import models._
-       |import scala.collection.JavaConversions._ 
+       |import scala.collection.JavaConversions._
+       |new play.core.StaticApplication(new java.io.File("."))
       """.stripMargin
   )
 

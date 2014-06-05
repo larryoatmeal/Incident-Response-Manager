@@ -6,9 +6,9 @@
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
 <!-- Select dropdowns. Empty string is interpreted as null-->
-@usersMap = @{for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name)}
-@teamsMap = @{Tuple2("","None") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
-@issueTypesMap = @{Tuple2("","None") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
+@usersMap = @{Tuple2("","-- Choose An Primary Responder --") :: (for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name))}
+@teamsMap = @{Tuple2("","-- Choose An Response Team --") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
+@issueTypesMap = @{Tuple2("","-- Choose An Issue Type --") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
 
 
 @template(){
@@ -54,14 +54,19 @@
 		<!-- '_attribute -> 'blah' 'attribute -> 'blah2'   -->
 		<!-- <fieldset> -->
 
-
+		<div id="incident_title">
 		@inputText(incidentForm("title"), 
 		'_label -> "Title*", 'errormessage -> "Required", 'class ->"form-control")
+		</div>
 
+		<div id="incident_type">
+		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Impact Scope", 'class ->"form-control")
+		</div>
+
+		<div id="incident_desc">
 		@textarea(incidentForm("description"), 
-		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 10, 'class ->"form-control")
-
-		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type", 'class ->"form-control")
+		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 4, 'class ->"form-control")
+		</div>
 
 		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
 		'_label -> "Status")*/}
@@ -70,27 +75,35 @@
 			<div class ="controls">
 			<input type = "text" name ="status" value ="open"  readonly = "readonly" class="form-control">
 		</div> -->
-		<div class="form-group">
+		<div class="form-group" id="incident_status">
 	      <label for="disabledTextInput">Status</label>
 	      <input type="text" name = "status" id="disabledTextInput" value ="open" class="form-control" readonly>
-    </div>
+    	</div>
 
-
+		<div id="next_update_at">
 		@inputText(incidentForm("next_update_at_string"), 
 		'_label -> "Next Update", 'class ->"form-control")
+		</div>
 
-
+		<div id="issue_type_id">
 		@select(incidentForm("issue_type_id"), issueTypesMap,
 		'_label -> "Issue Type", 'class ->"form-control")
+		</div>
 
+		<div id="issue_id">
 		@inputText(incidentForm("issue_id"), 
 		'_label -> "Issue ID", 'class ->"form-control")
+		</div>
 
+		<div id="primary_responder">
 		@select(incidentForm("primary_responder"), usersMap,
 		'_label -> "Primary Responder", 'class ->"form-control")
+		</div> 
 
+		<div id="response_team">
 		@select(incidentForm("response_team"), teamsMap,
 		'_label -> "Response Team", 'class ->"form-control")
+		</div>
 
 		<div id ="subscriptions">
 		@repeat(incidentForm("subscriptions"), min = 0) { subscription =>
