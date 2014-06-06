@@ -23,7 +23,8 @@ grant all on *.* to 'playapp'@'localhost' identified by 'w00t';
 Create conf/prod-mysql.conf - use conf/sample-mysql.conf as a basis
 
 <pre>
-ln -s conf/evolutions/mysql conf/evolutions/default
+cd conf/evolutions
+ln -s mysql default
 play -Dconfig.file=conf/prod-mysql.conf
 </pre>
 
