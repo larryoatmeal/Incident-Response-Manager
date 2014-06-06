@@ -1,0 +1,53 @@
+<configuration>
+
+    <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%coloredLevel [%d{MM/dd/yyyy HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file>
+        <encoder>
+            <pattern>%d %5p %t [%c:%L] %m%n)</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/app.log-%d{yyyy-MM-dd}</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <file>logs/err.log</file>
+        <encoder>
+            <pattern>%d %5p %t [%c:%L] %m%n)</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/err.log-%d{yyyy-MM-dd}</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+    <logger name="play" level="INFO"/>
+    <logger name="application" level="INFO"/>
+
+    <!-- Off these ones as they are annoying, and anyway we manage configuration ourself -->
+    <logger name="com.avaje.ebean.config.PropertyMapLoader" level="OFF"/>
+    <logger name="com.avaje.ebeaninternal.server.core.XmlConfigLoader" level="OFF"/>
+    <logger name="com.avaje.ebeaninternal.server.lib.BackgroundThread" level="OFF"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

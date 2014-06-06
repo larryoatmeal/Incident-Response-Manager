@@ -17,7 +17,7 @@ object IncidentBrowser extends Controller{
     implicit request =>
 
     val incidents = IncidentM.getIncidents(page, sort, query, queryCol, queryOptions)
-    //Logger.debug(incidents.toString)
+    Logger.info(s"Displaying ${incidents._1.size} incidents")
 
     incidents match {
       case (incidents, numberOfIncidents, err) =>
