@@ -6,7 +6,8 @@ Get Play 2.2.2 http://downloads.typesafe.com/play/2.2.2/play-2.2.2.zip
 ## Development ##
 
 <pre>
-ln -s conf/evolutions/h2 conf/evolutions/default
+cd conf/evolutions
+ln -s h2 default
 play -Dconfig.file=conf/test-h2.conf -DapplyEvolutions.test=true
 </pre>
 

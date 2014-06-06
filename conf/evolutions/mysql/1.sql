@@ -1,7 +1,6 @@
 # --- !Ups
 DROP TABLE IF EXISTS incidents;
 CREATE TABLE incidents (
-
 	id 					int 			NOT NULL AUTO_INCREMENT, 			#? Needs to be not null?
 	title 				varchar(256)	NOT NULL,
 	description 		TEXT			NOT NULL, #? Probably need to change max characters
