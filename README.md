@@ -1,18 +1,16 @@
 
-Setup
-=====
+## Setup ##
 
 Get Play 2.2.2 http://downloads.typesafe.com/play/2.2.2/play-2.2.2.zip
 
+## Development ##
 
-Development
-===========
-
+<pre>
 ln -s conf/evolutions/h2 conf/evolutions/default
 play -Dconfig.file=conf/test-h2.conf -DapplyEvolutions.test=true
+</pre>
 
-Production
-==========
+## Production ##
 
 Create a MySQL database for the incident response manager
 
@@ -23,13 +21,10 @@ grant all on *.* to 'playapp'@'localhost' identified by 'w00t';
 
 Create conf/prod-mysql.conf - use conf/sample-mysql.conf as a basis
 
+<pre>
 play -Dconfig.file=conf/prod-mysql.conf
+</pre>
 
+## TODO ##
 
-TODO
-====
-
-* upgrade to play 2.3
-* determine how to get the anorm database configured from an "included" .conf from application.conf
 * embed a solr server for more free form search
-* control the ids/class names the form helper gives the controls on the create form
