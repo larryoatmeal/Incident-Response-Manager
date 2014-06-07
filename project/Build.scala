@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 import play.Project._
+import com.typesafe.sbt.SbtStartScript
 
 object ApplicationBuild extends Build {
 
@@ -16,7 +17,9 @@ object ApplicationBuild extends Build {
     "org.apache.commons" % "commons-email" % "1.3"
   )
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val allSettings = Defaults.defaultSettings ++ SbtStartScript.startScriptForClassesSettings
+
+  val main = play.Project(appName, appVersion, appDependencies, settings=allSettings).settings(
       // define the statements initially evaluated when entering 'console',
       // 'console-quick', or 'console-project'
       initialCommands := """
@@ -28,5 +31,4 @@ object ApplicationBuild extends Build {
        |new play.core.StaticApplication(new java.io.File("."))
       """.stripMargin
   )
-
 }
