@@ -49,16 +49,9 @@
 		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 4, 'class ->"form-control")
 		</div>
 
-		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
-		'_label -> "Status")*/}
-
-		<!-- <label class-"control-label">Status</label>
-			<div class ="controls">
-			<input type = "text" name ="status" value ="open"  readonly = "readonly" class="form-control">
-		</div> -->
-		<div class="form-group" id="incident_status">
-	      <label for="disabledTextInput">Status</label>
-	      <input type="text" name = "status" id="disabledTextInput" value ="open" class="form-control" readonly>
+		<div id="incident_status">
+		@select(incidentForm("status"), options(IncidentM.statusTypes), 
+		'_label -> "Status", 'class ->"form-control")
     	</div>
 
 		<div id="next_update_at">
