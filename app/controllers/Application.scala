@@ -47,6 +47,14 @@ object Application extends Controller {
     Ok(views.html.debug())
   }
 
+  def dump = Action { implicit request => {
+      val headers = request.headers.toSimpleMap.foldLeft("") { (s: String, pair: (String, String)) =>
+        s + "\n" + pair._1 + " -> " + pair._2
+      }
+      Ok(s"$request $headers").as("text/plain")
+    }
+  }
+
   def javascriptRoutes = Action { implicit request =>
     import routes.javascript._
     Ok(

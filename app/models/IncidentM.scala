@@ -12,6 +12,9 @@ import java.sql.Timestamp
 import AnormJoda._
 
 
+case class IncidentMeta(url: String, reporter: UserM, primary: UserM, responseTeam: Option[TeamM], updates: List[IncidentUpdateM], messages: List[String])
+case class IncidentInfo(incident: IncidentM, meta: IncidentMeta)
+
 case class IncidentM(
   id: Pk[Int], //primary key. Use anorm.NotAssigned when inserting row
   title: String,

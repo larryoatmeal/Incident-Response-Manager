@@ -30,4 +30,5 @@ play -Dconfig.file=conf/prod-mysql.conf
 
 ## TODO ##
 
+* "next update at" should default to now + some interval
 * embed a solr server for more free form search

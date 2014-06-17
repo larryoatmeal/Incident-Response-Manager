@@ -1,4 +1,4 @@
-@(incidentForm: Form[IncidentFormTemp], user_id: Int)(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
+@(incidentForm: Form[IncidentFormTemp])(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash)
 
 
 @import helper._
@@ -6,32 +6,13 @@
 @implicitFieldConstructor = @{ FieldConstructor(bootstrapForm.render)}
 
 <!-- Select dropdowns. Empty string is interpreted as null-->
-@usersMap = @{Tuple2("","-- Choose An Primary Responder --") :: (for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name))}
-@teamsMap = @{Tuple2("","-- Choose An Response Team --") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
+@usersMap = @{Tuple2("","-- Choose A Primary Responder --") :: (for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name))}
+@teamsMap = @{Tuple2("","-- Choose A Response Team --") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
 @issueTypesMap = @{Tuple2("","-- Choose An Issue Type --") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
 
 
 @template(){
 	
-
-	
-<!-- 	<form action="@routes.IncidentCreator.submitIncidentForm" method="post">
- -->
-		<!-- THe name attribute deals with form submission -->
-		<!-- <input id = "title" name ="title">
-		<input id = "description" name ="description">
-		<input id = "incident_type" name ="incident_type">
-		<input id = "status" name ="status">
-		<input id = "next_update" name ="next_update">
-		<input id = "issue_type" name ="issue_type">
-		<input id = "issue_type_id" name ="issue_type_id">
-		<input id = "primary_responder" name ="primary_responder">
-		<input id = "response_team" name ="response_team">
-		<input id = "user_id" name ="user_id">
-
-	</form>
- -->
-
  	<!-- For time picker -->
  	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
  	<link href="@routes.Assets.at("stylesheets/jqueryTimepicker.css")" rel="stylesheet" media="screen">
@@ -129,10 +110,9 @@
 		</div>
 		<a id="addSubscription" class="btn btn-primary">Add Subscription</a>
 
-
-	
+		<!-- Stores id -->
 		@input(incidentForm("user_id"), '_label -> "") { (id, name, value, args) =>
-    		<input type="hidden" name="@name" id="@id" value = "@user_id" @toHtmlArgs(args)>
+    		<input type="hidden" name="@name" id="@id" value="@value"  @toHtmlArgs(args)>
 		}
 
 		<!-- </fieldset> -->

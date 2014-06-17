@@ -4,6 +4,7 @@
 
 GET     /								controllers.Application.home
 GET		/debug							controllers.Application.debug
+GET		/dump							controllers.Application.dump
 
 GET		/incidents						controllers.IncidentBrowser.getIncidents(page: Int ?= 1, sort: String ?= "created_at", query: String ?= "", queryCol: String ?= "description", queryOptions: Int ?= 1)
 GET     /incidents/create 				controllers.IncidentCreator.addIncident

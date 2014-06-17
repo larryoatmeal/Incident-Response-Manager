@@ -35,60 +35,86 @@
 		<fieldset>
 
 
+		<div id="incident_title">
 		@inputText(incidentForm("title"), 
-		'_label -> "Title*", 'class ->"form-control")
+		'_label -> "Title*", 'errormessage -> "Required", 'class ->"form-control")
+		</div>
 
+		<div id="incident_type">
+		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Impact Scope", 'class ->"form-control")
+		</div>
+
+		<div id="incident_desc">
 		@textarea(incidentForm("description"), 
-		'_label -> "Description*",'class->"input-xxlarge", 'rows-> 10, 'class ->"form-control")
+		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 4, 'class ->"form-control")
+		</div>
 
-		@select(incidentForm("incident_type"), options(IncidentM.incidentTypes), '_label -> "Incident Type", 'class ->"form-control")
+		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
+		'_label -> "Status")*/}
 
-		@select(incidentForm("status"), options(IncidentM.statusTypes), 
-		'_label -> "Status", 'class ->"form-control")
+		<!-- <label class-"control-label">Status</label>
+			<div class ="controls">
+			<input type = "text" name ="status" value ="open"  readonly = "readonly" class="form-control">
+		</div> -->
+		<div class="form-group" id="incident_status">
+	      <label for="disabledTextInput">Status</label>
+	      <input type="text" name = "status" id="disabledTextInput" value ="open" class="form-control" readonly>
+    	</div>
 
+		<div id="next_update_at">
 		@inputText(incidentForm("next_update_at_string"), 
 		'_label -> "Next Update", 'class ->"form-control")
+		</div>
 
-
+		<div id="issue_type_id">
 		@select(incidentForm("issue_type_id"), issueTypesMap,
 		'_label -> "Issue Type", 'class ->"form-control")
+		</div>
 
+		<div id="issue_id">
 		@inputText(incidentForm("issue_id"), 
 		'_label -> "Issue ID", 'class ->"form-control")
+		</div>
 
+		<div id="primary_responder">
 		@select(incidentForm("primary_responder"), usersMap,
 		'_label -> "Primary Responder", 'class ->"form-control")
+		</div> 
 
+		<div id="response_team">
 		@select(incidentForm("response_team"), teamsMap,
 		'_label -> "Response Team", 'class ->"form-control")
+		</div>
 
 		<div id ="subscriptions">
 		@repeat(incidentForm("subscriptions"), min = 0) { subscription =>
     
-    		<div class="subscription"> 
+			<div class="subscription"> 
 			@input(subscription, '_label -> "Subscription") { (id, name, value, args) =>
 
 			<!-- Get index number out of Subscription[n], store in 'index' attribute -->
 
-    		<select name="@name" id="@id" value="@value" index = "@Helper.extractRepeatedFormIndex(name)" class="form-control" @toHtmlArgs(args)>
+    		<select name="@name" id="@id" value="@value" index = "@Helper.extractRepeatedFormIndex(name)" @toHtmlArgs(args) class="form-control">
 				@for((team_id, display) <- teamsMap if (team_id != "")){
 					<option value="@team_id" @if(team_id == value.getOrElse("")){selected}>@display</option>
 				}
 
 			</select>
-			<a class="removeSubscription" index="@Helper.extractRepeatedFormIndex(name)"><span class="glyphicon glyphicon-remove"></span></a>
+			<!-- <a class="removeSubscription" index="@Helper.extractRepeatedFormIndex(name)"><i class="icon-remove" ></i></a> -->
+			<a class="removeSubscription"><span class="glyphicon glyphicon-remove"></span></a>
 			}
 			</div>
+
 		}
 
 		</div>
 		<a id="addSubscription" class="btn btn-primary">Add Subscription</a>
 
-
 		<!-- Stores id -->
 		@input(incidentForm("user_id"), '_label -> "") { (id, name, value, args) =>
     		<input type="hidden" name="@name" id="@id" value="@value"  @toHtmlArgs(args)>
 		}
+
 
 
 		</fieldset>

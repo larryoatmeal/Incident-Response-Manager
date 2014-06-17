@@ -49,7 +49,24 @@ object IncidentUpdate extends Controller with Secured{
       value => {
         IncidentUpdateM.addIncidentUpdate(value)
         IncidentM.update(incident_id, user_id.toInt) //Set update time on each update
-        Emailer.send(incident_id)
+        IncidentM.getOneIncident(incident_id) match {
+          case Some(incident) => {
+            val incidentInfo = IncidentInfo(incident, 
+              IncidentMeta(
+                routes.IncidentView.incidentView(incident_id).absoluteURL(), 
+                UserM.getUser(incident.created_by).get,
+                UserM.getUser(incident.primary_responder).get,
+                TeamM.getTeam(incident.respond_team_id.getOrElse(-1)),
+                IncidentUpdateM.getIncidentUpdates(incident_id),
+                List[String]()
+              )
+            )
+            Logger.info(s"Sending $incidentInfo")
+            Emailer.send(incidentInfo)
+          }
+          case _ => Logger.error(s"Could not retrieve $incident_id to send notifications about it")
+        }
+        //Emailer.send(incident_id)
         Redirect(routes.IncidentView.incidentView(incident_id))
       }
     )

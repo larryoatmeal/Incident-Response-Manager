@@ -15,7 +15,6 @@ case class IncidentFormTemp(title: String, description: String, incident_type: S
     status: String, next_update_at_string: Option[String], issue_type_id: Option[Int],
     issue_id: Option[String], primary_responder: Int, response_team: Option[Int], user_id: Int, subscriptions: List[Int])
 
-
 object IncidentCreator extends Controller with Secured{
   
   val incidentForm = Form(
@@ -46,16 +45,17 @@ object IncidentCreator extends Controller with Secured{
   )
   
   def addIncident = IsAuthenticated {
-    user_id => implicit request =>
-    Ok(views.html.incidentCreationForm(incidentForm, user_id.toInt))
-    
+    user_id => implicit request => {
+      val newForm = IncidentFormTemp("","","","",None, None, None, 0, None, user_id.toInt, List[Int]())
+      Ok(views.html.incidentCreationForm(incidentForm.fill(newForm)))
+    }
   }
-  
+
   def submitIncidentForm = IsAuthenticated {
     user_id => implicit request =>
     incidentForm.bindFromRequest.fold(
       formWithErrors =>{
-          Ok(views.html.incidentCreationForm(formWithErrors, user_id.toInt))
+          Ok(views.html.incidentCreationForm(formWithErrors))
           },
         value => {
           val currentTime = new DateTime()
@@ -97,8 +97,25 @@ object IncidentCreator extends Controller with Secured{
             value.subscriptions.foreach{
               subscription => IncidentSubscriptionsMap.addSubscription(incident_id, subscription)
             }
-            
-          Emailer.send(incident_id)
+          
+          IncidentM.getOneIncident(incident_id) match {
+            case Some(incident) => {
+              val incidentInfo = IncidentInfo(incident, 
+                IncidentMeta(
+                  routes.IncidentView.incidentView(incident_id).absoluteURL(), 
+                  UserM.getUser(incident.created_by).get,
+                  UserM.getUser(incident.primary_responder).get,
+                  TeamM.getTeam(incident.respond_team_id.getOrElse(-1)),
+                  List[IncidentUpdateM](),
+                  List[String]()
+                )
+              )
+              Logger.info(s"Sending $incidentInfo")
+              Emailer.send(incidentInfo)
+            }
+            case _ => Logger.error(s"Could not retrieve $incident_id to send notifications about it")
+          }
+          //Emailer.send(incident_id)
 
 
 
@@ -111,11 +128,4 @@ object IncidentCreator extends Controller with Secured{
       }
     )
   }
-
-
-
-
-
-
-
 }
