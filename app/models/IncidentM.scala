@@ -12,7 +12,7 @@ import java.sql.Timestamp
 import AnormJoda._
 
 
-case class IncidentMeta(url: String, reporter: UserM, primary: UserM, responseTeam: Option[TeamM], updates: List[IncidentUpdateM], messages: List[String])
+case class IncidentMeta(url: String, reporter: UserM, primary: UserM, responseTeam: Option[TeamM], updates: List[IncidentUpdateM], messages: List[String], status: Option[String])
 case class IncidentInfo(incident: IncidentM, meta: IncidentMeta)
 
 case class IncidentM(

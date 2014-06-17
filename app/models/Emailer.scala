@@ -146,10 +146,11 @@ class Emailer extends Actor{
     val messages = if (incidentInfo.meta.messages.isEmpty) {
       ""
     } else {
-      incidentInfo.meta.messages.mkString("\n")
+      incidentInfo.meta.messages.mkString("\n\n")
     }
     s"""
        |${latestUpdate}${incidentInfo.incident.description}
+       |
        |${messages}
        |
        |reporter: ${incidentInfo.meta.reporter.first_name} ${incidentInfo.meta.reporter.last_name}

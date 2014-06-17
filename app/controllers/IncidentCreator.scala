@@ -107,7 +107,8 @@ object IncidentCreator extends Controller with Secured{
                   UserM.getUser(incident.primary_responder).get,
                   TeamM.getTeam(incident.respond_team_id.getOrElse(-1)),
                   List[IncidentUpdateM](),
-                  List[String]()
+                  List[String](),
+                  None
                 )
               )
               Logger.info(s"Sending $incidentInfo")

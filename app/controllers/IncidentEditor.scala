@@ -60,7 +60,7 @@ object IncidentEditor extends Controller with Secured{
 
             val messages = ListBuffer[String]()
             if (value.status != oldIncident.status)
-              messages append "Incident Closed"
+              messages += "Incident Closed"
 
             //If closed, add finish time
             val finishedTime = value.status match {
@@ -83,7 +83,7 @@ object IncidentEditor extends Controller with Secured{
                 IncidentSubscriptionsMap.addSubscription(incident_id, team_id)
                 TeamM.getTeam(team_id) match {
                   case Some(team) => {
-                    messages += s"Subscribed ${team.name} to notifications concerning this incident"
+                    messages += s"Subscribed team '${team.name}' to notifications concerning this incident"
                   }
                   case None =>
                 }
@@ -95,7 +95,7 @@ object IncidentEditor extends Controller with Secured{
                 IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id) 
                 TeamM.getTeam(team_id) match {
                   case Some(team) => {
-                    messages += s"Unsubscribed ${team.name} to notifications concerning this incident"
+                    messages += s"Unsubscribed team '${team.name}' to notifications concerning this incident"
                   }
                   case None =>
                 }
@@ -103,14 +103,14 @@ object IncidentEditor extends Controller with Secured{
             }
 
             if (oldIncident.title != value.title)
-              messages += s"Name of this incident changed, was\n${oldIncident.title}\n"
+              messages += s"Name of this incident changed, was\n'${oldIncident.title}'"
             if (oldIncident.description != value.description)
-              messages += s"Description of this incident changed, was\n${oldIncident.description}\n"
+              messages += s"Description of this incident changed, was\n'${oldIncident.description}'"
             if (oldIncident.incident_type != value.incident_type)
-              messages += s"Impact scope of this incident changed, was\n${oldIncident.incident_type}\n"
+              messages += s"Impact scope of this incident changed, was '${oldIncident.incident_type}'"
             if (oldIncident.primary_responder != value.primary_responder) {
               UserM.getUser(oldIncident.primary_responder) match {
-                case Some(user) => messages += s"Primary responder of this incident changed, was\n${user.first_name} ${user.last_name}\n"
+                case Some(user) => messages += s"Primary responder of this incident changed, was\n'${user.first_name} ${user.last_name}'"
                 case None => // wtf
               }
             }
@@ -119,14 +119,17 @@ object IncidentEditor extends Controller with Secured{
                 case Some(team_id) => {
                   TeamM.getTeam(team_id) match {
                     case Some(team) => {
-                      messages += s"Response team for this incident changed, was ${team.name}\n"
+                      messages += s"Response team for this incident changed, was team '${team.name}'"
                     }
                     case None => // wtf
                   }
                 }
-                case None => messages += s"Added response team for this incident\n"
+                case None => messages += s"Added response team for this incident"
               }
             }
+
+            if (messages.length > 0)
+              "CHANGES:" +=: messages 
 
             //Some fields are ignored in the SQL update
             val incident = IncidentM(
@@ -159,7 +162,8 @@ object IncidentEditor extends Controller with Secured{
                 UserM.getUser(incident.primary_responder).get,
                 TeamM.getTeam(incident.respond_team_id.getOrElse(-1)),
                 IncidentUpdateM.getIncidentUpdates(incident_id),
-                messages.toList
+                messages.toList,
+                None
               )
             )
             Logger.info(s"Sending $incidentInfo")

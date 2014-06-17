@@ -45,9 +45,18 @@ div#incident_type {
 	padding: 1px 3px;
 }
 
-div#incident_desc
+div#incident_desc {
 	float: left;
 	width: 100%;	
 }
 
+div#subscriptions {
+	float: left;
+	width: 100%;	
+	padding: 12px 6px;
+}
+
+div.new_incident_button {
+	padding: 12px 6px;
+}
 
