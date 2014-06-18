@@ -13,7 +13,7 @@ import AnormJoda._
 
 sealed trait IncidentStatusChange { val status: String }
 case class IncidentStatusResolved(status: String = "RESOLVED") extends IncidentStatusChange
-case class IncidentStatusReopened(status: String = "REOPEND") extends IncidentStatusChange
+case class IncidentStatusReopened(status: String = "REOPENED") extends IncidentStatusChange
 object IncidentStatusChange {
   val transitions = Map(
     ("open", "closed") -> IncidentStatusResolved(),
