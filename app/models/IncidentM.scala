@@ -11,9 +11,19 @@ import org.joda.time.DateTime
 import java.sql.Timestamp
 import AnormJoda._
 
+sealed trait IncidentStatusChange { val status: String }
+case class IncidentStatusResolved(status: String = "RESOLVED") extends IncidentStatusChange
+case class IncidentStatusReopened(status: String = "REOPEND") extends IncidentStatusChange
+object IncidentStatusChange {
+  val transitions = Map(
+    ("open", "closed") -> IncidentStatusResolved(),
+    ("closed", "open") -> IncidentStatusReopened()
+  )
+}
 
-case class IncidentMeta(url: String, reporter: UserM, primary: UserM, responseTeam: Option[TeamM], updates: List[IncidentUpdateM], messages: List[String], status: Option[String])
+case class IncidentMeta(url: String, reporter: UserM, primary: UserM, responseTeam: Option[TeamM], updates: List[IncidentUpdateM], messages: List[String], statusChange: Option[IncidentStatusChange])
 case class IncidentInfo(incident: IncidentM, meta: IncidentMeta)
+
 
 case class IncidentM(
   id: Pk[Int], //primary key. Use anorm.NotAssigned when inserting row

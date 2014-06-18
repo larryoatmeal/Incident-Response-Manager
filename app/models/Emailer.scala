@@ -127,9 +127,13 @@ class Emailer extends Actor{
   }
 
   def getSubject(incidentInfo: IncidentInfo): String = {
+    val incidentStatusChangeString = incidentInfo.meta.statusChange match {
+      case Some(i) => "%s ".format(i.status)
+      case None => ""
+    }
     incidentInfo.incident.incident_type match {
-      case "external" => s"[SITEIMPACT] ${incidentInfo.incident.title}"
-      case _ => s"[HEADSUP] ${incidentInfo.incident.title}"
+      case "external" => s"[SITEIMPACT] ${incidentStatusChangeString}${incidentInfo.incident.title}"
+      case _ => s"[HEADSUP] ${incidentStatusChangeString}${incidentInfo.incident.title}"
     }
   }
 
@@ -140,8 +144,12 @@ class Emailer extends Actor{
     }
     val latestUpdate = if (incidentInfo.meta.updates.isEmpty) {
       ""
-    } else {
+    } else { 
       s"LATEST UPDATE: ${incidentInfo.meta.updates.head.description}\n\n"
+    }
+    val nextUpdate = incidentInfo.incident.next_update_at match {
+      case Some(dt) => "next update at: %s".format(dt)
+      case None => ""
     }
     val messages = if (incidentInfo.meta.messages.isEmpty) {
       ""
@@ -153,12 +161,13 @@ class Emailer extends Actor{
        |
        |${messages}
        |
+       |link: ${incidentInfo.meta.url}
        |reporter: ${incidentInfo.meta.reporter.first_name} ${incidentInfo.meta.reporter.last_name}
        |contact: ${incidentInfo.meta.primary.first_name} ${incidentInfo.meta.primary.last_name}
        |team: ${responseTeamName}
        |status: ${incidentInfo.incident.status}
        |last update: ${incidentInfo.incident.updated_at}
-       |link: ${incidentInfo.meta.url}
+       |${nextUpdate}
       """.stripMargin
   }
 

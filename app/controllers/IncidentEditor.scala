@@ -59,8 +59,14 @@ object IncidentEditor extends Controller with Secured{
             // email message highlight what changed
 
             val messages = ListBuffer[String]()
-            if (value.status != oldIncident.status)
-              messages += "Incident Closed"
+            val incidentStatusChange = if (value.status != oldIncident.status) {
+              messages += s"Incident status changed to '${value.status}'"
+              val transition = (oldIncident.status, value.status)
+              IncidentStatusChange.transitions.get(transition) 
+            } else {
+              None
+            }
+              
 
             //If closed, add finish time
             val finishedTime = value.status match {
@@ -163,7 +169,7 @@ object IncidentEditor extends Controller with Secured{
                 TeamM.getTeam(incident.respond_team_id.getOrElse(-1)),
                 IncidentUpdateM.getIncidentUpdates(incident_id),
                 messages.toList,
-                None
+                incidentStatusChange
               )
             )
             Logger.info(s"Sending $incidentInfo")

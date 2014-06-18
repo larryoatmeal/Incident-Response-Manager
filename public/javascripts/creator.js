@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
-	$("#next_update_at_string").datetimepicker()
-
+	$("#next_update_at_string").datetimepicker({ minDateTime: new Date() })
 
 	//For adding new subscriptions
 	$("#addSubscription").on("click", function(){
