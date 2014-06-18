@@ -88,7 +88,7 @@ object Helper{
 
     }
     catch {
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         None
       }
@@ -102,7 +102,7 @@ object Helper{
       SQL(s"""SELECT * FROM $table""").as(parser *)
     }
     catch {
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         List()
       }
@@ -117,7 +117,7 @@ object Helper{
       SQL(s"""SELECT * FROM $table ORDER BY $sort $direction""").as(parser *)
     }
     catch {
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         List()
       }
@@ -178,11 +178,11 @@ object Helper{
   def gravatar(email: String, size: Int = 30) = {
     import java.security.MessageDigest
     //Lower case, no spaces
-    val emailNormalized = email.toLowerCase.filter(_!=" ")
+    val emailNormalized = email.toLowerCase.filter(_!=' ')
     val bytesOfMessage = emailNormalized.getBytes("UTF-8")
     val hash = MessageDigest.getInstance("MD5").digest(bytesOfMessage).map("%02x".format(_)).mkString 
 
-    "http://www.gravatar.com/avatar/" + hash + "?d=retro&s=" + size
+    "http://www.gravatar.com/avatar/" + hash + ".png?d=retro&s=" + size
   }
 
   def cutoff(text: String, cutoffNumber: Int) = {
