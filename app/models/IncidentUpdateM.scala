@@ -83,7 +83,7 @@ object IncidentUpdateM{
         }
     }
     catch {
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         Some(e.toString)
       }

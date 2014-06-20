@@ -62,7 +62,7 @@ object TeamM {
             case 1 => Message("Previous team with same name. Previous team revived", Helper.Warning) 
           }  
       }
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         Message(e.toString, Helper.Error)
       }
@@ -90,7 +90,7 @@ object TeamM {
         case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException => {
           Message("Team name already exists", Helper.Error)
         }
-        case e => {
+        case e: Throwable => {
           Message(e.toString, Helper.Error)
         }
       }

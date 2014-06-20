@@ -30,5 +30,7 @@ play -Dconfig.file=conf/prod-mysql.conf
 
 ## TODO ##
 
-* "next update at" should default to now + some interval
+* improve exception and other error handling
+* move components that are calling queries on the models out of the views and into the controllers
+* "next update at" should default to now + some default interval
 * embed a solr server for more free form search

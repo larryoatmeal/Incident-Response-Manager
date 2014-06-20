@@ -72,7 +72,7 @@ object UserM {
             case 1 => Message("Previous user with same email. Previous user revived", Helper.Warning) 
           }
       }
-      case e => {
+      case e: Throwable => {
         Logger.error(e.toString)
         Message(e.toString, Helper.Error)
       }
@@ -103,7 +103,7 @@ object UserM {
         case e:com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException =>{
           Message("Email already exists", Helper.Error)
         }
-        case e =>{
+        case e: Throwable =>{
           Message(e.toString, Helper.Error)
         }
 
