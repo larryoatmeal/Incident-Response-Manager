@@ -2,81 +2,70 @@ $(document).ready(function(){
 
 	$("#next_update_at_string").datetimepicker({ minDateTime: new Date() })
 
-	//For adding new subscriptions
+	// subsciptions to new, unsaved incidents get submitted to the backend
+	// with the rest of the incident data
+	$("#newAddSubscription").on("click", function(){
+		var team_id = parseInt($("#newSubscriptionSelector").val())
+		$("#newSubscriberList")
+			.append( $("<li />", {
+				'class' : 'newSubscriber',
+			}).append( $("<a />", {
+				'class': 'removeSubscription',
+				'id': 'removeSubscription-' + team_id,
+				'value': team_id
+			}).append( $("<span />", {
+				'class': 'glyphicon glyphicon-remove'
+			})
+		)))
+		$("<a />", {
+			'href': '/team/' + team_id,
+			'text': teamMap[team_id]
+		}).insertAfter("#removeSubscription-" + team_id)
+		$("<input />", {
+			'type': 'hidden',
+			'name': 'subscriptions[' + team_id + ']',
+			'value': team_id
+		}).insertAfter("#removeSubscription-" + team_id)
+		
+	})
+
+	$("#newSubscriber").on("click", "a" ,function(e){
+		var team_id = parseInt($(this).attr("value"))
+		console.log("Removing subscription " + team_id)
+		$(this).parentsUntil($(".newSubscriber")).remove()
+	})
+
 	$("#addSubscription").on("click", function(){
-
-		//Get high index number
-		var allInputs = $("#subscriptions").find("select")
-
-		var highestIndexNumber = -1 //-1 is no inputs, 0 is one input
-
-		//Find highest index number
-		allInputs.each(function(index){
-			var indexNumber = parseInt($(this).attr("index"))
-			if (indexNumber > highestIndexNumber){
-				highestIndexNumber = indexNumber
+		var ids = $("#subscriptionSelector").val().split(":")
+		var incident_id = parseInt(ids[0])
+		var team_id = parseInt(ids[1])
+		var url = jsRoutes.controllers.IncidentEditor.addIncidentSubscription(incident_id, team_id).ajax({
+			success: function(data){
+				location.reload()
+			},
+			error: function(err){
+				//alert("err")
 			}
-		}
-		)
-
-
-		var template = $("#subscription_template")
-
-
-		//Modify selects
-		template.find("select").each(function(){
-
-			$(this).attr("name", "subscriptions[" + (highestIndexNumber+1) + "]" )
-			$(this).attr("index", (highestIndexNumber+1))
-		}
-		)
-		//Modify remove link
-		template.find("a").each(function(){
-			$(this).attr("index", (highestIndexNumber+1))
 		})
-
-
-		$("#subscriptions").append(
-			//htmlTemplate
-			template.html()
-		)
 	})
 
-	//Removing
-	//For live functionality. Click evenst won't bind to dynamically
-	//created elements unless using this format
-	$("#subscriptions").on("click", "a" ,function(e){
-		var index = parseInt($(this).attr("index"))
-		//Remove selector field
-		$("#subscriptions").find("select[index="+ index + "]").each(function(){
-			$(this).parentsUntil($(".subscription")).parent().remove()
-
-		})
-
-
-		rename()
-
+	$(document).on('click', ".removeSubscription", function(e) {
+		var ids = $(this).attr("value").split(":")
+		var incident_id = parseInt(ids[0])
+		var team_id = parseInt(ids[1])
+		if (ids.length == 2) {
+			// if we're editing subscriptions that've already been established, call
+			// the backend
+			var url = jsRoutes.controllers.IncidentEditor.deleteIncidentSubscription(incident_id, team_id).ajax({
+				success: function(data){
+					location.reload()
+				},
+				error: function(err){
+					//alert("err")
+				}
+			})
+		}
+		$(this).parent().remove()
 	})
-
-
-	function rename(){
-		//When selectors are deleted, indexes may not be contiguous anymore
-		//Must rename indexes
-
-		var numberOfSubscriptions = $("#subscriptions").find("select").size()
-
-
-		$("#subscriptions").find("select").each(function(index, value){
-			$(this).attr("index", index).attr("name", "subscriptions[" + index + "]" )
-		})
-
-		$("#subscriptions").find("a").each(function(index, value){
-			$(this).attr("index", index)
-		})
-
-
-	}
-
-
 
 })

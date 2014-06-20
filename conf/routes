@@ -15,6 +15,8 @@ POST    /incidents/update/submit 		controllers.IncidentUpdate.submitUpdate(incid
 GET     /incidents/update/:id 			controllers.IncidentUpdate.incidentUpdate(id:Int)
 GET     /incidents/edit/:id 			controllers.IncidentEditor.incidentEdit(id: Int)
 POST 	/incidents/edit/:id 			controllers.IncidentEditor.submitIncidentEditForm(id: Int)
+POST 	/incidents/deleteSubscription 	controllers.IncidentEditor.deleteIncidentSubscription(incident_id: Int, team_id: Int)
+POST 	/incidents/addSubscription 		controllers.IncidentEditor.addIncidentSubscription(incident_id: Int, team_id: Int)
 
 GET     /login							controllers.Authentication.loginScreen
 POST	/login 							controllers.Authentication.loginSubmit

@@ -33,8 +33,9 @@ object IncidentEditor extends Controller with Secured{
           incident.respond_team_id,
           user_id.toInt, //IGNORED
           //Get subscriptions linked to this incident
-          IncidentSubscriptionsMap.getTeams(incident.id.get).map(_.id.get)
+          IncidentSubscriptionsMap.getTeams(incident_id).map(_.id.get)
         )
+
         Ok(views.html.incidentEditorView(IncidentCreator.incidentForm.fill(filledForm), incident_id))  
       }
       case None => {
@@ -186,6 +187,20 @@ object IncidentEditor extends Controller with Secured{
       }
     )
   }
+
+  def deleteIncidentSubscription(incident_id: Int, team_id: Int) = Action{
+    implicit request =>
+    IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id)
+    Ok("Ok")
+  }
+
+  def addIncidentSubscription(incident_id: Int, team_id: Int) = Action{
+    implicit request =>
+    IncidentSubscriptionsMap.addSubscription(incident_id, team_id)
+    Ok("Ok")
+  }
+
+  
 
 
 }

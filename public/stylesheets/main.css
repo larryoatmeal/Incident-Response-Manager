@@ -50,11 +50,49 @@ div#incident_desc {
 	width: 100%;	
 }
 
-div#subscriptions {
+div#subscribers {
 	float: left;
 	width: 100%;	
 	padding: 12px 6px;
 }
+
+
+div#newSubscribers {
+	float: left;
+	width: 100%;	
+	padding: 12px 6px;
+}
+
+div#subscriptions {
+	float: left;
+	width: 50%;	
+	padding: 12px 6px;
+}
+
+div#newSubscriptions {
+	float: left;
+	width: 50%;	
+	padding: 12px 6px;
+}
+
+div#subscriptionAdder {
+	float: right;
+	width: 50%;	
+	padding: 12px 6px;
+}
+
+div#newSubscriptions {
+	float: left;
+	width: 50%;	
+	padding: 12px 6px;
+}
+
+div#newSubscriptionAdder {
+	float: right;
+	width: 50%;	
+	padding: 12px 6px;
+}
+
 
 div.new_incident_button {
 	padding: 12px 6px;

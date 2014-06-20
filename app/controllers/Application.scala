@@ -64,7 +64,9 @@ object Application extends Controller {
         TeamInfo.addUserMap,
         TeamInfo.deleteUserMap,
         UserInfo.addTeamMap,
-        UserInfo.deleteTeamMap
+        UserInfo.deleteTeamMap,
+        IncidentEditor.deleteIncidentSubscription,
+        IncidentEditor.addIncidentSubscription
       )
     ).as("text/javascript") 
   }

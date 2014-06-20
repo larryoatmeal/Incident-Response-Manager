@@ -8,10 +8,18 @@
 <!-- Select dropdowns. Empty string is interpreted as null-->
 @usersMap = @{Tuple2("","-- Choose A Primary Responder --") :: (for(user <- UserM.getUsers if(!user.deleted)) yield Tuple2(user.id.getOrElse(-1).toString, user.first_name + " " + user.last_name))}
 @teamsMap = @{Tuple2("","-- Choose A Response Team --") :: (for(team <- TeamM.getTeams if(!team.deleted)) yield Tuple2(team.id.getOrElse(-1).toString, team.name))}
-@issueTypesMap = @{Tuple2("","-- Choose An Issue Type --") :: (for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name))}
+@issueTypesMap = @{for(issueT <- IssueTypeM.getIssueTypes) yield Tuple2(issueT.id.getOrElse(-1).toString, issueT.name)}
 
 
 @template(){
+
+	<script type="text/javascript">
+		var teamMap = {
+			@{TeamM.getTeams.map { team =>
+				Html("%d: '%s',".format(team.id.get, team.name))
+			}}
+		}
+	</script>
 	
  	<!-- For time picker -->
  	<link href="@routes.Assets.at("stylesheets/jqueryUI.css")" rel="stylesheet" media="screen">
@@ -37,7 +45,7 @@
 
 		<div id="incident_title">
 		@inputText(incidentForm("title"), 
-		'_label -> "Title*", 'errormessage -> "Required", 'class ->"form-control")
+		'_label -> "Title *", 'errormessage -> "Required", 'class ->"form-control")
 		</div>
 
 		<div id="incident_type">
@@ -46,16 +54,9 @@
 
 		<div id="incident_desc">
 		@textarea(incidentForm("description"), 
-		'_label -> "Description*", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 4, 'class ->"form-control")
+		'_label -> "Description *", 'errormessage -> "Required", 'class->"input-xxlarge", 'rows-> 4, 'class ->"form-control")
 		</div>
 
-		@{/*select(incidentForm("status"), options(IncidentM.statusTypes), 
-		'_label -> "Status")*/}
-
-		<!-- <label class-"control-label">Status</label>
-			<div class ="controls">
-			<input type = "text" name ="status" value ="open"  readonly = "readonly" class="form-control">
-		</div> -->
 		<div class="form-group" id="incident_status">
 	      <label for="disabledTextInput">Status</label>
 	      <input type="text" name = "status" id="disabledTextInput" value ="open" class="form-control" readonly>
@@ -63,7 +64,7 @@
 
 		<div id="next_update_at">
 		@inputText(incidentForm("next_update_at_string"), 
-		'_label -> "Next Update", 'class ->"form-control")
+		'_label -> "Next Update *", 'class ->"form-control")
 		</div>
 
 		<div id="issue_type_id">
@@ -78,7 +79,7 @@
 
 		<div id="primary_responder">
 		@select(incidentForm("primary_responder"), usersMap,
-		'_label -> "Primary Responder", 'class ->"form-control")
+		'_label -> "Primary Responder *", 'class ->"form-control")
 		</div> 
 
 		<div id="response_team">
@@ -86,7 +87,25 @@
 		'_label -> "Response Team", 'class ->"form-control")
 		</div>
 
-		<div id ="subscriptions">
+		<div id="newSubscribers">
+			<h3>Subscriptions</h3>
+			<ul id="newSubscriberList">
+
+			</ul>
+		</div>
+
+		<div id="newSubscriptions">
+    		<select id="newSubscriptionSelector" class="form-control">
+				@for((team_id, display) <- teamsMap if (team_id != "")){
+					<option value="@team_id">@display</option>
+				}
+			</select>
+		</div>
+		<div id="newSubscriptionAdder">
+			<a id="newAddSubscription" class="btn btn-primary">Add Subscription</a>
+		</div>
+
+		<div id ="subscriptionsOld" style="display: none;">
 		@repeat(incidentForm("subscriptions"), min = 0) { subscription =>
     
 			<div class="subscription"> 
