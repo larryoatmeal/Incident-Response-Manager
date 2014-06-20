@@ -43,6 +43,9 @@ POST	/team/edit 						controllers.TeamInfo.submitTeamEditForm(id: Int)
 
 GET 	/user/:id 						controllers.UserInfo.userPage(id: Int)
 GET 	/team/:id 						controllers.TeamInfo.teamPage(id: Int)
+
+GET 	/help 							controllers.Help.index
+
 # Javascript routing. MUST BE BEFORE GET /assets/*file
 GET     /assets/javascripts/routes      controllers.Application.javascriptRoutes
 

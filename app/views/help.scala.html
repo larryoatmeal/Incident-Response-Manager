@@ -1,0 +1,71 @@
+@(message: String = "HELP")(implicit session: play.api.mvc.Session, flash: play.api.mvc.Flash) 
+
+
+@template(){
+	
+<h2>Introduction</h2>
+
+When there's a significant issue or incident impacting developers, all staff, external users or impacts of other scopes, it's useful to have a communication mechanism that:
+
+<ol>
+	<li>what the scope is</li>
+	<li>indicates who is primarily responsible for resolving the issue</li>
+	<li>which team is focused on it with the primary</li>
+	<li>indicates when to expect an update</li>
+	<li>enables designating groups of users ("teams") to be subscribed the issue to receive communications about it</li>
+	<li>clearly indicates the duration of the incident</li>
+</ol>
+
+<h2>Creating Incidents</h2>
+
+To create an incident, click on the <a href="@routes.IncidentCreator.addIncident">[New Incident]</a> button on the main page.
+
+<ol>
+	<li>give the incident a <strong>Title</strong>, this will appear in the subject line of email messages concerning the incident</li>
+	<li>indicate the scope, either <strong>Internal</strong> or <strong>External</strong></li>
+	<li>provide some narrative in the <strong>Description</strong> about the incident<br />
+		if it's impact is External indicate which users are impacted (e.g. just perks users, users in the U.S., all users)</li>
+	<li>indicate when the <strong>Next Update</strong> should be expected</li>
+	<li>The <strong>Issue Type</strong> is a mechanism to optionally link external tracking systems
+		<ul>
+			<li><strong>JIRA</strong></li>
+			<li><strong>Pager Duty</strong></li>
+		</ul>
+		...or it may be unrelated to an externally tracked issue and is simply a <strong>Direct</strong>ly reported one.</li>
+	<li>assign a <strong>Primary Responder</strong> (yourself, if applicable)</li>
+	<li>indicate a <strong>Response Team</strong>, if applicable</li>
+	<li>determine which Teams should be <strong>Subscribed</strong> to the issue</li>
+	<li>... and <strong>Submit</strong> it!</li>
+</ol>
+
+<h2>Updating An Issue</h2>
+
+Incidents may have updates posted to them to provide progress updates, new information and resolution details. Updates are visible in reverse chronological order on the incident's detail page. You can add one by clicking [Add Update] an incident's detail page.
+
+<h2>Longer Term Goals</h2>
+
+<ol>
+	<li>Nag primary responders who don't update within the time indicated by the <strong>Next Update</strong> time</li>
+	<li>Measure incident lifecycle times with correlated systems (JIRA, Pager Duty, etc)</li>
+	<li>Provide a searchable knowledge respository so that resolutions to new incidents can be hastened by old ones</li>
+	<li>Aid in retrospectives and post-mortems by reconstructing timelines and helping turn incidents into learning opportunities</strong></li>
+</ol>
+
+<h2>About</h2>
+
+This is based on an open source project that was used as a learning exercise for a high school student for him to learn about Scala, Play Framework, Javascript and web application development. The code is posted on <a href="https://github.com/spidaman/Incident-Response-Manager">GitHub</a> under an Apache 2 license.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
