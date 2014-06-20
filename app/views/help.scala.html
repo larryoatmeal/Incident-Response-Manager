@@ -38,9 +38,35 @@ To create an incident, click on the <a href="@routes.IncidentCreator.addIncident
 	<li>... and <strong>Submit</strong> it!</li>
 </ol>
 
+<p>
+	<strong>Internal</strong> issues are typically of a "Heads Up" informational nature concerning infrastructure maintenance, significant application deployments or other system changes that will likely only be apparent to those inside the organization. The subject line in the mail messages from internal impacting issues will be prefixed "HEADSUP".
+</p>
+
+<p>
+	<strong>External</strong> issues are those that impact the service in a way that users will likely notice such as data publishes missing their schedule, degraded service performance, network outages, outbound mail system malfunctions. The subject line from external impacting incidents will be prefixed "SITEIMPACT".
+</p>
+
+
 <h2>Updating An Issue</h2>
 
-Incidents may have updates posted to them to provide progress updates, new information and resolution details. Updates are visible in reverse chronological order on the incident's detail page. You can add one by clicking [Add Update] an incident's detail page.
+<p>
+	Incidents may have updates posted to them to provide progress updates, new information and resolution details. Updates are visible in reverse chronological order on the incident's detail page. You can add one by clicking [Add Update] an incident's detail page.
+</p>
+
+<h2>Users</h2>
+
+<p>
+	This app is intentionally built with nothentication - "logging in" is just saying who you are, not proving it.  So this assumes a level of trust that users of the system won't misuse it. If that becomes a problem, some authentication system will be plugged in but in the meantime, we'll assume that we're all adults who find no thrill in abusing communication mechanisms.
+</p>
+<p>
+	Deployment to a trusted network is assumed; <em>do not run this app with open public access</em> because it can and <em>will</em> be abused.
+</p>
+
+<h2>Teams</h2>
+
+<p>
+	Teams arbitrary groupings of users that can be subscribed to an issue. The responding team is automatically subscribed but 	others may be subscribed if the incident potentially impacts them. Teams can have many users, users can be on many teams. Incidents can have many teams subscribed, ergo many users can be kept up to date on an issue with a good deal of flexibility. A user on multiple teams subscribed to the same incident will only be sent each update only once; the superset is addressed, not a joined lists with duplicates.
+</p>
 
 <h2>Longer Term Goals</h2>
 
