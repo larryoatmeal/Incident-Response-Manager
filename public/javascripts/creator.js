@@ -26,6 +26,8 @@ $(document).ready(function(){
 			'name': 'subscriptions[' + team_id + ']',
 			'value': team_id
 		}).insertAfter("#removeSubscription-" + team_id)
+
+		$("#newSubscriptionSelector option[value=" + team_id + "]").prop('disabled', true)
 		
 	})
 
@@ -64,6 +66,9 @@ $(document).ready(function(){
 					//alert("err")
 				}
 			})
+		} else {
+			team_id = incident_id
+			$("#newSubscriptionSelector option[value=" + team_id + "]").prop('disabled', false)
 		}
 		$(this).parent().remove()
 	})
