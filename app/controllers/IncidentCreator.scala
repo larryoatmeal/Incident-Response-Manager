@@ -84,10 +84,7 @@ object IncidentCreator extends Controller with Secured{
           val incident_id = IncidentM.addIncident(incident)
           //Logger.debug(incident_id.toString)
 
-          value.subscriptions.foreach { s => println("XXX %s".format(s)) }
-          println("YYYY %s".format(value.subscriptions))
-
-
+          Logger.info("subscriptions: %s".format(value.subscriptions))
 
           //-1 means something went wrong
           if (incident_id == -1){

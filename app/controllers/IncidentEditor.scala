@@ -77,37 +77,7 @@ object IncidentEditor extends Controller with Secured{
 
             //Check if subscriptions have changed
             val newSubscriptions = value.subscriptions.toSet
-            val oldSubscriptions = IncidentSubscriptionsMap.getTeams(incident_id).map(_.id.get).toSet
-
-            //Find additions:
-            val additions = newSubscriptions.filter(!oldSubscriptions.contains(_))
-            //Find deletions
-            val deletions = oldSubscriptions.filter(!newSubscriptions.contains(_))
-
-            //Add keys
-            additions.foreach{
-              team_id =>  {
-                IncidentSubscriptionsMap.addSubscription(incident_id, team_id)
-                TeamM.getTeam(team_id) match {
-                  case Some(team) => {
-                    messages += s"Subscribed team '${team.name}' to notifications concerning this incident"
-                  }
-                  case None =>
-                }
-              }
-            }
-            //Delete keys
-            deletions.foreach{
-              team_id => {
-                IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id) 
-                TeamM.getTeam(team_id) match {
-                  case Some(team) => {
-                    messages += s"Unsubscribed team '${team.name}' to notifications concerning this incident"
-                  }
-                  case None =>
-                }
-              }
-            }
+            updateSubscriptions(newSubscriptions, incident_id, messages)
 
             if (oldIncident.title != value.title)
               messages += s"Name of this incident changed, was\n'${oldIncident.title}'"
@@ -190,14 +160,57 @@ object IncidentEditor extends Controller with Secured{
 
   def deleteIncidentSubscription(incident_id: Int, team_id: Int) = Action{
     implicit request =>
+    Logger.info(s"Removing $team_id subscription from incident $incident_id")
     IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id)
     Ok("Ok")
   }
 
   def addIncidentSubscription(incident_id: Int, team_id: Int) = Action{
     implicit request =>
+    Logger.info(s"Adding $team_id subscription to incident $incident_id")
     IncidentSubscriptionsMap.addSubscription(incident_id, team_id)
     Ok("Ok")
+  }
+
+  def updateSubscriptions(newSubscriptions: Set[Int], incident_id: Int, messages: ListBuffer[String]) = {
+    val oldSubscriptions = IncidentSubscriptionsMap.getTeams(incident_id).map(_.id.get).toSet
+
+    Logger.info(s"new subscriptions: ${newSubscriptions.mkString(",")}")
+    Logger.info(s"old subscriptions: ${oldSubscriptions.mkString(",")}")
+    //Find additions:
+    val additions = newSubscriptions.filter(!oldSubscriptions.contains(_))
+    //Find deletions
+    val deletions = oldSubscriptions.filter(!newSubscriptions.contains(_))
+    Logger.info(s"additions: ${additions.mkString(",")}")
+    Logger.info(s"deletions: ${deletions.mkString(",")}")
+
+    //Add keys
+    additions.foreach{
+      team_id =>  {
+        IncidentSubscriptionsMap.addSubscription(incident_id, team_id)
+        TeamM.getTeam(team_id) match {
+          case Some(team) => {
+            messages += s"Subscribed team '${team.name}' to notifications concerning this incident"
+          }
+          case None =>
+        }
+      }
+    }
+    //Delete keys
+    deletions.foreach{
+      team_id => {
+        IncidentSubscriptionsMap.deleteSubscription(incident_id, team_id) 
+        TeamM.getTeam(team_id) match {
+          case Some(team) => {
+            val message = s"Unsubscribed team '${team.name}' to notifications concerning this incident"
+            Logger.info(message)
+            messages += message
+          }
+          case None =>
+        }
+      }
+    }
+
   }
 
   

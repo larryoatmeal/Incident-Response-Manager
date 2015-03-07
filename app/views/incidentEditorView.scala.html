@@ -83,7 +83,9 @@
 			<h3>Subscriptions</h3>
 			<ul id="subscriberList">
 				@for(s <- IncidentSubscriptionsMap.getTeams(incident_id)){
-					<li class="subscriber"><a class="removeSubscription" value="@incident_id:@s.id.get"><span class="glyphicon glyphicon-remove"></span></a> <a href="@routes.TeamInfo.teamPage(s.id.get)">@s.name</a></li>
+					<li class="subscriber"><a class="removeSubscription" value="@incident_id:@s.id.get"><span class="glyphicon glyphicon-remove"></span></a> <a href="@routes.TeamInfo.teamPage(s.id.get)">@s.name</a>
+					<input type="hidden" name="subscriptions[@s.id.get]" value="@s.id.get">
+					</li>
 				}
 			</ul>
 		</div>
